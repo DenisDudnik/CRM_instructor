@@ -1,0 +1,34 @@
+# General
+# ------------------------------------------------------------------------------
+DJANGO_DEBUG=True
+DJANGO_SETTINGS_MODULE=settings
+DJANGO_SECRET_KEY="django-insecure-Smw=_y^_wkuf##q(qgjf6vs1tvw(45#ff22hi5*jh-bv!xki0("
+DJANGO_ALLOWED_HOSTS=127.0.0.1,localhost
+DJANGO_STATIC_URL=http://127.0.0.1:8000/static/
+HOST_NAME=localhost
+SERVER_NAME=localhost
+
+
+# PostgreSQL
+# ------------------------------------------------------------------------------
+DJANGO_POSTGRES_HOST=postgres
+DJANGO_POSTGRES_PORT=5432
+DJANGO_POSTGRES_DB=crm_db
+DJANGO_POSTGRES_USER=admin
+DJANGO_POSTGRES_PASSWORD=password
+POSTGRES_DB=crm_db
+POSTGRES_USER=admin
+POSTGRES_PASSWORD=password
+PGDATA=/home/postgresql/data
+
+
+REDIS_BASE_URL=redis://redis:6379
+CELERY_BROKER_URL=redis://redis:6379/0
+CELERY_WORKER_NAME=celery
+
+
+#email_notifications
+EMAIL_HOST=smtp.office365.com
+EMAIL_PORT=587
+EMAIL_HOST_USER=email_user
+EMAIL_HOST_PASSWORD=email_passwd
