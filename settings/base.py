@@ -38,6 +38,9 @@ DEBUG = env.bool("DJANGO_DEBUG", default=True)
 
 ALLOWED_HOSTS = ["*"]
 
+# Заменить на адрес и порт (если отличается от 80) сайта в интернете
+CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000']
+
 
 # Application definition
 
