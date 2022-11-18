@@ -1,0 +1,51 @@
+version: '3.8'
+
+x-common: &common
+  build:
+    context: .
+    dockerfile: ./docker/Dockerfile
+    args:
+      - REQUIREMENTS_PATH=/requirements/local.txt
+  image: crm-local
+
+services:
+  postgres:
+    ports:
+      - 5436:5432
+
+  django:
+    <<: *common
+    volumes:
+      - .:/app
+      - django_static:/app/static
+      - media_crm:/app/media
+    expose:
+      - 8000
+
+  celery_quick:
+    <<: *common
+    volumes:
+      - .:/app
+      - media_crm:/app/media
+
+  celery-beat:
+    <<: *common
+    volumes:
+      - .:/app
+      - media_crm:/app/media
+
+  nginx:
+    build:
+      context: ./docker/nginx
+    ports:
+      - 8000:8000
+    depends_on:
+      - django
+    volumes:
+      - django_static:/static
+    networks:
+      - net
+
+volumes:
+  media_crm:
+    external: true

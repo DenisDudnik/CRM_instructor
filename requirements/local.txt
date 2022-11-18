@@ -1,0 +1,25 @@
+-r ./base.txt
+
+# Testing
+# ------------------------------------------------------------------------------
+# pytest==7.1.2  # https://github.com/pytest-dev/pytest
+# pytest-sugar==0.9.4  # https://github.com/Frozenball/pytest-sugar
+# freezegun==1.2.1  # https://pypi.org/project/freezegun/
+# pytest-mock==3.7.0
+# factory-boy==3.2.1  # https://github.com/FactoryBoy/factory_boy
+# django-coverage-plugin==2.0.2  # https://github.com/nedbat/django_coverage_plugin
+# pytest-django==4.5.2  # https://github.com/pytest-dev/pytest-django
+# pytest-cov==3.0.0
+# pytest-deadfixtures==2.2.1
+
+# Code quality
+# ------------------------------------------------------------------------------
+flake8==4.0.1  # https://github.com/PyCQA/flake8
+pre-commit==2.18.1  # https://github.com/pre-commit/pre-commit
+isort==5.10.1
+
+# Development
+# ------------------------------------------------------------------------------
+# Обновиться до 2.1+ после того, как эту версию поддержит django-extensions
+# См. https://github.com/django-extensions/django-extensions/pull/1716
+# werkzeug[watchdog]==2.0.3
