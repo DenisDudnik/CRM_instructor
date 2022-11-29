@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+
+    <link rel="icon" href="images/favicon.png" type="image/x-icon" />
+    <link rel="stylesheet" href="css/green_.css">
+
+    <title>Инструктор-CRM</title>
+    <meta name="Description" content="" />
+    <meta name="Keywords" content="" />
+</head>
+
+<body>
+    <div class="body-container">
+        <div class="top-container">
+            <div class="sized-container">
+                <div class="logo-container pointer" onclick="document.location='index_.html'">
+                    instructor<span>crm</span>
+                </div>
+                <div class="menu-container">
+                    <div class="menu-list">
+                        <a class="menu-item active" href="#">Таблица</a>
+                        <a class="menu-item" href="form_.html">Форма</a>
+                        <a class="menu-item" href="index_.html">Выход</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main-container">
+            <div class="sized-container">
+                <div class="content-container">
+                    <div class="title">Клиенты</div>
+                    <div class="row-reverse">
+                        <div class="filter-container margin-b-10">
+                            <form>
+                                <div class="row-wrap">
+                                    <div class="item">
+                                        <select>
+                                            <option>селект-фильтр</option>
+                                            <option>значени1</option>
+                                            <option>значени2</option>
+                                        </select>
+                                    </div>
+                                    <div class="item"><input placeholder="поиск..."></div>
+                                    <div class="item"><input type="submit" class="search" value=""></div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="add-container margin-b-10">
+                            <a href="#"><button class="green">Добавить +</button></a>
+                        </div>
+                    </div>
+                    <div class="table-container margin-t-15">
+                        <table class="list-table">
+                            <thead>
+                                <tr>
+                                    <th><span class="sortable">ФИО</span></th>
+                                    <th>E-Mail</th>
+                                    <th>Телефон</th>
+                                    <th>Занятие</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th class="edit"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Пупкин Василий Николаевич</td>
+                                    <td>pupkin@gmail.com</td>
+                                    <td>+79995556644</td>
+                                    <td>28.12.2022</td>
+                                    <td class="center"><button class="green">любая кнопка</button></td>
+                                    <td class="center"><button class="orange">удалить</button></td>
+                                    <td><a href="#"><img src="images/edit.png" alt=""></a></td>
+                                </tr>
+                                <tr>
+                                    <td>Иванов Петр Иванович</td>
+                                    <td>ivanov@gmail.com</td>
+                                    <td>+79995556622</td>
+                                    <td>12.01.2023</td>
+                                    <td class="center"><button class="green">любая кнопка</button></td>
+                                    <td class="center"><button class="orange">удалить</button></td>
+                                    <td><a href="#"><img src="images/edit.png" alt=""></a></td>
+                                </tr>
+                                <tr>
+                                    <td>Петрова Елизавета Никифорова</td>
+                                    <td>lisa@gmail.com</td>
+                                    <td>+79995556611</td>
+                                    <td></td>
+                                    <td class="center"><button class="green">любая кнопка</button></td>
+                                    <td class="center"><button class="orange">удалить</button></td>
+                                    <td><a href="#"><img src="images/edit.png" alt=""></a></td>
+                                </tr>
+                                <tr>
+                                    <td>Пупкин Василий Николаевич</td>
+                                    <td>pupkin@gmail.com</td>
+                                    <td>+79995556644</td>
+                                    <td>12.02.2023</td>
+                                    <td class="center"><button class="green">любая кнопка</button></td>
+                                    <td class="center"><button class="orange">удалить</button></td>
+                                    <td><a href="#"><img src="images/edit.png" alt=""></a></td>
+                                </tr>
+                                <tr>
+                                    <td>Иванов Петр Иванович</td>
+                                    <td>ivanov@gmail.com</td>
+                                    <td>+79995556622</td>
+                                    <td></td>
+                                    <td class="center"><button class="green">любая кнопка</button></td>
+                                    <td class="center"><button class="orange">удалить</button></td>
+                                    <td><a href="#"><img src="images/edit.png" alt=""></a></td>
+                                </tr>
+                                <tr>
+                                    <td>Петрова Елизавета Никифорова</td>
+                                    <td>lisa@gmail.com</td>
+                                    <td>+79995556611</td>
+                                    <td>15.01.2023</td>
+                                    <td class="center"><button class="green">любая кнопка</button></td>
+                                    <td class="center"><button class="orange">удалить</button></td>
+                                    <td><a href="#"><img src="images/edit.png" alt=""></a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagination">
+                        <div class="item">
+                            <a href="#"><<</a>
+                        </div>
+                        <!--div class="item not_active"> << </div-->
+                        <div class="item">
+                            <a href="#">1</a>
+                        </div>
+                        <div class="item active">
+                            <a href="#">2</a>
+                        </div>
+                        <div class="item">
+                            <a href="#">3</a>
+                        </div>
+                        <div class="item">
+                            <a href="#">4</a>
+                        </div>
+                        <div class="item">
+                            <a href="#">5</a>
+                        </div>
+                        <div class="item">
+                            <a href="#">>></a>
+                        </div>
+                        <!--div class="item not_active"> >> </div-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-container">
+            <div class="sized-container">
+                @copyright 2022
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
