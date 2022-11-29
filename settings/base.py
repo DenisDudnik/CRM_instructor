@@ -88,6 +88,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'users.context_processors.today_year'
             ],
         },
     },
@@ -180,7 +181,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = env('DJANGO_STATIC_URL', default='static/')
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+if DEBUG:
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, 'static')
+    ]
+else:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 
 # MEDIA
@@ -202,6 +208,8 @@ else:
     SERVER_URI = "http://" + env("LETSENCRYPT_HOST", default="inet_url") # Заменить на адрес хостинга
 
 AUTH_USER_MODEL = "users.User"
+LOGIN_URL = 'auth:login'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
