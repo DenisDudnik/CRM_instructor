@@ -1,0 +1,38 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.content {
+    max-width: 1140px;
+    margin: 0 auto;
+}
+.header {
+    display: flex;
+    align-items: center;
+}
+.menu {
+    list-style: none;
+    display: flex;
+    padding: 0 40px;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.footer {
+    height: 80px;
+}
+.footer-content {
+    display: flex;
+    padding: 0 80px;
+    justify-content: space-between;
+    align-items: center;
+}
+.wrapper {
+    flex-grow: 1;
+}

@@ -1,0 +1,12 @@
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="client-profile">
+  <div class="profile-field">
+    <label for="username">Имя пользователя: </label>
+    <span id="username">{{ user.username }}</span>
+  </div>
+</div>
+
+{% endblock %}
