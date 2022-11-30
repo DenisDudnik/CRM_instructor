@@ -77,12 +77,21 @@ class User(AbstractUser):
 
     id = models.UUIDField(primary_key=True, default=uuid4)
     role = models.CharField(
-        verbose_name='роль', max_length=1, choices=ROLES, null=False
+        verbose_name='роль',
+        max_length=1,
+        choices=ROLES,
+        null=False,
+        default='C'
     )
     lessons = models.ManyToManyField(
         Lesson, related_name='users', blank=True)
-    manager = models.ForeignKey('self', verbose_name='Персональный менеджер', on_delete=models.SET_NULL,
-                                related_name='users', null=True, blank=True)
+    manager = models.ForeignKey(
+        'self', verbose_name='Персональный менеджер',
+        on_delete=models.SET_NULL,
+        related_name='users',
+        null=True,
+        blank=True
+    )
     salary = models.FloatField(verbose_name='ставка', null=True, blank=True)
     percent_salary = models.IntegerField(verbose_name='надбавка в процентах',
                                          null=True, blank=True)
