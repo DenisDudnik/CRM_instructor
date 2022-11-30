@@ -1,6 +1,6 @@
 # General
 # ------------------------------------------------------------------------------
-DJANGO_DEBUG=True
+DJANGO_DEBUG=False
 DJANGO_SETTINGS_MODULE=settings
 DJANGO_SECRET_KEY="django-insecure-Smw=_y^_wkuf##q(qgjf6vs1tvw(45#ff22hi5*jh-bv!xki0("
 DJANGO_ALLOWED_HOSTS=127.0.0.1,localhost

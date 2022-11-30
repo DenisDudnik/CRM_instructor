@@ -80,7 +80,7 @@ class User(AbstractUser):
         verbose_name='роль', max_length=1, choices=ROLES, null=False
     )
     lessons = models.ManyToManyField(
-        Lesson, related_name='lessons', blank=True)
+        Lesson, related_name='users', blank=True)
     manager = models.ForeignKey('self', verbose_name='Персональный менеджер', on_delete=models.SET_NULL,
                                 related_name='users', null=True, blank=True)
     salary = models.FloatField(verbose_name='ставка', null=True, blank=True)
