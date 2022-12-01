@@ -2,8 +2,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from users.variables import links as links_list
-
 
 class BaseHandler:
 
@@ -17,11 +15,9 @@ class BaseHandler:
 class ClientHandler(BaseHandler):
 
     def get_response(self, *args, **kwargs) -> HttpResponse:
-        links = [links_list.get('courses')]
 
         context = {
-            'title': 'Профиль клиента',
-            'links': links
+            'title': 'Профиль клиента'
         }
         return render(self.request, 'users/client_profile.html', context)
 
@@ -29,12 +25,10 @@ class ClientHandler(BaseHandler):
 class TeacherHandler(BaseHandler):
 
     def get_response(self, *args, **kwargs) -> HttpResponse:
-        links = [links_list.get('courses')]
         user = self.request.user
         salary = user.salary + len(user.lessons.all()) * user.percent_salary
         context = {
             'title': 'Профиль клиента',
-            'links': links,
             'salary': salary
         }
         return render(self.request, 'users/client_profile.html', context)
@@ -43,13 +37,11 @@ class TeacherHandler(BaseHandler):
 class ManagerHandler(BaseHandler):
 
     def get_response(self, *args, **kwargs) -> HttpResponse:
-        links = [v for k, v in links_list.items() if k != 'managers']
         user = self.request.user
         salary = user.salary + len(user.users.all()) * user.percent_salary
         context = {
             'title': 'Профиль менеджера',
             'salary': salary,
-            'links': links
         }
         return render(self.request, 'users/client_profile.html', context)
 

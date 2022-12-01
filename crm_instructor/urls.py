@@ -27,7 +27,7 @@ urlpatterns = [
     path('', user_profile, name='user_profile'),
     path('clients_list/', ClientsListView.as_view(), name='clients'),
     path('teachers_list/', ClientsListView.as_view(), name='teachers'),
-    path('managers_list/', placeholder, name='managers'),
+    path('managers_list/', ClientsListView.as_view(), name='managers'),
     path('courses_list/', placeholder, name='courses'),
 ]
 

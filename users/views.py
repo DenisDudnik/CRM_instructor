@@ -4,12 +4,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 
 from users.forms import LoginForm, UserCreateForm, UserEditForm
 from users.handlers import UserHandlerFactory
 from users.models import User
-from users.variables import links
 
 
 def placeholder(request):
@@ -92,14 +92,9 @@ def create_user(request):
             return HttpResponseRedirect(reverse(rev))
     else:
         form = UserCreateForm(manager=request.user)
-        if request.user.role == 'H':
-            links_list = [v for k, v in links.items()]
-        else:
-            links_list = [v for k, v in links.items() if k != 'managers']
         context = {
             'title': title,
             'form': form,
-            'links': links_list,
             'button': 'Сохранить'
         }
         return render(request, 'users/login.html', context)
@@ -115,14 +110,6 @@ class ClientsListView(LoginRequiredMixin, ListView):
         '/teachers_list/': 'Список тренеров',
         '/managers_list/': 'Список менеджеров'
     }
-
-    def get_links(self):
-        if self.request.user.role in ('C', 'T'):
-            return [links.get('courses')]
-        elif self.request.user.role == 'M':
-            return [v for k, v in links.items() if k != 'managers']
-        else:
-            return [v for v in links.values()]
 
     def get_queryset(self):
         if self.request.META['PATH_INFO'] == '/clients_list/':
@@ -150,5 +137,10 @@ class ClientsListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super(ClientsListView, self).get_context_data(**kwargs)
         context['title'] = self.titles.get(self.request.META['PATH_INFO'], '')
-        context['links'] = self.get_links()
         return context
+
+
+class UserDetailView(LoginRequiredMixin, DetailView):
+    model = User
+    template_name = 'users/detail.html'
+    context_object_name = 'item'
