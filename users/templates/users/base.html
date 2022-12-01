@@ -24,15 +24,16 @@
                 <div class="logo-container">
                     instructor<span>crm</span>
                 </div>
-                {% if user.is_authenticated %}
-                    <a href="{% url 'auth:logout' %}">Выйти</a>
-                {% endif %}
+                <div class="menu-container">
+                    <div class="menu-list">
+                        {% if user.is_authenticated %}
+                            {% include 'users/includes/inc_user_menu.html' %}
+                        {% endif %}
+                    </div>
+                </div>
             </div>
         </div>
         <div class="main-container">
-            {% if user.is_authenticated %}
-                {% include 'users/includes/inc_user_menu.html' %}
-            {% endif %}
             <div class="sized-container">
                 {% block content %}
                 {% endblock %}
