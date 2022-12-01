@@ -1,6 +1,6 @@
 """Users forms module"""
 
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, UserChangeForm
 
 from users.models import User
 
@@ -16,3 +16,10 @@ class LoginForm(AuthenticationForm):
     class Meta:
         model = User
         fields = ('username', 'password')
+
+
+class UserEditForm(UserChangeForm):
+
+    class Meta:
+        model = User
+        fields = ("first_name", "last_name", "email", "phone")

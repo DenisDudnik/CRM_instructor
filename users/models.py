@@ -83,6 +83,9 @@ class User(AbstractUser):
         null=False,
         default='C'
     )
+    phone = models.CharField(
+        verbose_name='Номер телефона', blank=True, max_length=15
+    )
     lessons = models.ManyToManyField(
         Lesson, related_name='users', blank=True)
     manager = models.ForeignKey(

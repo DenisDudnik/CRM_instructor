@@ -5,6 +5,13 @@ from django.shortcuts import render
 
 class BaseHandler:
 
+    links = {
+        'clients': ('Клиенты', 'clients'),
+        'teachers': ('Тренеры', 'teachers'),
+        'managers': ('Менеджеры', 'managers'),
+        'courses': ('Курсы', 'courses')
+    }
+
     def __init__(self, request, *args, **kwargs):
         self.request = request
 
@@ -15,8 +22,11 @@ class BaseHandler:
 class ClientHandler(BaseHandler):
 
     def get_response(self, *args, **kwargs) -> HttpResponse:
+        links = [self.links.get('courses')]
+
         context = {
-            'title': 'Профиль клиента'
+            'title': 'Профиль клиента',
+            'links': links
         }
         return render(self.request, 'users/client_profile.html', context)
 
@@ -30,7 +40,15 @@ class TeacherHandler(BaseHandler):
 class ManagerHandler(BaseHandler):
 
     def get_response(self, *args, **kwargs) -> HttpResponse:
-        pass
+        links = [v for k, v in self.links.items() if k != 'managers']
+        user = self.request.user
+        salary = user.salary + len(user.lessons.all()) * user.percent_salary
+        context = {
+            'title': 'Профиль менеджера',
+            'salary': salary,
+            'links': links
+        }
+        return render(self.request, 'users/client_profile.html', context)
 
 
 class HeadManagerHandler(BaseHandler):

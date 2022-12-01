@@ -19,12 +19,16 @@ from django.contrib import admin
 from django.urls import path
 from django.urls.conf import include
 
-from users.views import user_profile
+from users.views import placeholder, user_profile
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('users.urls', namespace='auth')),
-    path('', user_profile, name='user-detail')
+    path('', user_profile, name='user_profile'),
+    path('clients_list/', placeholder, name='clients'),
+    path('teachers_list/', placeholder, name='teachers'),
+    path('managers_list/', placeholder, name='managers'),
+    path('courses_list/', placeholder, name='courses'),
 ]
 
 if settings.DEBUG:

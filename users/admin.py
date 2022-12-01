@@ -12,6 +12,7 @@ class CRMUserAdmin(UserAdmin):
         [x for x in UserAdmin.fieldsets] + [(
             _("Other"), {"fields": (
                 "role",
+                "phone",
                 "lessons",
                 "manager",
                 "salary",

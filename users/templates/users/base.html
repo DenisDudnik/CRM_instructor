@@ -1,43 +1,46 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <title>{{ title }}</title>
-    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+
+    <link rel="icon" href="/static/images/favicon.png" type="image/x-icon" />
+    <link rel="stylesheet" href="{% static 'css/green.css' %}">
+
+    <title>Инструктор-CRM</title>
+    <meta name="Description" content="" />
+    <meta name="Keywords" content="" />
 </head>
+
 <body>
-<div class="container">
-    <div class="wrapper">
-        <div class="header">
-            <ul class="menu">
+    <div class="body-container">
+        <div class="top-container">
+            <div class="sized-container row space-between">
+                <div class="logo-container">
+                    instructor<span>crm</span>
+                </div>
                 {% if user.is_authenticated %}
-                <li class="menu-item">
-                    <a href="{% url 'auth:logout' %}" class="menu-link">
-                        Выход
-                    </a>
-                </li>
-                {% else %}
-                <li class="menu-item">
-                    <a href="{% url 'auth:login' %}" class="menu-link">
-                        Вход
-                    </a>
-                </li>
+                    <a href="{% url 'auth:logout' %}">Выйти</a>
                 {% endif %}
-            </ul>
+            </div>
         </div>
-        <div class="content">
-            {% block content %}
-            {% endblock %}
+        <div class="main-container">
+            <div class="sized-container">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+        <div class="footer-container">
+            <div class="sized-container">
+                @copyright {{ year }}
+            </div>
         </div>
     </div>
-    <div class="footer">
-        <ul class="footer-content">
-            <li class="footer-item">&copy;EnigmaGBDev2</li>
-            <li class="footer-item">{{ year }}</li>
-        </ul>
-    </div>
-</div>
 </body>
+
 </html>
