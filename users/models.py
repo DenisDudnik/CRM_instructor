@@ -115,3 +115,6 @@ class User(AbstractUser):
             'user-detail',
             # kwargs={'pk': self.pk}
         )
+
+    def __str__(self):
+        return self.get_full_name()

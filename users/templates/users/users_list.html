@@ -29,5 +29,8 @@
     {% endfor %}
     </tbody>
 </table>
+    {% if user.role == 'M' or user.role == 'H' %}
+        <a href="{% url 'auth:create_user' %}" class="green">+ Добавить</a>
+    {% endif %}
 </div>
 {% endblock %}
