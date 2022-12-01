@@ -3,12 +3,6 @@
 
 {% block content %}
 <div class="content-container">
-    <div class="pages-links">
-        {% for value, link in links %}
-            <a href="{% url link %}">{{ value }}</a>
-        {% endfor %}
-    </div>
-
     <div class="title">{{ user.get_full_name }}</div>
     <div class="table-container margin-t-15">
         <table class="list-table">

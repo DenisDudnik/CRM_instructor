@@ -2,15 +2,10 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 
+from users.variables import links as links_list
+
 
 class BaseHandler:
-
-    links = {
-        'clients': ('Клиенты', 'clients'),
-        'teachers': ('Тренеры', 'teachers'),
-        'managers': ('Менеджеры', 'managers'),
-        'courses': ('Курсы', 'courses')
-    }
 
     def __init__(self, request, *args, **kwargs):
         self.request = request
@@ -22,7 +17,7 @@ class BaseHandler:
 class ClientHandler(BaseHandler):
 
     def get_response(self, *args, **kwargs) -> HttpResponse:
-        links = [self.links.get('courses')]
+        links = [links_list.get('courses')]
 
         context = {
             'title': 'Профиль клиента',
@@ -34,15 +29,23 @@ class ClientHandler(BaseHandler):
 class TeacherHandler(BaseHandler):
 
     def get_response(self, *args, **kwargs) -> HttpResponse:
-        pass
+        links = [links_list.get('courses')]
+        user = self.request.user
+        salary = user.salary + len(user.lessons.all()) * user.percent_salary
+        context = {
+            'title': 'Профиль клиента',
+            'links': links,
+            'salary': salary
+        }
+        return render(self.request, 'users/client_profile.html', context)
 
 
 class ManagerHandler(BaseHandler):
 
     def get_response(self, *args, **kwargs) -> HttpResponse:
-        links = [v for k, v in self.links.items() if k != 'managers']
+        links = [v for k, v in links_list.items() if k != 'managers']
         user = self.request.user
-        salary = user.salary + len(user.lessons.all()) * user.percent_salary
+        salary = user.salary + len(user.users.all()) * user.percent_salary
         context = {
             'title': 'Профиль менеджера',
             'salary': salary,

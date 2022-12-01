@@ -1,0 +1,8 @@
+{% load static %}
+
+<div class="pages-links">
+    <a href="{% url 'user_profile' %}">Профиль</a>
+    {% for value, link in links %}
+        <a href="{% url link %}">{{ value }}</a>
+    {% endfor %}
+</div>

@@ -30,6 +30,9 @@
             </div>
         </div>
         <div class="main-container">
+            {% if user.is_authenticated %}
+                    {% include 'users/includes/inc_user_menu.html' %}
+            {% endif %}
             <div class="sized-container">
                 {% block content %}
                 {% endblock %}

@@ -1,11 +1,15 @@
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.views.generic.list import ListView
 
 from users.forms import LoginForm, UserEditForm
 from users.handlers import UserHandlerFactory
+from users.models import User
+from users.variables import links
 
 
 def placeholder(request):
@@ -69,3 +73,35 @@ def profile_edit(request) -> HttpResponse:
         'button': 'Сохранить'
     }
     return render(request, 'users/login.html', context)
+
+
+class ClientsListView(LoginRequiredMixin, ListView):
+    model = User
+    template_name = 'users/users_list.html'
+    context_object_name = 'clients'
+
+    def get_queryset(self):
+        if self.request.META['PATH_INFO'] == '/clients_list/':
+            if self.request.user.role == 'M':
+                return User.objects.filter(
+                    role='C', manager__id=self.request.user.id
+                )
+            elif self.request.user.role == 'H':
+                return User.objects.filter(
+                    role='C'
+                )
+            else:
+                return []
+        elif self.request.META['PATH_INFO'] == '/teachers_list/':
+            if self.request.user.role in ('M', 'H'):
+                return User.objects.filter(
+                    role='T'
+                )
+            return []
+
+    def get_context_data(self, **kwargs):
+        print(self.request.META['PATH_INFO'])
+        context = super(ClientsListView, self).get_context_data(**kwargs)
+        context['title'] = 'Список клиентов'
+        context['links'] = [v for k, v in links.items() if k != 'managers']
+        return context
