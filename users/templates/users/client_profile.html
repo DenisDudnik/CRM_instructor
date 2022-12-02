@@ -5,7 +5,7 @@
 <div class="content-container">
     <div class="title">{{ user.get_full_name }}</div>
     <div class="table-container margin-t-15">
-        <table class="list-table">
+        <table class="line-table centered">
             <tbody>
                 <tr>
                     <td>Имя пользователя</td>
@@ -50,8 +50,10 @@
             </tbody>
         </table>
     </div>
-    <div class="control">
-        <a href="{% url 'auth:edit_profile' %}" class="control-link">Редактировать</a>
+    <div class="margin-t-20 center">
+        <a href="{% url 'auth:edit_profile' %}" class="not-decorated">
+            <button class="green">Редактировать</button>
+        </a>
     </div>
 </div>
 {% endblock %}
