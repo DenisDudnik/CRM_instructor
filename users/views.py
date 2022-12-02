@@ -72,7 +72,7 @@ def profile_edit(request) -> HttpResponse:
         'form': form,
         'button': 'Сохранить'
     }
-    return render(request, 'users/login.html', context)
+    return render(request, 'users/form.html', context)
 
 
 @login_required
