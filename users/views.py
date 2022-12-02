@@ -12,8 +12,8 @@ from users.handlers import UserHandlerFactory
 from users.models import User
 
 
-def placeholder(request):
-    pass
+def placeholder(request) -> HttpResponse:
+    return render(request, 'users/404.html', {'title': '404'})
 
 
 def login(request) -> HttpResponse:
