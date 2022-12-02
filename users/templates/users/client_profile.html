@@ -2,11 +2,56 @@
 {% load static %}
 
 {% block content %}
-<div class="client-profile">
-  <div class="profile-field">
-    <label for="username">Имя пользователя: </label>
-    <span id="username">{{ user.username }}</span>
-  </div>
+<div class="content-container">
+    <div class="title">{{ user.get_full_name }}</div>
+    <div class="table-container margin-t-15">
+        <table class="list-table">
+            <tbody>
+                <tr>
+                    <td>Имя пользователя</td>
+                    <td>{{ user.username }}</td>
+                </tr>
+                <tr>
+                    <td>Имя</td>
+                    <td>{{ user.first_name }}</td>
+                </tr>
+                <tr>
+                    <td>Фамилия</td>
+                    <td>{{ user.last_name }}</td>
+                </tr>
+                <tr>
+                    <td>Номер телефона</td>
+                    <td>{{ user.phone }}</td>
+                </tr>
+                {% if user.manager %}
+                <tr>
+                    <td>Менеджер</td>
+                    <td>{{ user.manager.get_full_name }}</td>
+                </tr>
+                {% endif %}
+                {% if user.salary %}
+                <tr>
+                    <td>Оклад</td>
+                    <td>{{ user.salary }} руб.</td>
+                </tr>
+                {% endif %}
+                {% if user.percent_salary %}
+                <tr>
+                    <td>Надбавка</td>
+                    <td>{{ user.percent_salary }} %</td>
+                </tr>
+                {% endif %}
+                {% if salary %}
+                <tr>
+                    <td>Суммарная заработная плата</td>
+                    <td>{{ salary }} руб.</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+    <div class="control">
+        <a href="{% url 'auth:edit_profile' %}" class="control-link">Редактировать</a>
+    </div>
 </div>
-
 {% endblock %}

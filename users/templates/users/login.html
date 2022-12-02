@@ -2,9 +2,16 @@
 {% load static %}
 
 {% block content %}
-<form action="" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Войти">
-</form>
+<div class="login-form-container">
+    <div class="title">{{ title }}</div>
+    <form action="" method="post" class="as_p">
+        <!--ul class="errorlist nonfield">
+            <li>Пожалуйста, введите правильные имя пользователя и пароль.
+                Оба поля могут быть чувствительны к регистру.</li>
+        </ul-->
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="{{ button }}" class="green">
+    </form>
+</div>
 {% endblock %}
