@@ -1,0 +1,10 @@
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="content-container">
+    <div class="title">{{ object.title }}</div>
+    <p>{{ object.description }}</p>
+    <p>Стоимость: {{ object.cost }}</p>
+</div>
+{% endblock %}
