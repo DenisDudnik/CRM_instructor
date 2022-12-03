@@ -59,6 +59,7 @@ THRIDPARTY_APPS = [
 
 LOCAL_APPS = [
     'users.apps.UsersConfig',
+    'courses',
 ]
 
 INSTALLED_APPS = LOCAL_APPS + DJANGO_APPS + THRIDPARTY_APPS
