@@ -12,6 +12,9 @@ class CourseType(models.Model):
         verbose_name='Направление', max_length=255, null=False
     )
 
+    def __str__(self) -> str:
+        return self.title
+
 
 class Course(models.Model):
     """Курс обучения"""
@@ -41,6 +44,9 @@ class Course(models.Model):
             )).timestamp() - lessons[0].date.timestamp()
         ) / 60
 
+    def __str__(self) -> str:
+        return self.title
+
 
 class Lesson(models.Model):
     """Отдельный урок"""
@@ -57,3 +63,6 @@ class Lesson(models.Model):
         verbose_name='Продолжительность занятия в минутах', default=0
     )
     cost = models.FloatField(verbose_name='Стоимость участия', null=False)
+
+    def __str__(self) -> str:
+        return self.description[:64]
