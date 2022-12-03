@@ -47,6 +47,12 @@ class Course(models.Model):
     def __str__(self) -> str:
         return self.title
 
+    def get_absolute_url(self):
+        return reverse('courses:detail', kwargs={'pk': self.pk})
+    
+    class Meta:
+        ordering = ['title']
+
 
 class Lesson(models.Model):
     """Отдельный урок"""

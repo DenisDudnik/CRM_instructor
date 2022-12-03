@@ -19,13 +19,17 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 from courses.apps import CoursesConfig
-from courses.views import CourseListView
+from courses.views import CourseListView, CourseDetailView, CourseCreateView, CourseUpdateView, CourseDeleteView
 
 
 app_name = CoursesConfig.name
 
 urlpatterns = [
     path("", CourseListView.as_view(), name='list'),
+    path("<int:pk>/", CourseDetailView.as_view(), name='detail'),
+    path("<int:pk>/update/", CourseUpdateView.as_view(), name='update'),
+    path("<int:pk>/delete/", CourseDeleteView.as_view(), name='delete'),
+    path("create/", CourseCreateView.as_view(), name='create'),
     # path("devitem/<uuid:pk>/", DevItemDetailView.as_view(), name='devitem_detail'),
     # path("devitem/<uuid:pk>/edit/",
     #      DevItemUpdateView.as_view(), name='devitem_update'),

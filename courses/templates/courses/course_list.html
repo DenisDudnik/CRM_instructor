@@ -1,0 +1,26 @@
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="table-container margin-t-15">
+<table class="list-table">
+    <thead>
+        <tr>
+            <th><span class="sortable">Тип курса</span></th>
+            <th>Название курса</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for object in object_list %}
+        <tr>
+            <td><a href="{% url 'courses:detail' pk=object.pk %}">{{ object.title }}</a></td>
+            <td>{{ object.description }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+    {% comment %} {% if user.role == 'M' or user.role == 'H' %}
+        <a href="{% url 'auth:create_user' %}" class="green">+ Добавить</a>
+    {% endif %} {% endcomment %}
+</div>
+{% endblock %}
