@@ -14,7 +14,7 @@ def get_links(request):
         'clients': ('Клиенты', 'clients'),
         'teachers': ('Тренеры', 'teachers'),
         'managers': ('Менеджеры', 'managers'),
-        'courses': ('Курсы', 'courses')
+        'courses': ('Курсы', 'courses:list')
     }
     result = {
         'links': []

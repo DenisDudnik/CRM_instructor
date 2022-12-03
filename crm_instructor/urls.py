@@ -28,7 +28,7 @@ urlpatterns = [
     path('clients_list/', ClientsListView.as_view(), name='clients'),
     path('teachers_list/', ClientsListView.as_view(), name='teachers'),
     path('managers_list/', ClientsListView.as_view(), name='managers'),
-    path('courses_list/', placeholder, name='courses'),
+    path('courses_list/', include('courses.urls', namespace='courses')),
 ]
 
 if settings.DEBUG:
