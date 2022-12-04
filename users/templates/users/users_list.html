@@ -17,6 +17,7 @@
     </thead>
     <tbody>
     {% for client in clients %}
+        {% if client != user %}
         <tr>
             <td><a href="{% url 'auth:detail_user' pk=client.pk %}">{{ client.get_full_name }}</a></td>
             <td>{{ client.email }}</td>
@@ -26,6 +27,7 @@
             <td class="center"><button class="orange">удалить</button></td>
             <td><a href="#"><img src="/static/images/edit.png" alt=""></a></td>
         </tr>
+        {% endif %}
     {% endfor %}
     </tbody>
 </table>
