@@ -30,13 +30,19 @@
         <tr>
             <th><span class="sortable">Тип курса</span></th>
             <th>Название курса</th>
+            <th class="edit"></th>
         </tr>
     </thead>
     <tbody>
     {% for object in object_list %}
         <tr>
-            <td><a href="{% url 'courses:detail' pk=object.pk %}">{{ object.title }}</a></td>
+            <td><a href="{% url 'courses:detail' pk=object.pk %}" class="control-link">{{ object.title }}</a></td>
             <td>{{ object.description }}</td>
+            <td>
+                <a href="{% url 'courses:update' pk=object.pk %}">
+                    <img src="/static/images/edit.png" alt="">
+                </a>
+            </td>
         </tr>
     {% endfor %}
     </tbody>

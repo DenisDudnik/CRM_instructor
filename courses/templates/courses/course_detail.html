@@ -3,10 +3,17 @@
 
 {% block content %}
 <div class="content-container">
-    <div class="title">{{ object.title }}</div>
-    <p>{{ object.description }}</p>
-    <p>Стоимость: {{ object.cost }}</p>
-    <a href="{% url 'courses:update' pk=object.pk %}"><button class="green">Редактировать</button></a>
-    <a href="{% url 'courses:delete' pk=object.pk %}"><button class="green">Удалить</button></a>
+    <div class="title center">{{ object.title }}</div>
+    <p class="center">{{ object.description }}</p>
+    <div class="details-container">
+        <div class="detail-field">
+            <label>Стоимость: </label>
+            <span id="first_name">{{ object.cost }}</span>
+        </div>
+    </div>
+    <div class="center margin-t-20">
+        <a href="{% url 'courses:update' pk=object.pk %}" class="margin-r-10"><button class="green">Редактировать</button></a>
+        <a href="{% url 'courses:delete' pk=object.pk %}"><button class="orange">Удалить</button></a>
+    </div>
 </div>
 {% endblock %}

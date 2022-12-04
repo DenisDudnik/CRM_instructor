@@ -97,7 +97,7 @@ def create_user(request):
             'form': form,
             'button': 'Сохранить'
         }
-        return render(request, 'users/login.html', context)
+        return render(request, 'users/form.html', context)
 
 
 class ClientsListView(LoginRequiredMixin, ListView):
