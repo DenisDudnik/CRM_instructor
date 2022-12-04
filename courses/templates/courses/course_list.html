@@ -2,6 +2,28 @@
 {% load static %}
 
 {% block content %}
+<div class="content-container">
+<div class="title">{{ title | capfirst }}</div>
+<div class="row-reverse">
+    <div class="filter-container margin-b-10">
+        <form>
+            <div class="row-wrap">
+                <div class="item">
+                    <select>
+                        <option>селект-фильтр</option>
+                        <option>значени1</option>
+                        <option>значени2</option>
+                    </select>
+                </div>
+                <div class="item"><input placeholder="поиск..."></div>
+                <div class="item"><input type="submit" class="search" value=""></div>
+            </div>
+        </form>
+    </div>
+    <div class="add-container margin-b-10">
+        <a href="{% url 'courses:create' %}"><button class="green">Добавить +</button></a>
+    </div>
+</div>
 <div class="table-container margin-t-15">
 <table class="list-table">
     <thead>
@@ -22,5 +44,6 @@
     {% comment %} {% if user.role == 'M' or user.role == 'H' %}
         <a href="{% url 'auth:create_user' %}" class="green">+ Добавить</a>
     {% endif %} {% endcomment %}
+</div>
 </div>
 {% endblock %}
