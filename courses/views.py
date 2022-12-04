@@ -20,10 +20,9 @@ class CourseListView(ListView):
         queryset = Course.objects.all()
         if self.request.user.role == User.MANAGER:
             queryset = queryset
-        if self.request.user.role == User.CLIENT:
-            queryset = queryset.filter(title="Курс 1")
-        if self.request.user.role == User.TEACHER:
-            queryset = queryset.filter(title="Курс 2")
+        if self.request.user.role in [User.CLIENT, User.TEACHER]:
+            ids = [x.pk for x in self.request.user.courses]
+            queryset = queryset.filter(pk__in=ids)
         return queryset
 
 
