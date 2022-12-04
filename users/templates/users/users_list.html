@@ -2,37 +2,47 @@
 {% load static %}
 
 {% block content %}
-<div class="table-container margin-t-15">
-<table class="list-table">
-    <thead>
-        <tr>
-            <th><span class="sortable">ФИО</span></th>
-            <th>E-Mail</th>
-            <th>Телефон</th>
-            <th>Дата регистрации</th>
-            <th></th>
-            <th></th>
-            <th class="edit"></th>
-        </tr>
-    </thead>
-    <tbody>
-    {% for client in clients %}
-        {% if client != user %}
-        <tr>
-            <td><a href="{% url 'auth:detail_user' pk=client.pk %}">{{ client.get_full_name }}</a></td>
-            <td>{{ client.email }}</td>
-            <td>{{ client.phone }}</td>
-            <td>{{ client.created_at }}</td>
-            <td class="center"><button class="green">любая кнопка</button></td>
-            <td class="center"><button class="orange">удалить</button></td>
-            <td><a href="#"><img src="/static/images/edit.png" alt=""></a></td>
-        </tr>
-        {% endif %}
-    {% endfor %}
-    </tbody>
-</table>
+<div class="content-container">
+    <div class="table-container margin-t-15">
+        <table class="list-table">
+            <thead>
+                <tr>
+                    <th><span class="sortable">ФИО</span></th>
+                    <th>E-Mail</th>
+                    <th>Телефон</th>
+                    <th>Дата регистрации</th>
+                    <th class="edit"></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for client in clients %}
+              {% if client != user %}
+                  <tr>
+                      <td>
+                          <a href="{% url 'auth:detail_user' pk=client.pk %}" class="control-link">
+                              {{ client.get_full_name }}
+                          </a>
+                      </td>
+                      <td>{{ client.email }}</td>
+                      <td>{{ client.phone }}</td>
+                      <td>{{ client.created_at }}</td>
+                      <td>
+                          <a href="{% url 'auth:detail_user' pk=client.pk %}">
+                              <img src="/static/images/edit.png" alt="">
+                          </a>
+                      </td>
+                  </tr>
+              {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
     {% if user.role == 'M' or user.role == 'H' %}
-        <a href="{% url 'auth:create_user' %}" class="green">+ Добавить</a>
+        <div class="margin-t-20">
+            <a href="{% url 'auth:create_user' %}" class="not-decorated">
+                <button class="green">+ Добавить</button>
+            </a>
+        </div>
     {% endif %}
 </div>
 {% endblock %}

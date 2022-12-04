@@ -3,26 +3,28 @@
 
 {% block content %}
 <div class="content-container">
-    <div class="title">{{ item.get_full_name }}</div>
-    <div class="detail-field">
-        <label for="first_name">Имя: </label>
-        <span id="first_name">{{ item.first_name }}</span>
-    </div>
-    <div class="detail-field">
-        <label for="last_name">Фамилия: </label>
-        <span id="last_name">{{ item.last_name }}</span>
-    </div>
-    <div class="detail-field">
-        <label for="email">Email: </label>
-        <span id="email">{{ item.email }}</span>
-    </div>
-    <div class="detail-field">
-        <label for="phone">Номер телефона: </label>
-        <span id="phone">{{ item.phone }}</span>
-    </div>
-    <div class="detail-field">
-        <label for="created_at">Дата регистрации: </label>
-        <span id="created_at">{{ item.created_at }}</span>
+    <div class="title center">{{ item.get_full_name }}</div>
+    <div class="details-container">
+        <div class="detail-field">
+            <label for="first_name">Имя: </label>
+            <span id="first_name">{{ item.first_name }}</span>
+        </div>
+        <div class="detail-field">
+            <label for="last_name">Фамилия: </label>
+            <span id="last_name">{{ item.last_name }}</span>
+        </div>
+        <div class="detail-field">
+            <label for="email">Email: </label>
+            <span id="email">{{ item.email }}</span>
+        </div>
+        <div class="detail-field">
+            <label for="phone">Номер телефона: </label>
+            <span id="phone">{{ item.phone }}</span>
+        </div>
+        <div class="detail-field">
+            <label for="created_at">Дата регистрации: </label>
+            <span id="created_at">{{ item.created_at }}</span>
+        </div>
     </div>
 </div>
 {% endblock %}
