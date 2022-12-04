@@ -6,5 +6,7 @@
     <div class="title">{{ object.title }}</div>
     <p>{{ object.description }}</p>
     <p>Стоимость: {{ object.cost }}</p>
+    <a href="{% url 'courses:update' pk=object.pk %}"><button class="green">Редактировать</button></a>
+    <a href="{% url 'courses:delete' pk=object.pk %}"><button class="green">Удалить</button></a>
 </div>
 {% endblock %}
