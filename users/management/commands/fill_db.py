@@ -66,6 +66,7 @@ class Command(BaseCommand):
         for user in users:
             user_item = user.get('fields')
             new_user = User(**user_item)
+            new_user.set_password(password)
             new_user.save()
 
         managers = User.objects.filter(role="M")
