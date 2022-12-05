@@ -74,6 +74,11 @@
    docker-compose run --rm django ./manage.py createsuperuser
    ```
 
+11a. Или создать пользователя и тестовые данные
+   ```
+   docker-compose exec django python manage.py fill_db --user <имя пользователя> --password <пароль>
+   ```
+
 12. Сервер доступен по адресу:
     ```
     http://127.0.0.1:8000/
