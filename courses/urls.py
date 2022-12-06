@@ -21,7 +21,7 @@ from django.urls import path
 from courses.apps import CoursesConfig
 from courses.views import (CourseCreateView, CourseDeleteView,
                            CourseDetailView, CourseListView, CourseUpdateView,
-                           subscribe)
+                           subscribe, unsubscribe)
 
 app_name = CoursesConfig.name
 
@@ -32,6 +32,7 @@ urlpatterns = [
     path("<int:pk>/delete/", CourseDeleteView.as_view(), name='delete'),
     path("create/", CourseCreateView.as_view(), name='create'),
     path("subscribe/<int:course_id>/<int:lesson_id>/<str:role>/", subscribe, name='subscribe'),
+    path("unsubscribe/", unsubscribe, name='unsubscribe'),
     # path("devitem/<uuid:pk>/", DevItemDetailView.as_view(), name='devitem_detail'),
     # path("devitem/<uuid:pk>/edit/",
     #      DevItemUpdateView.as_view(), name='devitem_update'),

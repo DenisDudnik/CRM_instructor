@@ -11,6 +11,18 @@ from users.models import User
 # Create your views here.
 
 
+def unsubscribe(request):
+    course_id = request.POST.get('course')
+    course = Course.objects.get(pk=course_id)
+    lessons = course.lessons.all()
+    user = request.user
+    for lesson in lessons:
+        if lesson in user.lessons.all():
+            user.lessons.remove(lesson)
+    user.save()
+    return HttpResponseRedirect(reverse('courses:list'))
+
+
 def subscribe(request, course_id=None, lesson_id=None, role: str = None):
     course = None
     lesson = None

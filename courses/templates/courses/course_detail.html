@@ -37,6 +37,13 @@
         <a href="{% url 'courses:delete' pk=object.pk %}"><button class="orange">Удалить</button></a>
         <a href="{% url 'courses:subscribe' course_id=object.id lesson_id=0 role='C' %}"><button class="green">Записать клиента на курс</button></a>
         {% endif %}
+        {% if user.role == 'C' %}
+        <form action="{% url 'courses:unsubscribe' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="course" value="{{ object.id }}">
+            <input type="submit" value="Отменить запись">
+        </form>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
