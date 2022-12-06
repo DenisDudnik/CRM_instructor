@@ -21,7 +21,8 @@ from django.urls import path
 from courses.apps import CoursesConfig
 from courses.views import (CourseCreateView, CourseDeleteView,
                            CourseDetailView, CourseListView, CourseUpdateView,
-                           subscribe, unsubscribe)
+                           LessonCreateView, LessonDetailView, subscribe,
+                           unsubscribe)
 
 app_name = CoursesConfig.name
 
@@ -31,36 +32,13 @@ urlpatterns = [
     path("<int:pk>/update/", CourseUpdateView.as_view(), name='update'),
     path("<int:pk>/delete/", CourseDeleteView.as_view(), name='delete'),
     path("create/", CourseCreateView.as_view(), name='create'),
-    path("subscribe/<int:course_id>/<int:lesson_id>/<str:role>/", subscribe, name='subscribe'),
+    path("subscribe/<int:course_id>/<int:lesson_id>/<str:role>/", subscribe,
+         name='subscribe'),
     path("unsubscribe/", unsubscribe, name='unsubscribe'),
-    # path("devitem/<uuid:pk>/", DevItemDetailView.as_view(), name='devitem_detail'),
-    # path("devitem/<uuid:pk>/edit/",
-    #      DevItemUpdateView.as_view(), name='devitem_update'),
-    # path("devitem/add/<str:ip>/<str:mac>/",
-    #      DevItemCreateView.as_view(), name='devitem_add'),
-    # path("devitem/<uuid:pk>/delete/",
-    #      DevItemDeleteView.as_view(), name='devitem_delete'),
-    # path("devmodel/<uuid:pk>/", DevModelDetailView.as_view(), name='devmodel_detail'),
-    # path("devmodel/add/", DevModelCreateView.as_view(), name='devmodel_add'),
-    # path("devmodel/<uuid:pk>/edit/",
-    #      DevModelUpdateView.as_view(), name='devmodel_update'),
-    # path("devmodel/<uuid:pk>/delete/",
-    #      DevModelDeleteView.as_view(), name='devmodel_delete'),
-    # path("devmodel/<uuid:pk>/addphoto/",
-    #      DevModelPhotoCreateView.as_view(), name='devmodelphoto_add'),
-    # path("devmodel/photo/<uuid:pk>/delete/",
-    #      DevModelPhotoDeleteView.as_view(), name='devmodelphoto_del'),
-    # path("devmodel/<uuid:pk>/addfile/",
-    #      DevModelFileCreateView.as_view(), name='devmodelfile_add'),
-    #  path("devmodel/file/<uuid:pk>/delete/",
-    #      DevModelFileDeleteView.as_view(), name='devmodelfile_del'),
-    # path("nets/add/", NetsCreateView.as_view(), name='nets_add'),
-    # path("nets/<uuid:pk>/edit/", NetsUpdateView.as_view(), name='nets_update'),
-    # path("nets/<uuid:pk>/delete/", NetsDeleteView.as_view(), name='nets_delete'),
-    #     path("login/", LoginPage.as_view(), {'title': 'вход'}, name='login'),
-    #     path("logout/", LogoutPage.as_view(), {'title': 'выход'}, name='logout'),
-    #     path("user/<pk>/", ProfilePage.as_view(), {'title': 'просмотр профиля'}, name='user-detail'),
-    #     path("user/<pk>/edit/", ProfileEditPage.as_view(), {'title': 'редактирование профиля'}, name='user-edit'),
+    path('create_lesson/<int:pk>/', LessonCreateView.as_view(),
+         name='create-lesson'),
+    path('lesson_dateil/<int:pk>/', LessonDetailView.as_view(),
+         name='lesson-detail')
 ]
 
 if settings.DEBUG:

@@ -10,9 +10,17 @@
             <label>Стоимость: </label>
             <span id="first_name">{{ object.cost }}</span>
         </div>
-        <div class="detail-field">
+        {% if user.role == 'M' or user.role == 'H' %}
+        <a href="{% url 'courses:create-lesson' pk=object.id %}"><button class="green">Добавить урок</button></a>
+        {% endif %}
+        <div class="lessons-list">
             <label>Уроки: </label>
+        </div>
+        <div class="detail-field">
             {% for lesson in object.lessons.all %}
+                <div class="lesson-field">
+                    {{ forloop.counter }}
+                </div>
                 <div class="lesson-field">
                     {{ lesson.description }}
                 </div>
@@ -28,6 +36,9 @@
                 <div class="lesson-field">
                     {{ lesson.cost }}
                 </div>
+                <a href="{% url 'courses:lesson-detail' pk=lesson.pk %}" class="margin-r-10">
+                    <button class="green">Подробнее</button>
+                </a>
             {% endfor %}
         </div>
     </div>

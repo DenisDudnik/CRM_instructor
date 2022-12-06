@@ -1,10 +1,13 @@
+from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
+from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, DeleteView, DetailView, UpdateView
 from django.views.generic.list import ListView
 
-from courses.forms import CourseForm, CourseSubscribeForm
+from courses.forms import CourseForm, CourseSubscribeForm, LessonCreateForm
 from courses.models import Course, Lesson
 from users.models import User
 
@@ -115,4 +118,30 @@ class CourseDeleteView(DeleteView):
     extra_context = {
         'title': 'удаление курса',
         'button': 'удалить',
+    }
+
+
+class LessonCreateView(LoginRequiredMixin, CreateView):
+
+    model = Lesson
+    template_name = 'courses/form.html'
+    extra_context = {
+        'title': 'Создание урока',
+        'button': 'Сохранить'
+    }
+    form_class = LessonCreateForm
+
+    @method_decorator(user_passes_test(
+        lambda user: user.role in [User.MANAGER, User.HEAD_MANAGER]
+    ))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+
+class LessonDetailView(LoginRequiredMixin, DetailView):
+
+    model = Lesson
+    template_name = 'courses/lesson_detail.html'
+    extra_context = {
+        'title': 'Иноформация об уроке'
     }
