@@ -1,13 +1,68 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from django.views.generic.list import ListView
-from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
 from django.urls import reverse, reverse_lazy
+from django.views.generic import CreateView, DeleteView, DetailView, UpdateView
+from django.views.generic.list import ListView
 
-from courses.models import Course
-from courses.forms import CourseForm
+from courses.forms import CourseForm, CourseSubscribeForm
+from courses.models import Course, Lesson
 from users.models import User
 
 # Create your views here.
+
+
+def unsubscribe(request):
+    course_id = request.POST.get('course')
+    course = Course.objects.get(pk=course_id)
+    lessons = course.lessons.all()
+    user = request.user
+    for lesson in lessons:
+        if lesson in user.lessons.all():
+            user.lessons.remove(lesson)
+    user.save()
+    return HttpResponseRedirect(reverse('courses:list'))
+
+
+def subscribe(request, course_id=None, lesson_id=None, role: str = None):
+    course = None
+    lesson = None
+    if course_id:
+        course = Course.objects.get(pk=course_id)
+    if lesson_id:
+        lesson = Lesson.objects.get(pk=lesson_id)
+    if request.method == 'POST':
+        form = CourseSubscribeForm(
+            request.POST,
+            role=role,
+            manager=request.user.pk,
+            course_item=course,
+            lesson_item=lesson
+        )
+        if form.is_valid():
+            user_id = form.data.get('user')
+            user = User.objects.get(pk=user_id)
+            lesson_id = form.data.get('lesson')
+            if lesson_id:
+                lesson = Lesson.objects.get(pk=int(lesson_id))
+            course = Course.objects.get(pk=int(form.data.get('course')))
+            if lesson:
+                user.lessons.add(lesson)
+            else:
+                for lesson in course.lessons.all():
+                    user.lessons.add(lesson)
+            user.save()
+            return HttpResponseRedirect(
+                reverse('auth:detail_user', kwargs={'pk': user.pk})
+            )
+    form = CourseSubscribeForm(
+        role=role,
+        manager=request.user.pk,
+        course_item=course or None,
+        lesson_item=lesson or None
+    )
+    return render(request, 'courses/form.html',
+                  {'form': form, 'button': 'Сохранить'})
+
 
 class CourseListView(ListView):
     model = Course

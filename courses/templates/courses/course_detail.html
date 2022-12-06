@@ -10,10 +10,40 @@
             <label>Стоимость: </label>
             <span id="first_name">{{ object.cost }}</span>
         </div>
+        <div class="detail-field">
+            <label>Уроки: </label>
+            {% for lesson in object.lessons.all %}
+                <div class="lesson-field">
+                    {{ lesson.description }}
+                </div>
+                <div class="lesson-field">
+                    {{ lesson.address }}
+                </div>
+                <div class="lesson-field">
+                    {{ lesson.date }}
+                </div>
+                <div class="lesson-field">
+                    {{ lesson.duration }}
+                </div>
+                <div class="lesson-field">
+                    {{ lesson.cost }}
+                </div>
+            {% endfor %}
+        </div>
     </div>
     <div class="center margin-t-20">
+        {% if user.role == 'M' or user.role == 'H' %}
         <a href="{% url 'courses:update' pk=object.pk %}" class="margin-r-10"><button class="green">Редактировать</button></a>
         <a href="{% url 'courses:delete' pk=object.pk %}"><button class="orange">Удалить</button></a>
+        <a href="{% url 'courses:subscribe' course_id=object.id lesson_id=0 role='C' %}"><button class="green">Записать клиента на курс</button></a>
+        {% endif %}
+        {% if user.role == 'C' %}
+        <form action="{% url 'courses:unsubscribe' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="course" value="{{ object.id }}">
+            <input type="submit" value="Отменить запись">
+        </form>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
