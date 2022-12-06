@@ -1,0 +1,37 @@
+[
+    {
+      "model": "courses.coursetype",
+      "pk": 1,
+      "fields": {
+        "title": "Лыжи"
+      }
+    },
+    {
+        "model": "courses.coursetype",
+        "pk": 2,
+        "fields": {
+          "title": "Сноуборд"
+        }
+      },
+      {
+        "model": "courses.coursetype",
+        "pk": 3,
+        "fields": {
+          "title": "Горные лыжи"
+        }
+      },
+      {
+        "model": "courses.coursetype",
+        "pk": 4,
+        "fields": {
+          "title": "Бобслей"
+        }
+      },
+      {
+        "model": "courses.coursetype",
+        "pk": 5,
+        "fields": {
+          "title": "Прыжки с трамплина"
+        }
+      }
+  ]
