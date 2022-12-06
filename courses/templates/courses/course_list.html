@@ -21,7 +21,9 @@
         </form>
     </div>
     <div class="add-container margin-b-10">
-        <a href="{% url 'courses:create' %}"><button class="green">Добавить +</button></a>
+        {% if user.role == 'M' or user.role == 'H' %}
+            <a href="{% url 'courses:create' %}"><button class="green">Добавить +</button></a>
+        {% endif %}
     </div>
 </div>
 <div class="table-container margin-t-15">
@@ -39,9 +41,11 @@
             <td><a href="{% url 'courses:detail' pk=object.pk %}" class="control-link">{{ object.title }}</a></td>
             <td>{{ object.description }}</td>
             <td>
+                {% if user.role == 'M' or user.role == 'H' %}
                 <a href="{% url 'courses:update' pk=object.pk %}">
                     <img src="/static/images/edit.png" alt="">
                 </a>
+                {% endif %}
             </td>
         </tr>
     {% endfor %}
