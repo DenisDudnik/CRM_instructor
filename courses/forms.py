@@ -11,6 +11,21 @@ class CourseForm(forms.ModelForm):
         # fields = '__all__'
 
 
+class LessonCreateForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields.get('date').widget = forms.DateTimeInput(
+            attrs={'type': 'datetime-local'})
+        self.fields.get('duration').widget.attrs['type'] = 'range'
+        self.fields.get('duration').widget.attrs['min'] = 1
+        self.fields.get('duration').widget.attrs['max'] = 120
+
+    class Meta:
+        model = Lesson
+        exclude = ('id', )
+
+
 class CourseSubscribeForm(forms.Form):
 
     role = None

@@ -38,6 +38,7 @@
     <tbody>
     {% for object in object_list %}
         <tr>
+            <td class="title">{{ object.kind.title }}</td>
             <td><a href="{% url 'courses:detail' pk=object.pk %}" class="control-link">{{ object.title }}</a></td>
             <td>{{ object.description }}</td>
             <td>

@@ -1,0 +1,25 @@
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="lesson-field">
+    {{ object.description }}
+</div>
+<div class="lesson-field">
+    {{ object.address }}
+</div>
+<div class="lesson-field">
+    {{ object.date }}
+</div>
+<div class="lesson-field">
+    {{ object.duration }}
+</div>
+<div class="lesson-field">
+    {{ object.cost }}
+</div>
+{% if user.role == 'M' or user.role == 'H' %}
+    <a href="#" class="margin-r-10"><button class="green">Редактировать</button></a>
+    <a href="#"><button class="orange">Удалить</button></a>
+    <a href="{% url 'courses:subscribe' course_id=object.course.id lesson_id=object.id role='C' %}"><button class="green">Записать клиента на урок</button></a>
+{% endif %}
+{% endblock %}
