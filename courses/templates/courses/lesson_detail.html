@@ -2,24 +2,43 @@
 {% load static %}
 
 {% block content %}
-<div class="lesson-field">
-    {{ object.description }}
+
+<div class="content-container">
+    <div class="title center">Урок</div>
+    <div class="details-container">
+        <div class="detail-field">
+            <label>Описание: </label>
+            <span>{{ object.description }}</span>
+        </div>
+        <div class="detail-field">
+            <label>Место проведения: </label>
+            <span>{{ object.address }}</span>
+        </div>
+        <div class="detail-field">
+            <label>Дата: </label>
+            <span>{{ object.date }}</span>
+        </div>
+        <div class="detail-field">
+            <label>Длительность: </label>
+            <span>{{ object.duration }}</span>
+        </div>
+        <div class="detail-field">
+            <label>Стоимость: </label>
+            <span>{{ object.cost }}</span>
+        </div>
+    </div>
+    {% if user.role == 'M' or user.role == 'H' %}
+        <div class="center margin-t-10">
+            <a href="#" class="not-decorated">
+                <button class="green margin-5">Редактировать</button>
+            </a>
+            <a href="{% url 'courses:subscribe' course_id=object.course.id lesson_id=object.id role='C' %}" class="not-decorated">
+                <button class="green margin-5">Записать клиента на урок</button>
+            </a>
+            <a href="#" class="not-decorated">
+                <button class="orange margin-5">Удалить</button>
+            </a>
+        </div>
+    {% endif %}
 </div>
-<div class="lesson-field">
-    {{ object.address }}
-</div>
-<div class="lesson-field">
-    {{ object.date }}
-</div>
-<div class="lesson-field">
-    {{ object.duration }}
-</div>
-<div class="lesson-field">
-    {{ object.cost }}
-</div>
-{% if user.role == 'M' or user.role == 'H' %}
-    <a href="#" class="margin-r-10"><button class="green">Редактировать</button></a>
-    <a href="#"><button class="orange">Удалить</button></a>
-    <a href="{% url 'courses:subscribe' course_id=object.course.id lesson_id=object.id role='C' %}"><button class="green">Записать клиента на урок</button></a>
-{% endif %}
 {% endblock %}

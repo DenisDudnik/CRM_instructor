@@ -3,58 +3,61 @@
 
 {% block content %}
 <div class="content-container">
-<div class="title">{{ title | capfirst }}</div>
-<div class="row-reverse">
-    <div class="filter-container margin-b-10">
-        <form>
-            <div class="row-wrap">
-                <div class="item">
-                    <select>
-                        <option>селект-фильтр</option>
-                        <option>значени1</option>
-                        <option>значени2</option>
-                    </select>
+    <div class="title">{{ title | capfirst }}</div>
+    <div class="row-reverse">
+        <div class="filter-container margin-b-10">
+            <form>
+                <div class="row-wrap">
+                    <div class="item">
+                        <select>
+                            <option>селект-фильтр</option>
+                            <option>значени1</option>
+                            <option>значени2</option>
+                        </select>
+                    </div>
+                    <div class="item"><input placeholder="поиск..."></div>
+                    <div class="item"><input type="submit" class="search" value=""></div>
                 </div>
-                <div class="item"><input placeholder="поиск..."></div>
-                <div class="item"><input type="submit" class="search" value=""></div>
-            </div>
-        </form>
+            </form>
+        </div>
+        <div class="add-container margin-b-10">
+            {% if user.role == 'M' or user.role == 'H' %}
+                <a href="{% url 'courses:create' %}"><button class="green">Добавить +</button></a>
+            {% endif %}
+        </div>
     </div>
-    <div class="add-container margin-b-10">
-        {% if user.role == 'M' or user.role == 'H' %}
-            <a href="{% url 'courses:create' %}"><button class="green">Добавить +</button></a>
-        {% endif %}
+    <div class="table-container margin-t-15">
+        <table class="list-table">
+            <thead>
+                <tr>
+                    <th><span class="sortable">Тип курса</span></th>
+                    <th>Название курса</th>
+                    <th>Описание</th>
+                    {% if user.role == 'M' or user.role == 'H' %}
+                        <th class="edit"></th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+            {% for object in object_list %}
+                <tr>
+                    <td>{{ object.kind.title }}</td>
+                    <td><a href="{% url 'courses:detail' pk=object.pk %}" class="control-link">{{ object.title }}</a></td>
+                    <td>{{ object.description }}</td>
+                    {% if user.role == 'M' or user.role == 'H' %}
+                        <td>
+                            <a href="{% url 'courses:update' pk=object.pk %}">
+                                <img src="/static/images/edit.png" alt="">
+                            </a>
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% comment %} {% if user.role == 'M' or user.role == 'H' %}
+            <a href="{% url 'auth:create_user' %}" class="green">+ Добавить</a>
+        {% endif %} {% endcomment %}
     </div>
-</div>
-<div class="table-container margin-t-15">
-<table class="list-table">
-    <thead>
-        <tr>
-            <th><span class="sortable">Тип курса</span></th>
-            <th>Название курса</th>
-            <th class="edit"></th>
-        </tr>
-    </thead>
-    <tbody>
-    {% for object in object_list %}
-        <tr>
-            <td class="title">{{ object.kind.title }}</td>
-            <td><a href="{% url 'courses:detail' pk=object.pk %}" class="control-link">{{ object.title }}</a></td>
-            <td>{{ object.description }}</td>
-            <td>
-                {% if user.role == 'M' or user.role == 'H' %}
-                <a href="{% url 'courses:update' pk=object.pk %}">
-                    <img src="/static/images/edit.png" alt="">
-                </a>
-                {% endif %}
-            </td>
-        </tr>
-    {% endfor %}
-    </tbody>
-</table>
-    {% comment %} {% if user.role == 'M' or user.role == 'H' %}
-        <a href="{% url 'auth:create_user' %}" class="green">+ Добавить</a>
-    {% endif %} {% endcomment %}
-</div>
 </div>
 {% endblock %}

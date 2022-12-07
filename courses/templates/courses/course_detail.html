@@ -4,49 +4,27 @@
 {% block content %}
 <div class="content-container">
     <div class="title center">{{ object.title }}</div>
-    <p class="center">{{ object.description }}</p>
     <div class="details-container">
         <div class="detail-field">
-            <label>Стоимость: </label>
-            <span id="first_name">{{ object.cost }}</span>
-        </div>
-        {% if user.role == 'M' or user.role == 'H' %}
-        <a href="{% url 'courses:create-lesson' pk=object.id %}"><button class="green">Добавить урок</button></a>
-        {% endif %}
-        <div class="lessons-list">
-            <label>Уроки: </label>
+            <label>Описание: </label>
+            <span>{{ object.description }}</span>
         </div>
         <div class="detail-field">
-            {% for lesson in object.lessons.all %}
-                <div class="lesson-field">
-                    {{ forloop.counter }}
-                </div>
-                <div class="lesson-field">
-                    {{ lesson.description }}
-                </div>
-                <div class="lesson-field">
-                    {{ lesson.address }}
-                </div>
-                <div class="lesson-field">
-                    {{ lesson.date }}
-                </div>
-                <div class="lesson-field">
-                    {{ lesson.duration }}
-                </div>
-                <div class="lesson-field">
-                    {{ lesson.cost }}
-                </div>
-                <a href="{% url 'courses:lesson-detail' pk=lesson.pk %}" class="margin-r-10">
-                    <button class="green">Подробнее</button>
-                </a>
-            {% endfor %}
+            <label>Стоимость: </label>
+            <span>{{ object.cost }}</span>
         </div>
     </div>
-    <div class="center margin-t-20">
+    <div class="center margin-t-10">
         {% if user.role == 'M' or user.role == 'H' %}
-        <a href="{% url 'courses:update' pk=object.pk %}" class="margin-r-10"><button class="green">Редактировать</button></a>
-        <a href="{% url 'courses:delete' pk=object.pk %}"><button class="orange">Удалить</button></a>
-        <a href="{% url 'courses:subscribe' course_id=object.id lesson_id=0 role='C' %}"><button class="green">Записать клиента на курс</button></a>
+            <a href="{% url 'courses:update' pk=object.pk %}" class="not-decorated">
+                <button class="green margin-5">Редактировать</button>
+            </a>
+            <a href="{% url 'courses:subscribe' course_id=object.id lesson_id=0 role='C' %}" class="not-decorated">
+                <button class="green margin-5">Записать клиента на курс</button>
+            </a>
+            <a href="{% url 'courses:delete' pk=object.pk %}" class="not-decorated">
+                <button class="orange margin-5">Удалить</button>
+            </a>
         {% endif %}
         {% if user.role == 'C' %}
         <form action="{% url 'courses:unsubscribe' %}" method="post">
@@ -55,6 +33,38 @@
             <input type="submit" value="Отменить запись">
         </form>
         {% endif %}
+    </div>
+
+    <div class="details-container">
+        <div class="row space-between padding-t-10">
+            <div class="title">Уроки</div>
+            <div class="margin-t-20">
+                {% if user.role == 'M' or user.role == 'H' %}
+                <a href="{% url 'courses:create-lesson' pk=object.id %}"><button class="green">+ Добавить урок</button></a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="table-container margin-t-15">
+        <table class="line-table centered">
+            <tbody>
+                {% for lesson in object.lessons.all %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td class="max-width-200">{{ lesson.description }}</td>
+                        <td>{{ lesson.address }}</td>
+                        <td>{{ lesson.date }}</td>
+                        <td>{{ lesson.duration }}</td>
+                        <td>{{ lesson.cost }}</td>
+                        <td>
+                            <a href="{% url 'courses:lesson-detail' pk=lesson.pk %}" class="control-link">
+                                Подробнее
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </div>
 {% endblock %}
