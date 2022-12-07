@@ -79,26 +79,26 @@ def profile_edit(request) -> HttpResponse:
 def create_user(request, role: str):
     """Create new user"""
     title = 'Добавление пользователя'
+    context = {
+        'title': title,
+        'button': 'Сохранить',
+        'back': request.META.get('HTTP_REFERER')
+    }
     if request.method == 'POST':
         form = UserCreateForm(request.POST, manager=request.user)
         if form.is_valid():
             form.save()
             if form.data.get('role') == 'C':
                 rev = 'clients'
-            elif form.data.get('role'):
+            elif form.data.get('role') == 'T':
                 rev = 'teachers'
             else:
                 rev = 'managers'
             return HttpResponseRedirect(reverse(rev))
     else:
         form = UserCreateForm(manager=request.user, role=role)
-        context = {
-            'title': title,
-            'form': form,
-            'button': 'Сохранить',
-            'back': request.META.get('HTTP_REFERER')
-        }
-        return render(request, 'users/form.html', context)
+    context['form'] = form
+    return render(request, 'users/form.html', context)
 
 
 class ClientsListView(LoginRequiredMixin, ListView):

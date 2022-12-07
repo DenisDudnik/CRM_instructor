@@ -7,13 +7,11 @@
     <form action="" method="post" class="as_p" id="form">
         {% csrf_token %}
         {{ form.as_p }}
-    </form>
-    <p>
+        <p style="display:flex; justify-content: center">
         <label></label>
-        <input type="submit" form="form" value="{{ button }}" class="green">
-        <a href="{{ back }}" class="not-decorated">
-            <button>Назад</button>
-        </a>
+        <input style="margin: 0 20px" type="submit" form="form" value="{{ button }}" class="green">
+        <a href="{{ back }}" class="not-decorated">Назад</a>
     </p>
+    </form>
 </div>
 {% endblock %}
