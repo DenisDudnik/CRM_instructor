@@ -29,3 +29,9 @@ def get_links(request):
         result['links'] = [v for v in links.values()]
 
     return result
+
+
+def get_back_url(request):
+    return {
+        'back': request.META.get('HTTP_REFERER')
+    }

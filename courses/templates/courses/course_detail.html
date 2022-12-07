@@ -25,6 +25,9 @@
             <a href="{% url 'courses:delete' pk=object.pk %}" class="not-decorated">
                 <button class="orange margin-5">Удалить</button>
             </a>
+            <a href="{{ back }}" class="not-decorated">
+                <button>Назад</button>
+            </a>
         {% endif %}
         {% if user.role == 'C' %}
         <form action="{% url 'courses:unsubscribe' %}" method="post">

@@ -16,12 +16,18 @@ from users.models import User
 
 def unsubscribe(request):
     course_id = request.POST.get('course')
+    lesson_id = request.POST.get('lesson')
+    lesson = Lesson.objects.get(pk=lesson_id)
     course = Course.objects.get(pk=course_id)
     lessons = course.lessons.all()
     user = request.user
-    for lesson in lessons:
+    if lesson:
         if lesson in user.lessons.all():
             user.lessons.remove(lesson)
+    else:
+        for lesson in lessons:
+            if lesson in user.lessons.all():
+                user.lessons.remove(lesson)
     user.save()
     return HttpResponseRedirect(reverse('courses:list'))
 
@@ -54,8 +60,12 @@ def subscribe(request, course_id=None, lesson_id=None, role: str = None):
                 for lesson in course.lessons.all():
                     user.lessons.add(lesson)
             user.save()
+            if lesson_id:
+                return HttpResponseRedirect(
+                    reverse('courses:lesson-detail', kwargs={'pk': lesson_id})
+                )
             return HttpResponseRedirect(
-                reverse('auth:detail_user', kwargs={'pk': user.pk})
+                reverse('courses:detail', kwargs={'pk': course_id})
             )
     form = CourseSubscribeForm(
         role=role,
@@ -63,8 +73,14 @@ def subscribe(request, course_id=None, lesson_id=None, role: str = None):
         course_item=course or None,
         lesson_item=lesson or None
     )
-    return render(request, 'courses/form.html',
-                  {'form': form, 'button': 'Сохранить'})
+    context = {
+        'form': form,
+        'button': 'Сохранить',
+        'back': reverse(
+            'courses:detail', kwargs={'pk': course_id}
+        )
+    }
+    return render(request, 'courses/form.html', context)
 
 
 class CourseListView(ListView):
@@ -89,6 +105,7 @@ class CourseDetailView(DetailView):
     template_name = 'courses/course_detail.html'
     extra_context = {
         'title': 'детали курса',
+        'back': reverse_lazy('courses:list')
     }
 
 
@@ -97,9 +114,22 @@ class CourseUpdateView(UpdateView):
     template_name = 'courses/form.html'
     extra_context = {
         'title': 'редактирование курса',
-        'button': 'сохранить',
+        'button': 'сохранить'
     }
     form_class = CourseForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # form = CourseForm(instance=self.object)
+        context['back'] = reverse_lazy('courses:detail', kwargs={
+            'pk': self.object.pk
+        })
+        # context.update({
+        #     'title': 'редактирование курса',
+        #     'button': 'сохранить',
+        #     'form': form
+        # })
+        return context
 
 
 class CourseCreateView(CreateView):
@@ -108,6 +138,7 @@ class CourseCreateView(CreateView):
     extra_context = {
         'title': 'создание курса',
         'button': 'сохранить',
+        'back': reverse_lazy('courses:list')
     }
     form_class = CourseForm
 
@@ -137,6 +168,13 @@ class LessonCreateView(LoginRequiredMixin, CreateView):
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['back'] = reverse('courses:detail', kwargs={
+            'pk': self.kwargs['pk']
+        })
+        return context
+
 
 class LessonDetailView(LoginRequiredMixin, DetailView):
 
@@ -145,3 +183,55 @@ class LessonDetailView(LoginRequiredMixin, DetailView):
     extra_context = {
         'title': 'Иноформация об уроке'
     }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['teachers'] = [
+            x for x in context['object'].users.all() if x.role == User.TEACHER
+        ]
+        context['back'] = reverse_lazy('courses:detail', kwargs={
+            'pk': self.object.course.pk}
+        )
+        return context
+
+
+class LessonDeleteView(LoginRequiredMixin, DeleteView):
+
+    model = Lesson
+    extra_context = {
+        'title': 'удаление курса',
+        'button': 'удалить',
+    }
+
+    def get_success_url(self):
+        return reverse_lazy('courses:detail', kwargs={
+            'pk': self.object.course.pk}
+        )
+
+    @method_decorator(user_passes_test(lambda u: u.role in [User.MANAGER, User.HEAD_MANAGER]))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['back'] = reverse_lazy('courses:lesson-detail', kwargs={
+            'pk': self.kwargs['pk']
+        })
+        return context
+
+
+class LessonEditView(LoginRequiredMixin, UpdateView):
+    form_class = LessonCreateForm
+    template_name = 'courses/form.html'
+    extra_context = {
+        'title': 'редактирование урока',
+        'button': 'сохранить',
+    }
+    model = Lesson
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['back'] = reverse('courses:lesson-detail', kwargs={
+            'pk': self.kwargs['pk']
+        })
+        return context

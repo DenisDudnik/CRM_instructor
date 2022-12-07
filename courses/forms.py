@@ -50,9 +50,11 @@ class CourseSubscribeForm(forms.Form):
         # lesson_field.widget.attrs['disabled'] = True
 
         user_field = self.fields.get('user')
-        user_field.queryset = User.objects.filter(role__exact=role).filter(
-            manager_id=manager
-        )
+        user_field.queryset = User.objects.filter(role__exact=role)
+        if role == 'C':
+            user_field.queryset = user_field.queryset.filter(
+                manager_id=manager
+            )
 
     course = forms.ModelChoiceField(queryset=Course.objects.all())
     lesson = forms.ModelChoiceField(

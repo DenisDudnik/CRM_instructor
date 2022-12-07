@@ -21,7 +21,8 @@ from django.urls import path
 from courses.apps import CoursesConfig
 from courses.views import (CourseCreateView, CourseDeleteView,
                            CourseDetailView, CourseListView, CourseUpdateView,
-                           LessonCreateView, LessonDetailView, subscribe,
+                           LessonCreateView, LessonDeleteView,
+                           LessonDetailView, LessonEditView, subscribe,
                            unsubscribe)
 
 app_name = CoursesConfig.name
@@ -37,8 +38,12 @@ urlpatterns = [
     path("unsubscribe/", unsubscribe, name='unsubscribe'),
     path('create_lesson/<int:pk>/', LessonCreateView.as_view(),
          name='create-lesson'),
-    path('lesson_dateil/<int:pk>/', LessonDetailView.as_view(),
-         name='lesson-detail')
+    path('lesson_detail/<int:pk>/', LessonDetailView.as_view(),
+         name='lesson-detail'),
+    path('lesson_delete/<int:pk>/', LessonDeleteView.as_view(),
+         name='lesson-delete'),
+    path('lesson_edit/<int:pk>/', LessonEditView.as_view(),
+         name='lesson-edit'),
 ]
 
 if settings.DEBUG:

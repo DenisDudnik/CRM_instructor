@@ -39,7 +39,7 @@
     </div>
     {% if user.role == 'M' or user.role == 'H' %}
         <div class="margin-t-20">
-            <a href="{% url 'auth:create_user' %}" class="not-decorated">
+            <a href="{% url 'auth:create_user' role=role %}" class="not-decorated">
                 <button class="green">+ Добавить</button>
             </a>
         </div>
