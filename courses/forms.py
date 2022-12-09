@@ -11,6 +11,21 @@ class CourseForm(forms.ModelForm):
         # fields = '__all__'
 
 
+class LessonCreateForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields.get('date').widget = forms.DateTimeInput(
+            attrs={'type': 'datetime-local'})
+        self.fields.get('duration').widget.attrs['type'] = 'range'
+        self.fields.get('duration').widget.attrs['min'] = 1
+        self.fields.get('duration').widget.attrs['max'] = 120
+
+    class Meta:
+        model = Lesson
+        exclude = ('id', )
+
+
 class CourseSubscribeForm(forms.Form):
 
     role = None
@@ -35,9 +50,11 @@ class CourseSubscribeForm(forms.Form):
         # lesson_field.widget.attrs['disabled'] = True
 
         user_field = self.fields.get('user')
-        user_field.queryset = User.objects.filter(role__exact=role).filter(
-            manager_id=manager
-        )
+        user_field.queryset = User.objects.filter(role__exact=role)
+        if role == 'C':
+            user_field.queryset = user_field.queryset.filter(
+                manager_id=manager
+            )
 
     course = forms.ModelChoiceField(queryset=Course.objects.all())
     lesson = forms.ModelChoiceField(

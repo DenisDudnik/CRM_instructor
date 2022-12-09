@@ -76,28 +76,29 @@ def profile_edit(request) -> HttpResponse:
 
 
 @login_required
-def create_user(request):
+def create_user(request, role: str):
     """Create new user"""
     title = 'Добавление пользователя'
+    context = {
+        'title': title,
+        'button': 'Сохранить',
+        'back': request.META.get('HTTP_REFERER')
+    }
     if request.method == 'POST':
         form = UserCreateForm(request.POST, manager=request.user)
         if form.is_valid():
             form.save()
             if form.data.get('role') == 'C':
                 rev = 'clients'
-            elif form.data.get('role'):
+            elif form.data.get('role') == 'T':
                 rev = 'teachers'
             else:
                 rev = 'managers'
             return HttpResponseRedirect(reverse(rev))
     else:
-        form = UserCreateForm(manager=request.user)
-        context = {
-            'title': title,
-            'form': form,
-            'button': 'Сохранить'
-        }
-        return render(request, 'users/form.html', context)
+        form = UserCreateForm(manager=request.user, role=role)
+    context['form'] = form
+    return render(request, 'users/form.html', context)
 
 
 class ClientsListView(LoginRequiredMixin, ListView):
@@ -106,9 +107,9 @@ class ClientsListView(LoginRequiredMixin, ListView):
     context_object_name = 'clients'
 
     titles = {
-        '/clients_list/': 'Список клиентов',
-        '/teachers_list/': 'Список тренеров',
-        '/managers_list/': 'Список менеджеров'
+        '/clients_list/': ['Список клиентов', 'C'],
+        '/teachers_list/': ['Список тренеров', 'T'],
+        '/managers_list/': ['Список менеджеров', 'M']
     }
 
     def get_queryset(self):
@@ -136,7 +137,9 @@ class ClientsListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ClientsListView, self).get_context_data(**kwargs)
-        context['title'] = self.titles.get(self.request.META['PATH_INFO'], '')
+        title, role = self.titles.get(self.request.META['PATH_INFO'])
+        context['title'] = title
+        context['role'] = role
         return context
 
 

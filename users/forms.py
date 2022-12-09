@@ -30,12 +30,10 @@ class UserEditForm(UserChangeForm):
 
 class UserCreateForm(ModelForm):
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, role: str = 'C', **kwargs):
         manager = kwargs.pop('manager')
         super(UserCreateForm, self).__init__(*args, **kwargs)
         for field in self.fields.values():
-            if field.label == 'Роль':
-                field.choices = [('C', 'Клиент'), ('T', 'Преподаватель'), ('M', 'Менеджер')]
             if field.label == 'Персональный менеджер':
                 field.queryset = User.objects.filter(pk=manager.pk)
             field.widget.attrs['required'] = True

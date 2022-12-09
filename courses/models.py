@@ -49,7 +49,7 @@ class Course(models.Model):
 
     def get_absolute_url(self):
         return reverse('courses:detail', kwargs={'pk': self.pk})
-    
+
     class Meta:
         ordering = ['title']
 
@@ -72,3 +72,6 @@ class Lesson(models.Model):
 
     def __str__(self) -> str:
         return self.description[:64]
+
+    def get_absolute_url(self):
+        return reverse('courses:lesson-detail', kwargs={'pk': self.pk})
