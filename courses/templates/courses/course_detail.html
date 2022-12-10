@@ -69,5 +69,16 @@
             </tbody>
         </table>
     </div>
+    <div class='clients-list'>
+        <hr>
+        <h3>Клиенты, записанные на курс:</h3>
+        {% for client in clients %}
+            <p>
+                <a href="{% url 'auth:detail_user' pk=client.pk %}" class="control-link">
+                {{ client.get_full_name }}
+                </a>
+            </p>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}
