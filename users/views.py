@@ -8,8 +8,8 @@ from django.views.generic import UpdateView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 
-from users.forms import (LoginForm, ManagerUserEditForm, UserCreateForm,
-                         UserEditForm)
+from users.forms import (LoginForm, ManagerUserEditForm, UserEditForm,
+                         UserManagerCreateForm)
 from users.handlers import UserHandlerFactory
 from users.models import User
 
@@ -87,18 +87,18 @@ def create_user(request, role: str):
         'back': request.META.get('HTTP_REFERER')
     }
     if request.method == 'POST':
-        form = UserCreateForm(request.POST, manager=request.user)
+        form = UserManagerCreateForm(request.POST, manager=request.user, role=role)
         if form.is_valid():
             form.save()
-            if form.data.get('role') == 'C':
+            if role == 'C':
                 rev = 'clients'
-            elif form.data.get('role') == 'T':
+            elif role == 'T':
                 rev = 'teachers'
             else:
                 rev = 'managers'
             return HttpResponseRedirect(reverse(rev))
     else:
-        form = UserCreateForm(manager=request.user, role=role)
+        form = UserManagerCreateForm(manager=request.user, role=role)
     context['form'] = form
     return render(request, 'users/form.html', context)
 

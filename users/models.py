@@ -87,8 +87,8 @@ class User(AbstractUser):
 
     def get_absolute_url(self):
         return reverse(
-            'user-detail',
-            # kwargs={'pk': self.pk}
+            'users:detail_user',
+            kwargs={'pk': self.pk}
         )
 
     def __str__(self):

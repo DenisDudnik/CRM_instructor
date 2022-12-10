@@ -3,15 +3,15 @@
 
 {% block content %}
 <div class="content-container">
-    <div class="title center">{{ title }}</div>
-    <p class="center">Вы точно хотите удалить "{{ object }}" ?</p>
-    <form action="" method="post">
+    <div class="title center">{{ title | capfirst }}</div>
+    <p class="center">Вы точно хотите удалить {{ object }} ?</p>
+    <form action="" method="post" class="as_p">
         {% csrf_token %}
         {{ form.as_p }}
         <p>
             <label></label>
             <input type="submit" value="{{ button }}" class="orange">
-            <a href="{{ back }}">Назад</a>
+            <a href="{{ back }}" class="not-decorated">Назад</a>
         </p>
     </form>
 </div>

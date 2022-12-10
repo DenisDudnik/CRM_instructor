@@ -4,7 +4,7 @@
 {% block content %}
 
 <div class="content-container">
-    <div class="title center">Урок</div>
+    <div class="title center">{{ object | capfirst }}</div>
     <div class="details-container">
         <div class="detail-field">
             <label>Описание: </label>
@@ -26,14 +26,25 @@
             <label>Стоимость: </label>
             <span>{{ object.cost }}</span>
         </div>
-    </div>
-    {% if user.role == 'M' or user.role == 'H' %}
+        <div class="detail-field">
+            <label>Количество мест: </label>
+            <span>{{ object.places }}</span>
+        </div>
+        <div class="detail-field">
+            <label>Количество свободных мест: </label>
+            <span>{{ object.free_places }}</span>
+        </div>
+        {% if user.role == 'M' or user.role == 'H' %}
         <div class="center margin-t-10">
             <a href="{% url 'courses:lesson-edit' pk=object.id %}" class="not-decorated">
                 <button class="green margin-5">Редактировать</button>
             </a>
             <a href="{% url 'courses:subscribe' course_id=object.course.id lesson_id=object.id role='C' %}" class="not-decorated">
-                <button class="green margin-5">Записать клиента на урок</button>
+                {% if object.places %}
+                    <button class="green margin-5">Записать клиента на урок</button>
+                {% else %}
+                    <button disabled class="not_active">Записать клиента на урок</button>
+                {% endif %}
             </a>
             <a href="{% url 'courses:subscribe' course_id=object.course.id lesson_id=object.id role='T' %}" class="not-decorated">
                 <button class="green margin-5">Назначить преподавателя на урок</button>
@@ -46,6 +57,23 @@
             </a>
         </div>
     {% endif %}
+        <div class="title">Преподаватели: </div>
+        <div class="detail-field">
+            {% for teacher in teachers %}
+                <a class="control-link" href="{{ teacher.get_absolute_url }}">{{ teacher.get_full_name }}</a>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="details-container">
+        <div class="title">
+            Список студентов:
+        </div>
+        {% for client in clients %}
+            <div class="detail-field">
+                <a class="control-link" href="{{ client.get_absolute_url }}">{{ client.get_full_name }}</a>
+            </div>
+        {% endfor %}
+    </div>
 </div>
 {% if user.role == 'C' %}
 <form action="{% url 'courses:unsubscribe' %}" method="post">

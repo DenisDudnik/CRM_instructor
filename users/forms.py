@@ -29,22 +29,55 @@ class UserEditForm(UserChangeForm):
 
 
 class UserCreateForm(ModelForm):
+    _fields = {
+        'C': ("salary", "percent_salary",),
+        'T': ("status", "manager"),
+        'M': ("status", "manager")
+    }
 
-    def __init__(self, *args, role: str = 'C', **kwargs):
-        manager = kwargs.pop('manager')
-        super(UserCreateForm, self).__init__(*args, **kwargs)
-        for field in self.fields.values():
-            if field.label == 'Персональный менеджер':
-                field.queryset = User.objects.filter(pk=manager.pk)
-            field.widget.attrs['required'] = True
+    _roles = {
+        'C': User.CLIENT,
+        'T': User.TEACHER,
+        'M': User.MANAGER,
+    }
+
+    def __init__(self, *args, role: str, **kwargs):
+        super().__init__(*args, **kwargs)
+        fields = self._fields.get(role)
+        for field in fields:
+            self.fields.pop(field)
+        if "manager" in self.fields.keys():
+            self.fields['manager'].queryset = User.objects.filter(
+                role__in=[User.MANAGER, User.HEAD_MANAGER])
+        self.fields['role'].initial = self._roles.get(role)
+        self.fields['role'].disabled = True
 
     class Meta:
         model = User
         fields = (
-            'first_name', 'last_name', 'email', 'phone',
-            'role',
-            'manager'
+            "first_name",
+            "last_name",
+            "email",
+            "phone",
+            "role",
+            "manager",
+            "salary",
+            "percent_salary",
+            "status",
+            "comment"
         )
+
+
+class UserManagerCreateForm(UserCreateForm):
+
+    def __init__(self, *args, **kwargs):
+        manager = kwargs.pop('manager')
+        super(UserManagerCreateForm, self).__init__(*args, **kwargs)
+        for field in self.fields.values():
+            if field.label == 'Персональный менеджер':
+                field.queryset = User.objects.filter(pk=manager.pk)
+            if field.label != 'Комментарий':
+                field.widget.attrs['required'] = True
 
     @staticmethod
     def generate_username_or_password():
@@ -76,6 +109,9 @@ class ManagerUserEditForm(UserChangeForm):
             "email",
             "phone",
             "role",
+            "manager",
+            "salary",
+            "percent_salary",
             "status",
             "comment"
         )
