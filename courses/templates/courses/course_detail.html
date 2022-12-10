@@ -1,5 +1,6 @@
 {% extends 'users/base.html' %}
 {% load static %}
+{% load my_tags %}
 
 {% block content %}
 <div class="content-container">
@@ -54,8 +55,8 @@
                 {% for lesson in object.lessons.all %}
                     <tr>
                         <td>{{ forloop.counter }}</td>
-                        <td class="max-width-200">{{ lesson.description }}</td>
-                        <td>{{ lesson.address }}</td>
+                        <td class="max-width-200">{{ lesson.description|cut_string }}</td>
+                        <td class="max-width-200">{{ lesson.address }}</td>
                         <td>{{ lesson.date }}</td>
                         <td>{{ lesson.duration }}</td>
                         <td>{{ lesson.cost }}</td>
@@ -69,9 +70,8 @@
             </tbody>
         </table>
     </div>
-    <div class='clients-list'>
-        <hr>
-        <h3>Клиенты, записанные на курс:</h3>
+    <div class="details-container">
+        <div class="title">Клиенты, записанные на курс:</div>
         {% for client in clients %}
             <p>
                 <a href="{% url 'auth:detail_user' pk=client.pk %}" class="control-link">
