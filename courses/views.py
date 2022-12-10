@@ -114,6 +114,15 @@ class CourseListView(ListView):
 class CourseDetailView(DetailView):
     model = Course
     template_name = 'courses/course_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        course = Course.objects.get(pk=self.kwargs['pk'])
+        lessons = course.lessons.all()
+        context['clients'] = User.objects.filter(lessons__in=lessons)
+
+        return context
+
     extra_context = {
         'title': 'детали курса',
         'back': reverse_lazy('courses:list')
