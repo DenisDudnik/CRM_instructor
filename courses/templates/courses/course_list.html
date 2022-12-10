@@ -39,7 +39,8 @@
                 <tr>
                     <th><span class="sortable">Тип курса</span></th>
                     <th>Название курса</th>
-                    <th>Описание</th>
+                    <th>Стоимость</th>
+                    <th>Дата начала 1 урока</th>
                     {% if user.role == 'M' or user.role == 'H' %}
                         <th class="edit"></th>
                     {% endif %}
@@ -50,7 +51,8 @@
                 <tr>
                     <td>{{ object.kind.title }}</td>
                     <td><a href="{% url 'courses:detail' pk=object.pk %}" class="control-link">{{ object.title }}</a></td>
-                    <td>{{ object.description }}</td>
+                    <td>{{ object.cost }} руб</td>
+                    <td>{{ object.start_date }}</td>
                     {% if user.role == 'M' or user.role == 'H' %}
                         <td>
                             <a href="{% url 'courses:update' pk=object.pk %}">

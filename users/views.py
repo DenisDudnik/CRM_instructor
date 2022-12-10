@@ -3,11 +3,13 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
+from django.views.generic import UpdateView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 
-from users.forms import LoginForm, UserCreateForm, UserEditForm
+from users.forms import (LoginForm, ManagerUserEditForm, UserCreateForm,
+                         UserEditForm)
 from users.handlers import UserHandlerFactory
 from users.models import User
 
@@ -107,9 +109,9 @@ class ClientsListView(LoginRequiredMixin, ListView):
     context_object_name = 'clients'
 
     titles = {
-        '/clients_list/': ['Список клиентов', 'C'],
-        '/teachers_list/': ['Список тренеров', 'T'],
-        '/managers_list/': ['Список менеджеров', 'M']
+        '/clients_list/': ['Список клиентов', 'C', True, True],
+        '/teachers_list/': ['Список тренеров', 'T', False, True],
+        '/managers_list/': ['Список менеджеров', 'M', False, True]
     }
 
     def get_queryset(self):
@@ -121,7 +123,7 @@ class ClientsListView(LoginRequiredMixin, ListView):
             elif self.request.user.role == 'H':
                 return User.objects.filter(
                     role='C'
-                )
+                ).all()
             else:
                 return []
         elif self.request.META['PATH_INFO'] == '/teachers_list/':
@@ -137,9 +139,11 @@ class ClientsListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ClientsListView, self).get_context_data(**kwargs)
-        title, role = self.titles.get(self.request.META['PATH_INFO'])
+        title, role, status, comment = self.titles.get(self.request.META['PATH_INFO'])
         context['title'] = title
         context['role'] = role
+        context['show_status'] = status
+        context['show_comment'] = comment
         return context
 
 
@@ -147,3 +151,27 @@ class UserDetailView(LoginRequiredMixin, DetailView):
     model = User
     template_name = 'users/detail.html'
     context_object_name = 'item'
+
+
+class UserEditView(LoginRequiredMixin, UpdateView):
+    model = User
+    template_name = 'users/form.html'
+    extra_context = {
+        'title': 'редактирование пользователя',
+        'button': 'Сохранить',
+    }
+    form_class = ManagerUserEditForm
+
+    urls = {
+        'C': reverse_lazy('clients'),
+        'T': reverse_lazy('teachers'),
+        'M': reverse_lazy('managers'),
+    }
+
+    def get_success_url(self):
+        return self.urls.get(self.object.role)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['back'] = self.get_success_url()
+        return context

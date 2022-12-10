@@ -31,6 +31,12 @@ class Course(models.Model):
     def cost(self):
         return sum(x.cost for x in self.lessons.all())
 
+    def start_date(self):
+        if len(self.lessons.all()):
+            lessons = sorted(self.lessons.all(), key=lambda x: x.date)
+            return lessons[0].date.strftime('%Y-%m-%d %H:%M:%S')
+        return 'В курсе нет ни одного урока'
+
     @property
     def duration(self) -> int:
         if not len(self.lessons.all()):

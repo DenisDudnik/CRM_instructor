@@ -76,6 +76,12 @@ class User(AbstractUser):
         ordering = ["id"]
 
     @property
+    def verbose_status(self):
+        for item in self.STATUSES:
+            if item[0] == self.status:
+                return item[1]
+
+    @property
     def courses(self):
         return list(set([x.course for x in self.lessons.all()]))
 
