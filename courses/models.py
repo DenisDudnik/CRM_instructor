@@ -13,9 +13,6 @@ class CourseType(models.Model):
         verbose_name='Направление курса', max_length=255, null=False
     )
 
-    def get_absolute_url(self):
-        return reverse('courses:type_detail', kwargs={'pk': self.pk})
-
     @property
     def course_type(self):
         return list(set([x.course_type for x in self.course_type.all()]))
