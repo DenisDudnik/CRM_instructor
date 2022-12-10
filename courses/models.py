@@ -13,10 +13,6 @@ class CourseType(models.Model):
         verbose_name='Направление курса', max_length=255, null=False
     )
 
-    @property
-    def course_type(self):
-        return list(set([x.course_type for x in self.course_type.all()]))
-
     def __str__(self) -> str:
         return self.title
 
