@@ -6,26 +6,23 @@
     <div class="title">{{ title | capfirst }}</div>
     <div class="row-reverse">
         <div class="filter-container margin-b-10">
-            <form>
-                <div class="row-wrap">
-                    <form class="item" action="" method="get">
-                        <select name="filter">
-                            <option value="">Все</option>
-                            {% for kind in kinds %}
-                                {% if filtered == kind.id %}
-                                    <option selected value="{{ kind.id }}">{{ kind.title }}</option>
-                                {% else %}
-                                    <option value="{{ kind.id }}">{{ kind.title }}</option>
-                                {% endif %}
+            <div class="row-wrap">
+                <form class="item" action="" method="get">
+                    <select name="filter">
+                        <option value="">Все</option>
+                        {% for kind in kinds %}
+                            {% if filtered == kind.id %}
+                                <option selected value="{{ kind.id }}">{{ kind.title }}</option>
+                            {% else %}
+                                <option value="{{ kind.id }}">{{ kind.title }}</option>
+                            {% endif %}
 
-                            {% endfor %}
-                        </select>
-                        <input type="submit" value="Фильтр">
-                    </form>
-                    <div class="item"><input id="search" placeholder="поиск..."></div>
-                    <div class="item"><input type="submit" class="search" value=""></div>
-                </div>
-            </form>
+                        {% endfor %}
+                    </select>
+                    <input type="submit" value="Фильтр" class="margin-l-5">
+                </form>
+                <div class="item"><input id="search" placeholder="поиск..." class="search-input"></div>
+            </div>
         </div>
         <div class="add-container margin-b-10">
             {% if user.role == 'M' or user.role == 'H' %}
