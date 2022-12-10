@@ -70,8 +70,20 @@ class Lesson(models.Model):
     )
     cost = models.FloatField(verbose_name='Стоимость участия', null=False)
 
+    places = models.IntegerField(
+        verbose_name='количество мест', null=False, default=30
+    )
+
     def __str__(self) -> str:
         return self.description[:64]
 
     def get_absolute_url(self):
         return reverse('courses:lesson-detail', kwargs={'pk': self.pk})
+
+    @property
+    def subscribed(self):
+        return len(self.users.filter(role='C').all())
+
+    @property
+    def free_places(self):
+        return self.places - self.subscribed

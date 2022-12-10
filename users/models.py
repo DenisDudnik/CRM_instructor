@@ -23,6 +23,18 @@ class User(AbstractUser):
         (HEAD_MANAGER, 'Старший менеджер')
     )
 
+    NOT_CLIENT = 'N'
+    QUEUED = 'Q'
+    ACTUAL = 'C'
+    VIP = 'V'
+
+    STATUSES = (
+        (NOT_CLIENT, 'Возможный клиент'),
+        (QUEUED, 'В очереди'),
+        (ACTUAL, 'Записан на курсы'),
+        (VIP, 'Постоянный клиент'),
+    )
+
     id = models.UUIDField(primary_key=True, default=uuid4)
     role = models.CharField(
         verbose_name='роль',
@@ -50,6 +62,15 @@ class User(AbstractUser):
                                       auto_now_add=True)
     updated_at = models.DateTimeField(verbose_name='последнее обновление',
                                       auto_now=True)
+
+    comment = models.TextField(verbose_name='комментарий', blank=True)
+    status = models.CharField(
+        verbose_name='статус клиента',
+        max_length=1,
+        choices=STATUSES,
+        default=NOT_CLIENT,
+        null=False
+    )
 
     class Meta:
         ordering = ["id"]

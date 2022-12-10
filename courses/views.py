@@ -8,7 +8,7 @@ from django.views.generic import CreateView, DeleteView, DetailView, UpdateView
 from django.views.generic.list import ListView
 
 from courses.forms import CourseForm, CourseSubscribeForm, LessonCreateForm
-from courses.models import Course, Lesson
+from courses.models import Course, CourseType, Lesson
 from users.models import User
 
 # Create your views here.
@@ -88,16 +88,27 @@ class CourseListView(ListView):
     template_name = 'courses/course_list.html'
     extra_context = {
         'title': 'список курсов',
+        'kinds': CourseType.objects.all()
     }
 
     def get_queryset(self):
         queryset = Course.objects.all()
+        filtering = self.request.GET.get('filter')
+        if filtering:
+            queryset = queryset.filter(kind_id=filtering)
         if self.request.user.role == User.MANAGER:
             queryset = queryset
         if self.request.user.role in [User.CLIENT, User.TEACHER]:
             ids = [x.pk for x in self.request.user.courses]
             queryset = queryset.filter(pk__in=ids)
         return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        filtering = self.request.GET.get('filter')
+        if filtering:
+            context.update({'filtered': int(self.request.GET.get('filter'))})
+        return context
 
 
 class CourseDetailView(DetailView):
