@@ -38,7 +38,7 @@ urlpatterns = [
     path("create/", CourseCreateView.as_view(), name='create'),
 
     path("type_list/", CourseTypeListView.as_view(), name='type_list'),
-    path("<int:pk>/", CourseTypeDetailView.as_view(), name='type_detail'),
+    path("type_detail/<int:pk>/", CourseTypeDetailView.as_view(), name='type_detail'),
     path("<int:pk>/update_type/", CourseTypeUpdateView.as_view(), name='update_type'),
     path("<int:pk>/delete_type/", CourseTypeDeleteView.as_view(), name='delete_type'),
     path("create_type/", CourseTypeCreateView.as_view(), name='create_type'),
