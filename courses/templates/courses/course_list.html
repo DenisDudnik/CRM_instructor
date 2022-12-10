@@ -8,14 +8,21 @@
         <div class="filter-container margin-b-10">
             <form>
                 <div class="row-wrap">
-                    <div class="item">
-                        <select>
-                            <option>селект-фильтр</option>
-                            <option>значени1</option>
-                            <option>значени2</option>
+                    <form class="item" action="" method="get">
+                        <select name="filter">
+                            <option value="">Все</option>
+                            {% for kind in kinds %}
+                                {% if filtered == kind.id %}
+                                    <option selected value="{{ kind.id }}">{{ kind.title }}</option>
+                                {% else %}
+                                    <option value="{{ kind.id }}">{{ kind.title }}</option>
+                                {% endif %}
+
+                            {% endfor %}
                         </select>
-                    </div>
-                    <div class="item"><input placeholder="поиск..."></div>
+                        <input type="submit" value="Фильтр">
+                    </form>
+                    <div class="item"><input id="search" placeholder="поиск..."></div>
                     <div class="item"><input type="submit" class="search" value=""></div>
                 </div>
             </form>
@@ -60,4 +67,7 @@
         {% endif %} {% endcomment %}
     </div>
 </div>
+{% endblock %}
+{% block js %}
+<script src="{% static 'js/search.js' %}"></script>
 {% endblock %}
