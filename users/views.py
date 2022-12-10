@@ -72,7 +72,8 @@ def profile_edit(request) -> HttpResponse:
     context = {
         'title': title,
         'form': form,
-        'button': 'Сохранить'
+        'button': 'Сохранить',
+        'back': reverse('user_profile')
     }
     return render(request, 'users/form.html', context)
 
@@ -87,7 +88,8 @@ def create_user(request, role: str):
         'back': request.META.get('HTTP_REFERER')
     }
     if request.method == 'POST':
-        form = UserManagerCreateForm(request.POST, manager=request.user, role=role)
+        form = UserManagerCreateForm(
+            request.POST, manager=request.user, role=role)
         if form.is_valid():
             form.save()
             if role == 'C':
@@ -139,7 +141,8 @@ class ClientsListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ClientsListView, self).get_context_data(**kwargs)
-        title, role, status, comment = self.titles.get(self.request.META['PATH_INFO'])
+        title, role, status, comment = self.titles.get(
+            self.request.META['PATH_INFO'])
         context['title'] = title
         context['role'] = role
         context['show_status'] = status
