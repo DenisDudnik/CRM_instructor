@@ -8,9 +8,17 @@ from django.urls import reverse
 
 class CourseType(models.Model):
     """Направление обучения (лыжи, сноуборд, кройка и шитье, что угодно...)"""
+
     title = models.CharField(
-        verbose_name='Направление', max_length=255, null=False
+        verbose_name='Направление курса', max_length=255, null=False
     )
+
+    def get_absolute_url(self):
+        return reverse('courses:type_detail', kwargs={'pk': self.pk})
+
+    @property
+    def course_type(self):
+        return list(set([x.course_type for x in self.course_type.all()]))
 
     def __str__(self) -> str:
         return self.title

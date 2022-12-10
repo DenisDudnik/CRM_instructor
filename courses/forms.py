@@ -1,7 +1,14 @@
 from django import forms
 
-from courses.models import Course, Lesson
+from courses.models import Course, CourseType, Lesson
 from users.models import User
+
+
+class CourseTypeForm(forms.ModelForm):
+    class Meta:
+        model = CourseType
+        fields = ('title', )
+        # fields = '__all__'
 
 
 class CourseForm(forms.ModelForm):

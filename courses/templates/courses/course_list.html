@@ -29,6 +29,11 @@
         </div>
         <div class="add-container margin-b-10">
             {% if user.role == 'M' or user.role == 'H' %}
+                <a href="{% url 'courses:type_list' %}"><button class="green">Типы курсов</button></a>
+            {% endif %}
+            </div>
+        <div class="add-container margin-b-10">
+            {% if user.role == 'M' or user.role == 'H' %}
                 <a href="{% url 'courses:create' %}"><button class="green">Добавить +</button></a>
             {% endif %}
         </div>

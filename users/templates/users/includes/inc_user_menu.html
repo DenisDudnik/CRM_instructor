@@ -1,7 +1,7 @@
 {% load static %}
 
 <a class="menu-item" href="{% url 'user_profile' %}">Профиль</a>
-{% for value, link in links %}
-    <a class="menu-item"  href="{% url link %}">{{ value }}</a>
-{% endfor %}
+    {% for value, link in links %}
+        <a class="menu-item"  href="{% url link %}">{{ value }}</a>
+    {% endfor %}
 <a class="menu-item" href="{% url 'auth:logout' %}">Выйти</a>
