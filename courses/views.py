@@ -120,7 +120,7 @@ class CourseDetailView(DetailView):
         course = Course.objects.get(pk=self.kwargs['pk'])
         lessons = course.lessons.all()
         context['clients'] = User.objects.filter(
-            lessons__in=lessons
+            lessons__in=lessons, role="C"
         ).distinct()
 
         return context

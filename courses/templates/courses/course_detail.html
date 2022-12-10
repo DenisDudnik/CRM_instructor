@@ -33,7 +33,7 @@
                 <button class="green margin-5">Редактировать</button>
             </a>
             <a href="{% url 'courses:subscribe' course_id=object.id lesson_id=0 role='C' %}" class="not-decorated">
-                {% if object.places %}
+                {% if object.free_places %}
                     <button class="green margin-5">Записать клиента на курс</button>
                 {% else %}
                     <button disabled class="not_active">Записать клиента на курс</button>

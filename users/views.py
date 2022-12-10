@@ -161,6 +161,7 @@ class UserEditView(LoginRequiredMixin, UpdateView):
         'button': 'Сохранить',
     }
     form_class = ManagerUserEditForm
+    context_object_name = 'item'
 
     urls = {
         'C': reverse_lazy('clients'),

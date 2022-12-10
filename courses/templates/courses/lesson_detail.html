@@ -40,7 +40,7 @@
                 <button class="green margin-5">Редактировать</button>
             </a>
             <a href="{% url 'courses:subscribe' course_id=object.course.id lesson_id=object.id role='C' %}" class="not-decorated">
-                {% if object.places %}
+                {% if object.free_places %}
                     <button class="green margin-5">Записать клиента на урок</button>
                 {% else %}
                     <button disabled class="not_active">Записать клиента на урок</button>
@@ -58,11 +58,11 @@
         </div>
     {% endif %}
         <div class="title">Преподаватели: </div>
-        <div class="detail-field">
-            {% for teacher in teachers %}
+        {% for teacher in teachers %}
+            <div class="detail-field">
                 <a class="control-link" href="{{ teacher.get_absolute_url }}">{{ teacher.get_full_name }}</a>
-            {% endfor %}
-        </div>
+            </div>
+        {% endfor %}
     </div>
     <div class="details-container">
         <div class="title">

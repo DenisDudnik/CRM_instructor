@@ -95,11 +95,17 @@ class UserManagerCreateForm(UserCreateForm):
 
 
 class ManagerUserEditForm(UserChangeForm):
+    _fields = {
+        'C': ("salary", "percent_salary",),
+        'T': ("status", "manager"),
+        'M': ("status", "manager")
+    }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        if self.instance.role != 'C':
-            self.fields.pop('status')
+        fields = self._fields.get(self.instance.role)
+        for field in fields:
+            self.fields.pop(field)
 
     class Meta:
         model = User
