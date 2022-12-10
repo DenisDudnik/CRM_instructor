@@ -59,3 +59,23 @@ class UserCreateForm(ModelForm):
         user.set_password(self.generate_username_or_password())
         user.save()
         return user
+
+
+class ManagerUserEditForm(UserChangeForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance.role != 'C':
+            self.fields.pop('status')
+
+    class Meta:
+        model = User
+        fields = (
+            "first_name",
+            "last_name",
+            "email",
+            "phone",
+            "role",
+            "status",
+            "comment"
+        )
