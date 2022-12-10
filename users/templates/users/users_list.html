@@ -11,6 +11,12 @@
                     <th>E-Mail</th>
                     <th>Телефон</th>
                     <th>Дата регистрации</th>
+                    {% if show_status %}
+                        <th>Статус</th>
+                    {% endif %}
+                    {%if show_comment%}
+                        <th>Комментарий</th>
+                    {% endif %}
                     <th class="edit"></th>
                 </tr>
             </thead>
@@ -26,8 +32,14 @@
                       <td>{{ client.email }}</td>
                       <td>{{ client.phone }}</td>
                       <td>{{ client.created_at }}</td>
+                      {% if show_status %}
+                        <td>{{ client.verbose_status }}</td>
+                      {% endif %}
+                      {%if show_comment%}
+                        <td>{{ client.comment }}</td>
+                      {% endif %}
                       <td>
-                          <a href="{% url 'auth:detail_user' pk=client.pk %}">
+                          <a href="{% url 'auth:user_edit' pk=client.pk %}">
                               <img src="/static/images/edit.png" alt="">
                           </a>
                       </td>
