@@ -8,8 +8,8 @@ from django.views.generic import UpdateView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 
-from users.forms import (LoginForm, ManagerUserEditForm, UserCreateForm,
-                         UserEditForm)
+from users.forms import (LoginForm, ManagerUserEditForm, UserEditForm,
+                         UserManagerCreateForm)
 from users.handlers import UserHandlerFactory
 from users.models import User
 
@@ -72,7 +72,8 @@ def profile_edit(request) -> HttpResponse:
     context = {
         'title': title,
         'form': form,
-        'button': 'Сохранить'
+        'button': 'Сохранить',
+        'back': reverse('user_profile')
     }
     return render(request, 'users/form.html', context)
 
@@ -87,18 +88,19 @@ def create_user(request, role: str):
         'back': request.META.get('HTTP_REFERER')
     }
     if request.method == 'POST':
-        form = UserCreateForm(request.POST, manager=request.user)
+        form = UserManagerCreateForm(
+            request.POST, manager=request.user, role=role)
         if form.is_valid():
             form.save()
-            if form.data.get('role') == 'C':
+            if role == 'C':
                 rev = 'clients'
-            elif form.data.get('role') == 'T':
+            elif role == 'T':
                 rev = 'teachers'
             else:
                 rev = 'managers'
             return HttpResponseRedirect(reverse(rev))
     else:
-        form = UserCreateForm(manager=request.user, role=role)
+        form = UserManagerCreateForm(manager=request.user, role=role)
     context['form'] = form
     return render(request, 'users/form.html', context)
 
@@ -139,7 +141,8 @@ class ClientsListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ClientsListView, self).get_context_data(**kwargs)
-        title, role, status, comment = self.titles.get(self.request.META['PATH_INFO'])
+        title, role, status, comment = self.titles.get(
+            self.request.META['PATH_INFO'])
         context['title'] = title
         context['role'] = role
         context['show_status'] = status
@@ -161,6 +164,7 @@ class UserEditView(LoginRequiredMixin, UpdateView):
         'button': 'Сохранить',
     }
     form_class = ManagerUserEditForm
+    context_object_name = 'item'
 
     urls = {
         'C': reverse_lazy('clients'),

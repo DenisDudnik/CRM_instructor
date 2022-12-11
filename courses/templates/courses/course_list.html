@@ -37,6 +37,8 @@
                     <th><span class="sortable">Тип курса</span></th>
                     <th>Название курса</th>
                     <th>Стоимость</th>
+                    <th>Всего мест</th>
+                    <th>Свободных мест</th>
                     <th>Дата начала 1 урока</th>
                     {% if user.role == 'M' or user.role == 'H' %}
                         <th class="edit"></th>
@@ -49,6 +51,8 @@
                     <td>{{ object.kind.title }}</td>
                     <td><a href="{% url 'courses:detail' pk=object.pk %}" class="control-link">{{ object.title }}</a></td>
                     <td>{{ object.cost }} руб</td>
+                    <td>{{ object.places }}</td>
+                    <td>{{ object.free_places }}</td>
                     <td>{{ object.start_date }}</td>
                     {% if user.role == 'M' or user.role == 'H' %}
                         <td>

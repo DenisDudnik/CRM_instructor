@@ -7,11 +7,10 @@
     <form action="" method="post" class="as_p">
         {% csrf_token %}
         {{ form.as_p }}
-        <p style="display:flex; justify-content: center">
-        <label></label>
-        <input style="margin: 0 20px" type="submit" value="{{ button }}" class="green">
-        <a href="{{ back }}" class="not-decorated">Назад</a>
-    </p>
+        <p class="justify-force-center">
+            <input type="submit" value="{{ button }}" class="green margin-r-7">
+            <a href="{{ back }}" class="button">Назад</a>
+        </p>
     </form>
 </div>
 {% endblock %}
