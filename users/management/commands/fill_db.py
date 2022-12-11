@@ -25,7 +25,7 @@ class Command(BaseCommand):
         CourseType.objects.all().delete()
         for course_type in course_types:
             c_type = course_type.get('fields')
-            c_type['id'] = course_type.get('pk')
+            # c_type['id'] = course_type.get('pk')
             new_type = CourseType(**c_type)
             new_type.save()
 
