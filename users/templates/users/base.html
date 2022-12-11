@@ -28,6 +28,7 @@
                 <div class="menu-container">
                     <div class="menu-list">
                         {% if user.is_authenticated %}
+                            <strong class="user">{{ user.get_full_name }}</strong>
                             {% include 'users/includes/inc_user_menu.html' %}
                         {% endif %}
                     </div>

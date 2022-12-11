@@ -14,6 +14,18 @@
             <label>Стоимость: </label>
             <span>{{ object.cost }}</span>
         </div>
+        <div class="detail-field">
+            <label>Количество мест: </label>
+            <span>{{ object.places }}</span>
+        </div>
+        <div class="detail-field">
+            <label>Количество свободных мест: </label>
+            <span>{{ object.free_places }}</span>
+        </div>
+        <div class="detail-field">
+            <label>Дата начала: </label>
+            <span>{{ object.start_date }}</span>
+        </div>
     </div>
     <div class="center margin-t-10">
         {% if user.role == 'M' or user.role == 'H' %}
@@ -21,7 +33,11 @@
                 <button class="green margin-5">Редактировать</button>
             </a>
             <a href="{% url 'courses:subscribe' course_id=object.id lesson_id=0 role='C' %}" class="not-decorated">
-                <button class="green margin-5">Записать клиента на курс</button>
+                {% if object.free_places %}
+                    <button class="green margin-5">Записать клиента на курс</button>
+                {% else %}
+                    <button disabled class="not_active">Записать клиента на курс</button>
+                {% endif %}
             </a>
             <a href="{% url 'courses:delete' pk=object.pk %}" class="not-decorated">
                 <button class="orange margin-5">Удалить</button>
@@ -60,6 +76,8 @@
                         <td>{{ lesson.date }}</td>
                         <td>{{ lesson.duration }}</td>
                         <td>{{ lesson.cost }}</td>
+                        <td>{{ lesson.places }}</td>
+                        <td>{{ lesson.free_places }}</td>
                         <td>
                             <a href="{% url 'courses:lesson-detail' pk=lesson.pk %}" class="control-link">
                                 Подробнее

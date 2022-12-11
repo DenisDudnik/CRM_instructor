@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class="content-container">
-    <div class="title center">{{ title }}</div>
+    <div class="title center">{{ title | capfirst }}</div>
     <form action="" method="post" class="as_p" id="form">
         {% csrf_token %}
         {{ form.as_p }}
