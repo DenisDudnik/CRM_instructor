@@ -8,10 +8,9 @@
     <form action="" method="post" class="as_p">
         {% csrf_token %}
         {{ form.as_p }}
-        <p>
-            <label></label>
-            <input type="submit" value="{{ button }}" class="orange">
-            <a href="{{ back }}" class="not-decorated">Назад</a>
+        <p class="justify-force-center">
+            <input type="submit" value="{{ button }}" class="orange margin-r-7">
+            <a href="{{ back }}" class="button">Назад</a>
         </p>
     </form>
 </div>
