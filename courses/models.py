@@ -37,7 +37,7 @@ class Course(models.Model):
         if not len(self.lessons.all()):
             return 0
         if len(self.lessons.all()) == 1:
-            return self.lessons.all()[0].duration
+            return self.lessons[0].duration
         lessons = list(self.lessons.all())
         return (
             (lessons[-1].date + datetime.timedelta(
