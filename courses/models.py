@@ -32,6 +32,24 @@ class Course(models.Model):
     def cost(self):
         return sum(x.cost for x in self.lessons.all())
 
+    def start_date(self):
+        if len(self.lessons.all()):
+            lessons = sorted(self.lessons.all(), key=lambda x: x.date)
+            return lessons[0].date.strftime('%Y-%m-%d %H:%M:%S')
+        return 'В курсе нет ни одного урока'
+
+    @property
+    def places(self):
+        if self.lessons.all():
+            return min([x.places for x in self.lessons.all()])
+        return 0
+
+    @property
+    def free_places(self):
+        if self.lessons.all():
+            return min(x.free_places for x in self.lessons.all())
+        return 0
+
     @property
     def duration(self) -> int:
         if not len(self.lessons.all()):
@@ -76,7 +94,7 @@ class Lesson(models.Model):
     )
 
     def __str__(self) -> str:
-        return self.description[:64]
+        return self.description[:64] or 'урок'
 
     def get_absolute_url(self):
         return reverse('courses:lesson-detail', kwargs={'pk': self.pk})

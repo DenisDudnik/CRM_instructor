@@ -44,7 +44,7 @@ def subscribe(request, course_id=None, lesson_id=None, role: str = None):
         form = CourseSubscribeForm(
             request.POST,
             role=role,
-            manager=request.user.pk,
+            manager=request.user,
             course_item=course,
             lesson_item=lesson
         )
@@ -70,7 +70,7 @@ def subscribe(request, course_id=None, lesson_id=None, role: str = None):
             )
     form = CourseSubscribeForm(
         role=role,
-        manager=request.user.pk,
+        manager=request.user,
         course_item=course or None,
         lesson_item=lesson or None
     )
@@ -115,6 +115,17 @@ class CourseListView(ListView):
 class CourseDetailView(DetailView):
     model = Course
     template_name = 'courses/course_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        course = Course.objects.get(pk=self.kwargs['pk'])
+        lessons = course.lessons.all()
+        context['clients'] = User.objects.filter(
+            lessons__in=lessons, role="C"
+        ).distinct()
+
+        return context
+
     extra_context = {
         'title': 'детали курса',
         'back': reverse_lazy('courses:list')
@@ -163,6 +174,13 @@ class CourseDeleteView(DeleteView):
         'title': 'удаление курса',
         'button': 'удалить',
     }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['back'] = reverse_lazy('courses:detail', kwargs={
+            'pk': self.kwargs['pk']
+        })
+        return context
 
 
 class CourseTypeListView(ListView):
@@ -244,6 +262,11 @@ class LessonCreateView(LoginRequiredMixin, CreateView):
         })
         return context
 
+    def get_form(self, form_class=None):
+        form = super().get_form()
+        form.set_course(Course.objects.get(pk=self.kwargs.get('pk')))
+        return form
+
 
 class LessonDetailView(LoginRequiredMixin, DetailView):
 
@@ -258,6 +281,9 @@ class LessonDetailView(LoginRequiredMixin, DetailView):
         context['teachers'] = [
             x for x in context['object'].users.all() if x.role == User.TEACHER
         ]
+        context['clients'] = [
+            x for x in context['object'].users.all() if x.role == User.CLIENT
+        ]
         context['back'] = reverse_lazy('courses:detail', kwargs={
             'pk': self.object.course.pk}
         )
@@ -268,7 +294,7 @@ class LessonDeleteView(LoginRequiredMixin, DeleteView):
 
     model = Lesson
     extra_context = {
-        'title': 'удаление курса',
+        'title': 'удаление урока',
         'button': 'удалить',
     }
 

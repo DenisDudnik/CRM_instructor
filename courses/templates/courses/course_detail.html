@@ -1,5 +1,6 @@
 {% extends 'users/base.html' %}
 {% load static %}
+{% load my_tags %}
 
 {% block content %}
 <div class="content-container">
@@ -13,6 +14,18 @@
             <label>Стоимость: </label>
             <span>{{ object.cost }}</span>
         </div>
+        <div class="detail-field">
+            <label>Количество мест: </label>
+            <span>{{ object.places }}</span>
+        </div>
+        <div class="detail-field">
+            <label>Количество свободных мест: </label>
+            <span>{{ object.free_places }}</span>
+        </div>
+        <div class="detail-field">
+            <label>Дата начала: </label>
+            <span>{{ object.start_date }}</span>
+        </div>
     </div>
     <div class="center margin-t-10">
         {% if user.role == 'M' or user.role == 'H' %}
@@ -20,7 +33,11 @@
                 <button class="green margin-5">Редактировать</button>
             </a>
             <a href="{% url 'courses:subscribe' course_id=object.id lesson_id=0 role='C' %}" class="not-decorated">
-                <button class="green margin-5">Записать клиента на курс</button>
+                {% if object.free_places %}
+                    <button class="green margin-5">Записать клиента на курс</button>
+                {% else %}
+                    <button disabled class="not_active">Записать клиента на курс</button>
+                {% endif %}
             </a>
             <a href="{% url 'courses:delete' pk=object.pk %}" class="not-decorated">
                 <button class="orange margin-5">Удалить</button>
@@ -54,11 +71,13 @@
                 {% for lesson in object.lessons.all %}
                     <tr>
                         <td>{{ forloop.counter }}</td>
-                        <td class="max-width-200">{{ lesson.description }}</td>
-                        <td>{{ lesson.address }}</td>
+                        <td class="max-width-200">{{ lesson.description|cut_string }}</td>
+                        <td class="max-width-200">{{ lesson.address }}</td>
                         <td>{{ lesson.date }}</td>
                         <td>{{ lesson.duration }}</td>
                         <td>{{ lesson.cost }}</td>
+                        <td>{{ lesson.places }}</td>
+                        <td>{{ lesson.free_places }}</td>
                         <td>
                             <a href="{% url 'courses:lesson-detail' pk=lesson.pk %}" class="control-link">
                                 Подробнее
@@ -68,6 +87,16 @@
                 {% endfor %}
             </tbody>
         </table>
+    </div>
+    <div class="details-container">
+        <div class="title">Клиенты, записанные на курс:</div>
+        {% for client in clients %}
+            <p>
+                <a href="{% url 'auth:detail_user' pk=client.pk %}" class="control-link">
+                {{ client.get_full_name }}
+                </a>
+            </p>
+        {% endfor %}
     </div>
 </div>
 {% endblock %}

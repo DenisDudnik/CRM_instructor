@@ -76,13 +76,19 @@ class User(AbstractUser):
         ordering = ["id"]
 
     @property
+    def verbose_status(self):
+        for item in self.STATUSES:
+            if item[0] == self.status:
+                return item[1]
+
+    @property
     def courses(self):
         return list(set([x.course for x in self.lessons.all()]))
 
     def get_absolute_url(self):
         return reverse(
-            'user-detail',
-            # kwargs={'pk': self.pk}
+            'users:detail_user',
+            kwargs={'pk': self.pk}
         )
 
     def __str__(self):

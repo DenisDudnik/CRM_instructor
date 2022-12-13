@@ -92,6 +92,9 @@ TEMPLATES = [
                 'users.context_processors.today_year',
                 'users.context_processors.get_links',
             ],
+            'libraries': {
+                'my_tags': 'crm_instructor.templatetags.my_tags',
+            },
         },
     },
 ]
