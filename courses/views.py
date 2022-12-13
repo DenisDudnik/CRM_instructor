@@ -7,7 +7,8 @@ from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, DeleteView, DetailView, UpdateView
 from django.views.generic.list import ListView
 
-from courses.forms import CourseForm, CourseSubscribeForm, LessonCreateForm
+from courses.forms import (CourseForm, CourseSubscribeForm, CourseTypeForm,
+                           LessonCreateForm)
 from courses.models import Course, CourseType, Lesson
 from users.models import User
 
@@ -157,6 +158,7 @@ class CourseUpdateView(UpdateView):
 class CourseCreateView(CreateView):
     model = Course
     template_name = 'courses/form.html'
+    success_url = reverse_lazy('courses:list')
     extra_context = {
         'title': 'создание курса',
         'button': 'сохранить',
@@ -179,6 +181,62 @@ class CourseDeleteView(DeleteView):
             'pk': self.kwargs['pk']
         })
         return context
+
+
+class CourseTypeListView(ListView):
+    model = CourseType
+    template_name = 'courses/course_type_list.html'
+    extra_context = {
+        'title': 'список типов курсов',
+    }
+
+    def get_queryset(self):
+        queryset = CourseType.objects.all()
+        if self.request.user.role == User.MANAGER:
+            queryset = queryset
+        if self.request.user.role in [User.CLIENT, User.TEACHER]:
+            ids = [x.pk for x in self.request.user.course_type]
+            queryset = queryset.filter(pk__in=ids)
+        return queryset
+
+
+class CourseTypeCreateView(CreateView):
+    model = CourseType
+    template_name = 'courses/form.html'
+    success_url = reverse_lazy('courses:type_list')
+    extra_context = {
+        'title': 'создание типа курса',
+        'button': 'сохранить',
+    }
+    form_class = CourseTypeForm
+
+
+class CourseTypeDetailView(DetailView):
+    model = CourseType
+    template_name = 'courses/course_type_detail.html'
+    extra_context = {
+        'title': 'детали типа',
+    }
+
+
+class CourseTypeUpdateView(UpdateView):
+    model = CourseType
+    template_name = 'courses/form.html'
+    success_url = reverse_lazy('courses:type_list')
+    extra_context = {
+        'title': 'редактирование типа курса',
+        'button': 'сохранить',
+    }
+    form_class = CourseTypeForm
+
+
+class CourseTypeDeleteView(DeleteView):
+    model = CourseType
+    success_url = reverse_lazy('courses:type_list')
+    extra_context = {
+        'title': 'удаление типа курса',
+        'button': 'удалить',
+    }
 
 
 class LessonCreateView(LoginRequiredMixin, CreateView):

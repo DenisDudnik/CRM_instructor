@@ -8,8 +8,9 @@ from django.urls import reverse
 
 class CourseType(models.Model):
     """Направление обучения (лыжи, сноуборд, кройка и шитье, что угодно...)"""
+
     title = models.CharField(
-        verbose_name='Направление', max_length=255, null=False
+        verbose_name='Направление курса', max_length=255, null=False
     )
 
     def __str__(self) -> str:

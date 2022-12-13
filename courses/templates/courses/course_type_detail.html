@@ -1,0 +1,47 @@
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="content-container">
+    <div class="title center">{{ object.title }}</div>
+    <div class="details-container">
+        <div class="title">Курсы: </div>
+        <table class="list-table">
+            <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>Продолжительность</th>
+                    <th>Стоимость</th>
+                    <th>Дата начала</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for course in object.courses.all %}
+                <tr>
+                    <td>
+                        {{ course.title }}
+                    </td>
+                    <td>
+                        {{ course.lessons.all | length }} уроков
+                    </td>
+                    <td>
+                        {{ course.cost }}
+                    </td>
+                    <td>
+                        {{ course.cost }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="center margin-t-20">
+        {% if user.role == 'M' or user.role == 'H' %}
+        <a href="{% url 'courses:update_type' pk=object.pk %}" class="margin-r-10"><button class="green">Редактировать</button></a>
+        <a href="{% url 'courses:delete_type' pk=object.pk %}"><button class="orange">Удалить</button></a>
+        {% endif %}
+        {% if user.role == 'C' %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
