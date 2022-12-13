@@ -216,6 +216,7 @@ class CourseTypeDetailView(DetailView):
     template_name = 'courses/course_type_detail.html'
     extra_context = {
         'title': 'детали типа',
+        'back': reverse_lazy('courses:type_list')
     }
 
 
