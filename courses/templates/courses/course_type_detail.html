@@ -13,6 +13,7 @@
                     <th>Продолжительность</th>
                     <th>Стоимость</th>
                     <th>Дата начала</th>
+                    <th>Свободных мест</th>
                 </tr>
             </thead>
             <tbody>
@@ -28,7 +29,10 @@
                         {{ course.cost }}
                     </td>
                     <td>
-                        {{ course.cost }}
+                        {{ course.start_date }}
+                    </td>
+                    <td>
+                        {{ course.free_places }}
                     </td>
                 </tr>
                 {% endfor %}
@@ -40,8 +44,7 @@
         <a href="{% url 'courses:update_type' pk=object.pk %}" class="margin-r-10"><button class="green">Редактировать</button></a>
         <a href="{% url 'courses:delete_type' pk=object.pk %}"><button class="orange">Удалить</button></a>
         {% endif %}
-        {% if user.role == 'C' %}
-        {% endif %}
+        <a href="{{ back }}" class="not-decorated">Назад</a>
     </div>
 </div>
 {% endblock %}
