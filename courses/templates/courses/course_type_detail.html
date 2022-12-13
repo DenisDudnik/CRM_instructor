@@ -4,32 +4,36 @@
 {% block content %}
 <div class="content-container">
     <div class="title center">{{ object.title }}</div>
-    <p class="center">{{ object.description }}</p>
     <div class="details-container">
-        <div class="detail-field">
-            <label>Стоимость: </label>
-            <span id="first_name">{{ object.cost }}</span>
-        </div>
-        <div class="detail-field">
-            <label>Уроки: </label>
-            {% for lesson in object.lessons.all %}
-                <div class="lesson-field">
-                    {{ lesson.description }}
-                </div>
-                <div class="lesson-field">
-                    {{ lesson.address }}
-                </div>
-                <div class="lesson-field">
-                    {{ lesson.date }}
-                </div>
-                <div class="lesson-field">
-                    {{ lesson.duration }}
-                </div>
-                <div class="lesson-field">
-                    {{ lesson.cost }}
-                </div>
-            {% endfor %}
-        </div>
+        <div class="title">Курсы: </div>
+        <table class="list-table">
+            <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>Продолжительность</th>
+                    <th>Стоимость</th>
+                    <th>Дата начала</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for course in object.courses.all %}
+                <tr>
+                    <td>
+                        {{ course.title }}
+                    </td>
+                    <td>
+                        {{ course.lessons.all | length }} уроков
+                    </td>
+                    <td>
+                        {{ course.cost }}
+                    </td>
+                    <td>
+                        {{ course.cost }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
     <div class="center margin-t-20">
         {% if user.role == 'M' or user.role == 'H' %}
