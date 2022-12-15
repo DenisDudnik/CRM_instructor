@@ -27,8 +27,6 @@ CELERY_BROKER_URL=redis://redis:6379/0
 CELERY_WORKER_NAME=celery
 
 
-#email_notifications
-EMAIL_HOST=smtp.office365.com
-EMAIL_PORT=587
-EMAIL_HOST_USER=email_user
-EMAIL_HOST_PASSWORD=email_passwd
+# Email ---------------------------------------------------------------
+EMAIL_HOST_USER=crminstructorgeekbrains@gmail.com
+EMAIL_HOST_PASSWORD=pukzuyevgulnhcas
