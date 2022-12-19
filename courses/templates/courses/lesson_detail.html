@@ -4,82 +4,84 @@
 {% block content %}
 
 <div class="content-container">
-    <div class="title center">{{ object | capfirst }}</div>
-    <div class="details-container">
-        <div class="detail-field">
-            <label>Описание: </label>
-            <span>{{ object.description }}</span>
-        </div>
-        <div class="detail-field">
-            <label>Место проведения: </label>
-            <span>{{ object.address }}</span>
-        </div>
-        <div class="detail-field">
-            <label>Дата: </label>
-            <span>{{ object.date }}</span>
-        </div>
-        <div class="detail-field">
-            <label>Длительность: </label>
-            <span>{{ object.duration }}</span>
-        </div>
-        <div class="detail-field">
-            <label>Стоимость: </label>
-            <span>{{ object.cost }}</span>
-        </div>
-        <div class="detail-field">
-            <label>Количество мест: </label>
-            <span>{{ object.places }}</span>
-        </div>
-        <div class="detail-field">
-            <label>Количество свободных мест: </label>
-            <span>{{ object.free_places }}</span>
-        </div>
-        {% if user.role == 'M' or user.role == 'H' %}
-        <div class="center margin-t-10">
-            <a href="{% url 'courses:lesson-edit' pk=object.id %}" class="not-decorated">
-                <button class="green margin-5">Редактировать</button>
-            </a>
-            <a href="{% url 'courses:subscribe' course_id=object.course.id lesson_id=object.id role='C' %}" class="not-decorated">
-                {% if object.free_places %}
-                    <button class="green margin-5">Записать клиента на урок</button>
-                {% else %}
-                    <button disabled class="not_active">Записать клиента на урок</button>
-                {% endif %}
-            </a>
-            <a href="{% url 'courses:subscribe' course_id=object.course.id lesson_id=object.id role='T' %}" class="not-decorated">
-                <button class="green margin-5">Назначить преподавателя на урок</button>
-            </a>
-            <a href="{% url 'courses:lesson-delete' pk=object.pk %}" class="not-decorated">
-                <button class="orange margin-5">Удалить</button>
-            </a>
-            <a href="{{ back }}" class="not-decorated">
-                <button>Назад</button>
-            </a>
-        </div>
-    {% endif %}
-        <div class="title">Преподаватели: </div>
-        {% for teacher in teachers %}
-            <div class="detail-field">
-                <a class="control-link" href="{{ teacher.get_absolute_url }}">{{ teacher.get_full_name }}</a>
-            </div>
-        {% endfor %}
+    <div class="row-reverse">
+        <div class="title">{{ object | capfirst }}</div>
+        <div class="padding-t-20"><a href="{{ back }}" class="control-link"><< К курсу</a></div>
     </div>
-    <div class="details-container">
-        <div class="title">
-            Список студентов:
-        </div>
-        {% for client in clients %}
-            <div class="detail-field">
-                <a class="control-link" href="{{ client.get_absolute_url }}">{{ client.get_full_name }}</a>
+
+    <div class="cards-container">
+        <div class="card big">
+            <div class="title first">Описание:</div>
+            <div class="margin-b-10">{{ object.description }}</div>
+            <div class="margin-b-10 location">{{ object.address }}</div>
+            <div class="row space-between margin-b-10">
+                <div>Дата: <strong>{{ object.date }}</strong></div>
+                <div>
+                    Свободных мест: <strong>{{ object.free_places }}</strong>
+                    из <strong>{{ object.places }}</strong>
+                </div>
             </div>
-        {% endfor %}
+            <div class="row space-between margin-b-10">
+                <div>Длительность: <strong>{{ object.duration }}</strong></div>
+                <div>Стоимость: <strong>{{ object.cost }} руб</strong></div>
+            </div>
+
+            {% if user.role == 'M' or user.role == 'H' %}
+                <div class="">
+                    <a href="{% url 'courses:lesson-edit' pk=object.id %}" class="not-decorated">
+                        <button class="green margin-5">Редактировать</button>
+                    </a>
+                    <a href="{% url 'courses:lesson-delete' pk=object.pk %}" class="not-decorated">
+                        <button class="orange margin-5">Удалить</button>
+                    </a>
+                </div>
+            {% endif %}
+
+            {% if user.role == 'C' %}
+            <form action="{% url 'courses:unsubscribe' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="lesson" value="{{ object.id }}">
+                <input type="submit" value="Отменить запись">
+            </form>
+            {% endif %}
+        </div>
+        <div class="card big">
+            <div class="row-reverse">
+                <div class="title first">Преподаватели:</div>
+                {% if user.role == 'M' or user.role == 'H' %}
+                    <div class="">
+                        <a href="{% url 'courses:subscribe' course_id=object.course.id lesson_id=object.id role='T' %}" class="not-decorated">
+                            <button class="green margin-5">Назначить преподавателя</button>
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+            {% for teacher in teachers %}
+                <div class="margin-b-10">
+                    <a class="control-link" href="{{ teacher.get_absolute_url }}">{{ teacher.get_full_name }}</a>
+                </div>
+            {% endfor %}
+
+            <div class="row-reverse">
+                <div class="title">Клиенты, записанные на урок:</div>
+                {% if user.role == 'M' or user.role == 'H' %}
+                    <div class="margin-t-10">
+                        <a href="{% url 'courses:subscribe' course_id=object.course.id lesson_id=object.id role='C' %}" class="not-decorated">
+                            {% if object.free_places %}
+                                <button class="green margin-5">Записать клиента</button>
+                            {% else %}
+                                <button disabled class="not_active">Записать клиента</button>
+                            {% endif %}
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+            {% for client in clients %}
+                <div class="margin-b-10">
+                    <a class="control-link" href="{{ client.get_absolute_url }}">{{ client.get_full_name }}</a>
+                </div>
+            {% endfor %}
+        </div>
     </div>
 </div>
-{% if user.role == 'C' %}
-<form action="{% url 'courses:unsubscribe' %}" method="post">
-    {% csrf_token %}
-    <input type="hidden" name="lesson" value="{{ object.id }}">
-    <input type="submit" value="Отменить запись">
-</form>
-{% endif %}
 {% endblock %}

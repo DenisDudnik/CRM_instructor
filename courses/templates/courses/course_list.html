@@ -49,7 +49,7 @@
                     {% endif %}
                 </div>
                 <div class="margin-b-7">
-                    <a href="{% url 'courses:detail' pk=object.pk %}" class="control-link">{{ object.title }}</a>
+                    <a href="{% url 'courses:detail' pk=object.pk %}" class="control-link name">{{ object.title }}</a>
                 </div>
                 <div class="margin-b-7">Стоимость: <strong>{{ object.cost }} руб</strong></div>
                 <div class="margin-b-7">

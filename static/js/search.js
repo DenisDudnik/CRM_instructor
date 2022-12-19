@@ -1,8 +1,8 @@
 "use strict";
 window.addEventListener('load', () => {
    const search = document.querySelector('#search');
-   const body = document.querySelector('TBODY');
-   const rows = body.querySelectorAll('TR');
+   const body = document.querySelector('.cards-container');
+   const rows = body.querySelectorAll('.card');
    console.dir(rows);
    search.addEventListener('input', event => {
        const value = event.target.value.toLowerCase();
@@ -12,7 +12,7 @@ window.addEventListener('load', () => {
            })
        } else {
            rows.forEach(el => {
-               let val = el.querySelector('TD:nth-child(2)').querySelector('A').innerText.toLowerCase();
+               let val = el.querySelector('a.name').innerText.toLowerCase();
                if (val.includes(value)) {
                    el.style.display = '';
                } else {
