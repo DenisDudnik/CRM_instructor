@@ -82,6 +82,12 @@ class User(AbstractUser):
                 return item[1]
 
     @property
+    def verbose_role(self):
+        for item in self.ROLES:
+            if item[0] == self.role:
+                return item[1]
+
+    @property
     def courses(self):
         return list(set([x.course for x in self.lessons.all()]))
 
