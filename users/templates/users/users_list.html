@@ -10,7 +10,11 @@
                     <th><span class="sortable">ФИО</span></th>
                     <th>E-Mail</th>
                     <th>Телефон</th>
-                    <th>Дата регистрации</th>
+                    {% if request.resolver_match.url_name == 'managers' %}
+                        <th>Количество клиентов</th>
+                    {% else %}
+                        <th>Статус записи</th>
+                    {% endif %}
                     {% if show_status %}
                         <th>Статус</th>
                     {% endif %}
@@ -23,7 +27,7 @@
             <tbody>
             {% for client in clients %}
               {% if client != user %}
-                  <tr>
+                  <tr class="table-row">
                       <td>
                           <a href="{% url 'auth:detail_user' pk=client.pk %}" class="control-link">
                               {{ client.get_full_name }}
@@ -31,7 +35,22 @@
                       </td>
                       <td>{{ client.email }}</td>
                       <td>{{ client.phone }}</td>
-                      <td>{{ client.created_at }}</td>
+                    {% if request.resolver_match.url_name == 'managers' %}
+                        <td class="table-cell">{{ client.users.all|length }}</td>
+                    {% else %}
+                        <td class="table-cell">
+                            <ul class="tooltip">
+                                  {% if client.courses|length == 0 %}
+                                        <span>Нет доступных курсов</span>
+                                  {% else %}
+                                    {% for course in client.courses %}
+                                        <a href="{% url 'courses:detail' pk=course.pk %}" style="margin: 5px 0" class="control-link">{{ course.title }}</a>
+                                    {% endfor %}
+                                  {% endif %}
+                              </ul>
+                            {% if client.courses|length > 0%}Записан ({{ client.courses|length }}){% else %}Не записан{% endif %}
+                        </td>
+                    {% endif %}
                       {% if show_status %}
                         <td>{{ client.verbose_status }}</td>
                       {% endif %}
