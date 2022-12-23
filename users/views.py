@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -12,6 +13,7 @@ from users.forms import (LoginForm, ManagerUserEditForm, UserEditForm,
                          UserManagerCreateForm)
 from users.handlers import UserHandlerFactory
 from users.models import User
+from users.tasks import send_mail
 
 
 def placeholder(request) -> HttpResponse:
@@ -91,7 +93,21 @@ def create_user(request, role: str):
         form = UserManagerCreateForm(
             request.POST, manager=request.user, role=role)
         if form.is_valid():
-            form.save()
+            user = form.save()
+            if form.data['email']:
+
+                email_context = {
+                    'user': user,
+                    'manager': User.objects.get(id=request.user.id),
+                    'domain': settings.SERVER_URI
+                }
+
+                send_mail(
+                    user,
+                    'users/send_mail_user_register.html',
+                    f"{user.first_name}, вы зарегистрированы в crm_instructor!",
+                    email_context)
+
             if role == 'C':
                 rev = 'clients'
             elif role == 'T':
