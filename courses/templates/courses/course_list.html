@@ -25,12 +25,43 @@
             </div>
         </div>
         <div class="add-container margin-b-10">
-            {% if user.role == 'M' or user.role == 'H' %}
-                <a href="{% url 'courses:create' %}"><button class="green">Добавить +</button></a>
-            {% endif %}
+            <div class="row">
+                {% if user.role == 'M' or user.role == 'H' %}
+                    <a href="{% url 'courses:type_list' %}"><button class="green margin-r-7">Типы курсов</button></a>
+                {% endif %}
+                {% if user.role == 'M' or user.role == 'H' %}
+                    <a href="{% url 'courses:create' %}"><button class="green">Добавить +</button></a>
+                {% endif %}
+            </div>
         </div>
     </div>
-    <div class="table-container margin-t-15">
+    <div class="cards-container">
+        {% for object in object_list %}
+            <div class="card">
+                <div class="row space-between">
+                    <div class="margin-b-7 grey-text">{{ object.kind.title }}</div>
+                    {% if user.role == 'M' or user.role == 'H' %}
+                        <div>
+                            <a href="{% url 'courses:update' pk=object.pk %}">
+                                <img src="/static/images/edit.png" alt="">
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="margin-b-7">
+                    <a href="{% url 'courses:detail' pk=object.pk %}" class="control-link name">{{ object.title }}</a>
+                </div>
+                <div class="margin-b-7">Стоимость: <strong>{{ object.cost }} руб</strong></div>
+                <div class="margin-b-7">
+                    Свободных мест: <strong>{{ object.free_places }}</strong> из <strong>{{ object.places }}</strong>
+                </div>
+                <div class="margin-b-7">
+                    Дата начала 1 урока: <strong class="green-text">{{ object.start_date }}</strong>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <!--div class="table-container margin-t-15">
         <table class="list-table">
             <thead>
                 <tr>
@@ -68,7 +99,7 @@
         {% comment %} {% if user.role == 'M' or user.role == 'H' %}
             <a href="{% url 'auth:create_user' %}" class="green">+ Добавить</a>
         {% endif %} {% endcomment %}
-    </div>
+    </div-->
 </div>
 {% endblock %}
 {% block js %}

@@ -28,8 +28,12 @@
                 <div class="menu-container">
                     <div class="menu-list">
                         {% if user.is_authenticated %}
-                            <div class="menu-item active">{{ user.get_full_name }}</div>
-                            {% include 'users/includes/inc_user_menu.html' %}
+                            <div class="menu-box">
+                                {% include 'users/includes/inc_user_menu.html' %}
+                                <span class="menu-item active username">
+                                    {{ user.get_full_name }}
+                                </span>
+                            </div>
                         {% endif %}
                     </div>
                 </div>

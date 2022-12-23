@@ -20,7 +20,10 @@ from django.urls import path
 
 from courses.apps import CoursesConfig
 from courses.views import (CourseCreateView, CourseDeleteView,
-                           CourseDetailView, CourseListView, CourseUpdateView,
+                           CourseDetailView, CourseListView,
+                           CourseTypeCreateView, CourseTypeDeleteView,
+                           CourseTypeDetailView, CourseTypeListView,
+                           CourseTypeUpdateView, CourseUpdateView,
                            LessonCreateView, LessonDeleteView,
                            LessonDetailView, LessonEditView, subscribe,
                            unsubscribe)
@@ -33,6 +36,14 @@ urlpatterns = [
     path("<int:pk>/update/", CourseUpdateView.as_view(), name='update'),
     path("<int:pk>/delete/", CourseDeleteView.as_view(), name='delete'),
     path("create/", CourseCreateView.as_view(), name='create'),
+
+    path("type_list/", CourseTypeListView.as_view(), name='type_list'),
+    path("type_detail/<int:pk>/", CourseTypeDetailView.as_view(), name='type_detail'),
+    path("<int:pk>/update_type/", CourseTypeUpdateView.as_view(), name='update_type'),
+    path("<int:pk>/delete_type/", CourseTypeDeleteView.as_view(), name='delete_type'),
+    path("create_type/", CourseTypeCreateView.as_view(), name='create_type'),
+
+    path("subscribe/<int:course_id>/<int:lesson_id>/<str:role>/", subscribe, name='subscribe'),
     path("subscribe/<int:course_id>/<int:lesson_id>/<str:role>/", subscribe,
          name='subscribe'),
     path("unsubscribe/", unsubscribe, name='unsubscribe'),
