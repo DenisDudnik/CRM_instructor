@@ -31,7 +31,7 @@ class User(AbstractUser):
     STATUSES = (
         (NOT_CLIENT, 'Возможный клиент'),
         (QUEUED, 'В очереди'),
-        (ACTUAL, 'Записан на курсы'),
+        (ACTUAL, 'Разовый клиент'),
         (VIP, 'Постоянный клиент'),
     )
 
@@ -79,6 +79,12 @@ class User(AbstractUser):
     def verbose_status(self):
         for item in self.STATUSES:
             if item[0] == self.status:
+                return item[1]
+
+    @property
+    def verbose_role(self):
+        for item in self.ROLES:
+            if item[0] == self.role:
                 return item[1]
 
     @property
