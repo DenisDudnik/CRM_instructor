@@ -42,10 +42,12 @@
                                         <span>Нет клиентов</span>
                                   {% else %}
                                     {% for item in client.users.all %}
-                                        <a href="{% url 'auth:detail_user' pk=item.pk %}" style="margin: 5px 0" class="control-link">
-                                            {{ item.get_full_name }}
-                                        </a>
-                                        <span> - {{ item.verbose_role }}</span>
+                                        <div class="line-row">
+                                            <a href="{% url 'auth:detail_user' pk=item.pk %}">
+                                                {{ item.get_full_name }}
+                                            </a>
+                                            <span>{{ item.verbose_role }}</span>
+                                        </div>
                                     {% endfor %}
                                   {% endif %}
                             </ul>
@@ -58,7 +60,9 @@
                                         <span>Нет доступных курсов</span>
                                   {% else %}
                                     {% for course in client.courses %}
-                                        <a href="{% url 'courses:detail' pk=course.pk %}" style="margin: 5px 0" class="control-link">{{ course.title }}</a>
+                                        <div class="line-row">
+                                            <a href="{% url 'courses:detail' pk=course.pk %}">{{ course.title }}</a>
+                                        </div>
                                     {% endfor %}
                                   {% endif %}
                               </ul>
