@@ -26,7 +26,7 @@
                 <div class="logo-container">
                     instructor<span>crm</span>
                 </div>
-                <div class="menu-container">
+                <div class="menu-container row">
                     <div class="menu-list">
                         {% if user.is_authenticated %}
                             <div class="menu-box">
@@ -36,6 +36,15 @@
                                 </span>
                             </div>
                         {% endif %}
+                    </div>
+                    <div class="messages-container">
+                        <img class="letter" src="{% static 'images/letter.png' %}" alt="" style="width: 30px">
+                        <div class="messages {% comment %}active{% endcomment %}">
+                            <ul>
+                                <li>Сообщение для менеджера или клиента</li>
+                                <li>Еще одно</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -53,10 +62,6 @@
             </div>
         </div>
     </div>
-    <div class="messages-container">
-        <img class="letter" src="{% static 'images/letter.png' %}" alt="">
-        <ul class="messages">
-    </ul>
 {% block js %}
 {% endblock %}
     <script>
