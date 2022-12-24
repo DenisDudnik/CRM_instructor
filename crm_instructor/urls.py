@@ -13,13 +13,17 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+import asyncio
+from threading import Thread
+
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 from django.urls.conf import include
 
-from users.views import ClientsListView, placeholder, user_profile
+from users.views import ClientsListView, user_profile
+from websocket_server.start import main
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -35,3 +39,14 @@ if settings.DEBUG:
     urlpatterns += static(
         settings.STATIC_URL, document_root=settings.STATIC_ROOT
     )
+
+
+def loop_start():
+    loop = asyncio.new_event_loop()
+    loop.create_task(main())
+    asyncio.set_event_loop(loop)
+    loop.run_forever()
+
+
+thread = Thread(target=asyncio.run, args=[main()], daemon=True)
+thread.start()

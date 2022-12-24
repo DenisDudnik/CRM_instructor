@@ -11,6 +11,7 @@
 
     <link rel="icon" href="/static/images/favicon.png" type="image/x-icon" />
     <link rel="stylesheet" href="{% static 'css/green.css' %}">
+    <link rel="stylesheet" href="{% static 'css/js.css' %}">
 
     <title>Инструктор-CRM</title>
     <title>Инструктор-CRM {{ title|capfirst }}</title>
@@ -44,6 +45,7 @@
                 {% block content %}
                 {% endblock %}
             </div>
+            </div>
         </div>
         <div class="footer-container">
             <div class="sized-container">
@@ -51,8 +53,22 @@
             </div>
         </div>
     </div>
+    <div class="messages-container">
+        <img class="letter" src="{% static 'images/letter.png' %}" alt="">
+        <ul class="messages">
+    </ul>
 {% block js %}
 {% endblock %}
+    <script>
+        "use strict";
+        window.addEventListener('load', () => {
+            const ws = new WebSocket(('ws://localhost:8181/'));
+            const btn = document.querySelector('#send');
+            btn.addEventListener('click', () => {
+                ws.send('hello');
+            })
+        })
+    </script>
 </body>
 
 </html>
