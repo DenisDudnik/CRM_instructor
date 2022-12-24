@@ -1,4 +1,4 @@
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -15,6 +15,7 @@ from users.models import User
 # Create your views here.
 
 
+@login_required
 def unsubscribe(request):
     course_id = request.POST.get('course')
     lesson_id = request.POST.get('lesson')
@@ -33,6 +34,7 @@ def unsubscribe(request):
     return HttpResponseRedirect(reverse('courses:list'))
 
 
+@login_required
 def subscribe(request, course_id=None, lesson_id=None, role: str = None):
     course = None
     lesson = None
@@ -84,7 +86,7 @@ def subscribe(request, course_id=None, lesson_id=None, role: str = None):
     return render(request, 'courses/form.html', context)
 
 
-class CourseListView(ListView):
+class CourseListView(LoginRequiredMixin, ListView):
     model = Course
     template_name = 'courses/course_list.html'
     extra_context = {
@@ -112,7 +114,7 @@ class CourseListView(ListView):
         return context
 
 
-class CourseDetailView(DetailView):
+class CourseDetailView(LoginRequiredMixin, DetailView):
     model = Course
     template_name = 'courses/course_detail.html'
 
@@ -132,7 +134,7 @@ class CourseDetailView(DetailView):
     }
 
 
-class CourseUpdateView(UpdateView):
+class CourseUpdateView(LoginRequiredMixin, UpdateView):
     model = Course
     template_name = 'courses/form.html'
     extra_context = {
@@ -143,19 +145,13 @@ class CourseUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # form = CourseForm(instance=self.object)
         context['back'] = reverse_lazy('courses:detail', kwargs={
             'pk': self.object.pk
         })
-        # context.update({
-        #     'title': 'редактирование курса',
-        #     'button': 'сохранить',
-        #     'form': form
-        # })
         return context
 
 
-class CourseCreateView(CreateView):
+class CourseCreateView(LoginRequiredMixin, CreateView):
     model = Course
     template_name = 'courses/form.html'
     success_url = reverse_lazy('courses:list')
@@ -167,7 +163,7 @@ class CourseCreateView(CreateView):
     form_class = CourseForm
 
 
-class CourseDeleteView(DeleteView):
+class CourseDeleteView(LoginRequiredMixin, DeleteView):
     model = Course
     success_url = reverse_lazy('courses:list')
     extra_context = {
@@ -183,7 +179,7 @@ class CourseDeleteView(DeleteView):
         return context
 
 
-class CourseTypeListView(ListView):
+class CourseTypeListView(LoginRequiredMixin, ListView):
     model = CourseType
     template_name = 'courses/course_type_list.html'
     extra_context = {
@@ -200,7 +196,7 @@ class CourseTypeListView(ListView):
         return queryset
 
 
-class CourseTypeCreateView(CreateView):
+class CourseTypeCreateView(LoginRequiredMixin, CreateView):
     model = CourseType
     template_name = 'courses/form.html'
     success_url = reverse_lazy('courses:type_list')
@@ -211,7 +207,7 @@ class CourseTypeCreateView(CreateView):
     form_class = CourseTypeForm
 
 
-class CourseTypeDetailView(DetailView):
+class CourseTypeDetailView(LoginRequiredMixin, DetailView):
     model = CourseType
     template_name = 'courses/course_type_detail.html'
     extra_context = {
@@ -220,7 +216,7 @@ class CourseTypeDetailView(DetailView):
     }
 
 
-class CourseTypeUpdateView(UpdateView):
+class CourseTypeUpdateView(LoginRequiredMixin, UpdateView):
     model = CourseType
     template_name = 'courses/form.html'
     success_url = reverse_lazy('courses:type_list')
@@ -231,7 +227,7 @@ class CourseTypeUpdateView(UpdateView):
     form_class = CourseTypeForm
 
 
-class CourseTypeDeleteView(DeleteView):
+class CourseTypeDeleteView(LoginRequiredMixin, DeleteView):
     model = CourseType
     success_url = reverse_lazy('courses:type_list')
     extra_context = {

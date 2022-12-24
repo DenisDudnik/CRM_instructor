@@ -99,3 +99,24 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.get_full_name()
+
+
+class UserMessage(models.Model):
+
+    kind = models.CharField(max_length=6, choices=[
+        ('notify', 'notify'),
+        ('msg', 'message')
+    ], blank=False, default='msg')
+
+    from_user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='sender',
+        null=False, verbose_name='от кого'
+    )
+    to_user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='recipient',
+        null=False, verbose_name='кому'
+    )
+    timestamp = models.DateTimeField(auto_now_add=True)
+    text = models.TextField(blank=False)
