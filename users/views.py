@@ -2,6 +2,11 @@ from django.conf import settings
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import (PasswordChangeView,
+                                       PasswordResetCompleteView,
+                                       PasswordResetConfirmView,
+                                       PasswordResetDoneView,
+                                       PasswordResetView)
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
@@ -39,7 +44,8 @@ def login(request) -> HttpResponse:
     context = {
         'title': 'Вход',
         'form': form,
-        'button': 'Войти'
+        'button': 'Войти',
+        'button_2': 'Сбросить пароль',
     }
     return render(request, 'users/login.html', context)
 
@@ -195,3 +201,41 @@ class UserEditView(LoginRequiredMixin, UpdateView):
         context = super().get_context_data(**kwargs)
         context['back'] = self.get_success_url()
         return context
+
+
+class UserPasswordEditView(PasswordChangeView):
+    """Change password form"""
+    model = User
+    template_name = 'users/form.html'
+    extra_context = {
+        'title': 'Смена пароля',
+        'button': 'Сохранить',
+    }
+    context_object_name = 'item'
+
+
+class UserPasswordResetView(PasswordResetView):
+    """Initialize password reset. Enter corresponding e-mail to receive reset link"""
+    template_name = 'users/password-reset/password_reset_form.html',
+    subject_template_name = 'users/password-reset/password_reset_subject.txt',
+    email_template_name = 'users/password-reset/password_reset_email.html',
+    extra_context = {
+        'title': 'Сброс пароля',
+        'button': 'Сбросить пароль',
+    }
+    context_object_name = 'item'
+
+
+class UserPasswordResetDoneView(PasswordResetDoneView):
+    """Automatically displays after submitting an e-mail"""
+    template_name = 'users/password-reset/password_reset_done.html'
+
+
+class UserPasswordResetConfirmView(PasswordResetConfirmView):
+    """This link is emailed to the user. Here token is validated against user data."""
+    template_name = 'users/password-reset/password_reset_confirm.html'
+
+
+class UserPasswordResetCompleteView(PasswordResetCompleteView):
+    """Page Display after successful Password Reset."""
+    template_name = 'users/password-reset/password_reset_complete.html'

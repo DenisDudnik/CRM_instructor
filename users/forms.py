@@ -2,6 +2,7 @@
 import random
 from string import ascii_letters
 
+from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserChangeForm
 from django.forms.models import ModelForm
 
@@ -40,6 +41,7 @@ class UserCreateForm(ModelForm):
         'T': User.TEACHER,
         'M': User.MANAGER,
     }
+    password = forms.CharField(widget=forms.PasswordInput)
 
     def __init__(self, *args, role: str, **kwargs):
         super().__init__(*args, **kwargs)
@@ -55,9 +57,11 @@ class UserCreateForm(ModelForm):
     class Meta:
         model = User
         fields = (
+            "username",
             "first_name",
             "last_name",
             "email",
+            "password",
             "phone",
             "role",
             "manager",
@@ -88,8 +92,12 @@ class UserManagerCreateForm(UserCreateForm):
 
     def save(self, commit=True):
         user = User(**self.cleaned_data)
-        user.username = self.generate_username_or_password()
-        user.set_password(self.generate_username_or_password())
+        if user.username == '':
+            user.username = self.generate_username_or_password()
+        if user.password == '':
+            user.password = self.generate_username_or_password()
+        password = forms.CharField(widget=forms.PasswordInput())
+        user.set_password(str(password))
         user.save()
         return user
 
@@ -106,10 +114,15 @@ class ManagerUserEditForm(UserChangeForm):
         fields = self._fields.get(self.instance.role)
         for field in fields:
             self.fields.pop(field)
+        manager = self.fields.get('manager')
+        manager.queryset = User.objects.filter(
+            role__in=[User.MANAGER, User.HEAD_MANAGER]
+        )
 
     class Meta:
         model = User
         fields = (
+            "username",
             "first_name",
             "last_name",
             "email",
