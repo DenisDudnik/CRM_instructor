@@ -2,7 +2,7 @@ from django.conf import settings
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
 from django.views.generic import UpdateView
@@ -14,6 +14,7 @@ from users.forms import (LoginForm, ManagerUserEditForm, UserEditForm,
 from users.handlers import UserHandlerFactory
 from users.models import User
 from users.tasks import send_mail
+from websocket_server.schema import UserItem, UsersList
 
 
 def placeholder(request) -> HttpResponse:
@@ -119,6 +120,34 @@ def create_user(request, role: str):
         form = UserManagerCreateForm(manager=request.user, role=role)
     context['form'] = form
     return render(request, 'users/form.html', context)
+
+
+def messages_by_user(request, user_id: str):
+    messages = []
+    messages.extend([x for x in request.user.in_messages.filter(
+        from_user_id=user_id).all()])
+    messages.extend([x for x in request.user.out_messages.filter(
+        to_user_id=user_id).all()])
+    date_formats = ['%Y-%m-%d', '%H-%M']
+    return JsonResponse(
+        data={
+            'result': [
+                f'<b>{x.timestamp.strftime(" ".join(date_formats))}</b><br>{x.text}'
+                for x in sorted(messages, key=lambda x: x.timestamp)
+            ]
+        }
+    )
+
+
+def users_list(request):
+    result = UsersList(
+        result=[]
+    )
+    for i in User.objects.all():
+        result.result.append(
+            UserItem.parse_obj({'id': str(i.pk), 'name': i.get_full_name()})
+        )
+    return JsonResponse(data=result.dict())
 
 
 class ClientsListView(LoginRequiredMixin, ListView):

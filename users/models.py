@@ -109,14 +109,20 @@ class UserMessage(models.Model):
     ], blank=False, default='msg')
 
     from_user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='sender',
+        User, on_delete=models.CASCADE, related_name='out_messages',
         null=False, verbose_name='от кого'
     )
     to_user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='recipient',
+        related_name='in_messages',
         null=False, verbose_name='кому'
     )
     timestamp = models.DateTimeField(auto_now_add=True)
     text = models.TextField(blank=False)
+
+    def __str__(self):
+        return f"{self.from_user.get_full_name()} -> {self.to_user.get_full_name()}"
+
+    class Meta:
+        ordering = ['timestamp']

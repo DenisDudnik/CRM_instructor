@@ -11,5 +11,5 @@ urlpatterns = [
     path('create-user/<str:role>/', users.create_user, name='create_user'),
     path('detail-user/<uuid:pk>/',
          users.UserDetailView.as_view(), name='detail_user'),
-    path('edit-user/<uuid:pk>/', users.UserEditView.as_view(), name='user_edit')
+    path('edit-user/<uuid:pk>/', users.UserEditView.as_view(), name='user_edit'),
 ]

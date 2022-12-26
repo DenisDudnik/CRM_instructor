@@ -106,6 +106,10 @@ class ManagerUserEditForm(UserChangeForm):
         fields = self._fields.get(self.instance.role)
         for field in fields:
             self.fields.pop(field)
+        manager = self.fields.get('manager')
+        manager.queryset = User.objects.filter(
+            role__in=[User.MANAGER, User.HEAD_MANAGER]
+        )
 
     class Meta:
         model = User

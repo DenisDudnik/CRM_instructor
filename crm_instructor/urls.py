@@ -22,7 +22,8 @@ from django.contrib import admin
 from django.urls import path
 from django.urls.conf import include
 
-from users.views import ClientsListView, user_profile
+from users.views import (ClientsListView, messages_by_user, user_profile,
+                         users_list)
 from websocket_server.start import main
 
 urlpatterns = [
@@ -33,6 +34,8 @@ urlpatterns = [
     path('teachers_list/', ClientsListView.as_view(), name='teachers'),
     path('managers_list/', ClientsListView.as_view(), name='managers'),
     path('courses_list/', include('courses.urls', namespace='courses')),
+    path('users_list/', users_list, name='users-list'),
+    path('messages_list/<str:user_id>/', messages_by_user, name='messages-list'),
 ]
 
 if settings.DEBUG:
