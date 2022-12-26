@@ -3,7 +3,7 @@
 import os
 
 from celery import Celery
-# from celery.schedules import crontab
+from celery.schedules import crontab
 from celery.signals import setup_logging
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
@@ -24,6 +24,11 @@ def config_loggers(*args, **kwags):
 app.autodiscover_tasks()
 
 app.conf.beat_schedule = {
+    'Lesson_notifications': {
+        'task': 'users.tasks.lesson_notifications',
+        'schedule': crontab(minute=1, hour=0)
+        # 'schedule': 30.0
+    }
     # 'task_export_routes': {
     #     'task': 'apps.verification.tasks.task_export_routes',
     #     'schedule': crontab(),  # change to `crontab(minute=0, hour=0)` if you want it to run daily at midnight
