@@ -46,7 +46,7 @@ def get_contacts(request):
     added = set()
     queryset = [request.user.in_messages, request.user.out_messages]
     for x in queryset:
-        for item in x.all():
+        for item in x.filter(kind='msg').all():
             if item.from_user == request.user:
                 obj = {
                     'id': item.to_user.id,
@@ -67,5 +67,7 @@ def get_notification(request):
     if request.user.is_anonymous:
         return {'user_notifications': []}
 
-    message = UserMessage.objects.filter(to_user=request.user).all()
+    message = UserMessage.objects.filter(
+        to_user=request.user, kind='notify'
+    ).all()
     return {'user_notifications': message}

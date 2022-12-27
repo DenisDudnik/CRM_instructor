@@ -11,8 +11,8 @@ from courses.forms import (CourseForm, CourseSubscribeForm, CourseTypeForm,
                            LessonCreateForm)
 from courses.models import Course, CourseType, Lesson
 from users.models import User
-
-# Create your views here.
+from websocket_server.client import send_notification
+from websocket_server.schema import MessageTypes, UserItem, WebsocketData
 
 
 @login_required
@@ -24,13 +24,23 @@ def unsubscribe(request):
     lessons = course.lessons.all()
     user = request.user
     if lesson:
+        entity = 'урок'
         if lesson in user.lessons.all():
             user.lessons.remove(lesson)
     else:
+        entity = 'курс'
         for lesson in lessons:
             if lesson in user.lessons.all():
                 user.lessons.remove(lesson)
     user.save()
+    data = WebsocketData(
+        kind=MessageTypes.notify,
+        from_user=UserItem(id=request.user.pk, name=request.user.get_full_name()),
+        text="Клиент {} отменил запись на {} {}".format(
+            user.get_full_name(), entity, course.title
+        )
+    )
+    send_notification(data)
     return HttpResponseRedirect(reverse('courses:list'))
 
 
@@ -58,11 +68,21 @@ def subscribe(request, course_id=None, lesson_id=None, role: str = None):
                 lesson = Lesson.objects.get(pk=int(lesson_id))
             course = Course.objects.get(pk=int(form.data.get('course')))
             if lesson:
+                entity = 'урок'
                 user.lessons.add(lesson)
             else:
+                entity = 'курс'
                 for lesson in course.lessons.all():
                     user.lessons.add(lesson)
             user.save()
+            data = WebsocketData(
+                kind=MessageTypes.notify,
+                from_user=UserItem(id=request.user.pk, name=request.user.get_full_name()),
+                text="Клиент {} записан на {} {}".format(
+                    user.get_full_name(), entity, course.title
+                )
+            )
+            send_notification(data)
             if lesson_id:
                 return HttpResponseRedirect(
                     reverse('courses:lesson-detail', kwargs={'pk': lesson_id})

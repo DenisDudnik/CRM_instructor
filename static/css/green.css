@@ -646,6 +646,7 @@ button {
 }
 
 .main-container {
+  position: relative;
   -webkit-box-flex: 1;
       -ms-flex: 1;
           flex: 1;
@@ -1328,12 +1329,15 @@ a.button {
 
 .messages-container .messages {
   display: none;
+  max-height: 50vh;
+  overflow-y: scroll;
   background-color: white;
   border-radius: 3px;
   position: absolute;
   right: 0;
   top: 40px;
   min-width: 200px;
+  z-index: 1;
 }
 
 .messages-container .messages ul {
@@ -1415,6 +1419,7 @@ a.button {
   padding: 5px 0;
   margin: 0 15px;
   background-color: #fff;
+  overflow-y: scroll;
 }
 
 .contacts-item {
@@ -1515,4 +1520,24 @@ a.button {
   margin: 5px 0;
   padding: 0;
 }
-
+.notification {
+  /*display: none;*/
+  position: fixed;
+  bottom: -100%;
+  right: 20px;
+  border: gray solid 1px;
+  max-width: 200px;
+  padding: 10px;
+  box-sizing: border-box;
+  border-radius: 5px;
+  z-index: 1;
+  background-color: #fff;
+}
+.show {
+  /*display: block;*/
+  bottom: 20px;
+  transition-duration: 500ms;
+  transition-property: transform;
+  transition-timing-function: ease-out;
+  transform: translateY(-1%);
+}

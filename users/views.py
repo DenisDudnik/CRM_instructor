@@ -125,9 +125,9 @@ def create_user(request, role: str):
 def messages_by_user(request, user_id: str):
     messages = []
     messages.extend([x for x in request.user.in_messages.filter(
-        from_user_id=user_id).all()])
+        from_user_id=user_id, kind='msg').all()])
     messages.extend([x for x in request.user.out_messages.filter(
-        to_user_id=user_id).all()])
+        to_user_id=user_id, kind='msg').all()])
     date_formats = ['%Y-%m-%d', '%H-%M']
     return JsonResponse(
         data={
