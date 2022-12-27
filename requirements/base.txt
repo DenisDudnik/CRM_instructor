@@ -18,3 +18,4 @@ django-redis==5.2.0  # https://github.com/jazzband/django-redis
 django-celery-beat==2.4.0
 ipython==8.6.0
 websockets==10.4
+pydantic==1.10.2
