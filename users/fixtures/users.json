@@ -1,0 +1,287 @@
+[
+    {
+      "model": "users.user",
+      "fields": {
+        "phone": "+79563595777",
+        "first_name": "Филипп",
+        "last_name": "Лапин",
+        "username": "lapin",
+        "role": "C",
+        "email": "rse1949@einrot.com"
+      }
+    },
+    {
+        "model": "users.user",
+        "fields": {
+          "phone": "+79563595777",
+          "first_name": "Даниил",
+          "last_name": "Чернышев",
+          "username": "chernishev",
+          "role": "C",
+          "email": "munge@comcast.net"
+        }
+      },
+      {
+        "model": "users.user",
+        "fields": {
+          "phone": "+79563595777",
+          "first_name": "Дарья Михайловна",
+          "last_name": "Кузнецова",
+          "username": "kuznetsova",
+          "role": "C",
+          "email": "nelson@msn.com"
+        }
+      },
+      {
+        "model": "users.user",
+        "fields": {
+          "phone": "+79563595777",
+          "first_name": "Алиса",
+          "last_name": "Смирнова",
+          "username": "smirnova",
+          "role": "C",
+          "email": "stewwy@msn.com"
+        }
+      },
+      {
+        "model": "users.user",
+        "fields": {
+          "phone": "+79563595777",
+          "first_name": "Максим Ильич",
+          "last_name": "Ершов",
+          "username": "ershov",
+          "role": "C",
+          "email": "henkp@msn.com"
+        }
+      },
+      {
+        "model": "users.user",
+        "fields": {
+          "phone": "+79563595777",
+          "first_name": "Александр Александрович",
+          "last_name": "Виноградов",
+          "username": "vinogradov",
+          "role": "C",
+          "email": "bmcmahon@icloud.com"
+        }
+      },
+      {
+          "model": "users.user",
+          "fields": {
+            "phone": "+79563595777",
+            "first_name": "Ярослав Тимурович",
+            "last_name": "Потапов",
+            "username": "potapov",
+            "role": "C",
+            "email": "hutton@gmail.com"
+          }
+        },
+        {
+          "model": "users.user",
+          "fields": {
+            "phone": "+79563595777",
+            "first_name": "Артём Арсентьевич",
+            "last_name": "Бобров",
+            "username": "bobrov",
+            "role": "C",
+            "email": "khris@att.net"
+          }
+        },
+        {
+          "model": "users.user",
+          "fields": {
+            "phone": "+79563595777",
+            "first_name": "Елизавета Максимовна",
+            "last_name": "Родионова",
+            "username": "rodionova",
+            "role": "C",
+            "email": "sfoskett@att.net"
+          }
+        },
+        {
+          "model": "users.user",
+          "fields": {
+            "phone": "+79563595777",
+            "first_name": "Ольга Олеговна",
+            "last_name": "Николаева",
+            "username": "nikolaeva",
+            "role": "C",
+            "email": "bartak@yahoo.ca"
+          }
+        },
+        {
+            "model": "users.user",
+            "fields": {
+              "phone": "+79563595777",
+              "first_name": "Максим Александрович",
+              "last_name": "Родин",
+              "username": "rodin",
+              "role": "C",
+              "email": "pereinar@optonline.net"
+            }
+          },
+          {
+              "model": "users.user",
+              "fields": {
+                "phone": "+79563595777",
+                "first_name": "Сергей",
+                "last_name": "Курай",
+                "username": "kourai",
+                "role": "C",
+                "email": "kourai@live.com"
+              }
+            },
+            {
+              "model": "users.user",
+              "fields": {
+                "phone": "+79563595777",
+                "first_name": "Василиса Ярославовна",
+                "last_name": "Ларионова",
+                "username": "larionova",
+                "role": "C",
+                "email": "rhavyn@comcast.net"
+              }
+            },
+            {
+              "model": "users.user",
+              "fields": {
+                "phone": "+79563595777",
+                "first_name": "Платон Артёмович",
+                "last_name": "Ковалев",
+                "username": "kovalev",
+                "role": "C",
+                "email": "dcoppit@optonline.net"
+              }
+            },
+            {
+              "model": "users.user",
+              "fields": {
+                "phone": "+79563595777",
+                "first_name": "Максим Андреевич",
+                "last_name": "Ермилов",
+                "username": "ermilov",
+                "role": "C",
+                "email": "joelw@icloud.com"
+              }
+            },
+            {
+                "model": "users.user",
+                "fields": {
+                  "phone": "+79563595777",
+                  "first_name": "Мария",
+                  "last_name": "Орлова",
+                  "username": "orlova",
+                  "role": "H",
+                  "salary": 1008.00,
+                  "email": "mchugh@verizon.net"
+                }
+              },
+              {
+                "model": "users.user",
+                "fields": {
+                  "phone": "+79563595777",
+                  "first_name": "Екатерина",
+                  "last_name": "Макарова",
+                  "username": "makarova",
+                  "role": "M",
+                  "salary": 1009.00,
+                  "email": "ebassi@sbcglobal.net"
+                }
+              },
+              {
+                "model": "users.user",
+                "fields": {
+                  "phone": "+79563595777",
+                  "first_name": "Виктория",
+                  "last_name": "Кудрявцева Виктория",
+                  "username": "kudryavtseva",
+                  "role": "M",
+                  "salary": 1000.00,
+                  "email": "scottlee@mac.com"
+                }
+              },
+              {
+                "model": "users.user",
+                "fields": {
+                  "phone": "+79563595777",
+                  "first_name": "Вероника",
+                  "last_name": "Филатова",
+                  "username": "filatova",
+                  "role": "M",
+                  "salary": 1060.00,
+                  "email": "carmena@msn.com"
+                }
+              },
+              {
+                "model": "users.user",
+                "fields": {
+                  "phone": "+79563595777",
+                  "first_name": "Никита",
+                  "last_name": "Сергеев",
+                  "username": "sergeev",
+                  "role": "T",
+                  "salary": 1030.00,
+                  "email": "flaviog@mac.com"
+                }
+              },
+              {
+                "model": "users.user",
+                "fields": {
+                  "phone": "+79563595777",
+                  "first_name": "Пётр",
+                  "last_name": "Зубов",
+                  "username": "zubov",
+                  "role": "T",
+                  "salary": 1001.00,
+                  "email": "jaffe@comcast.net"
+                }
+              },
+              {
+                "model": "users.user",
+                "fields": {
+                  "phone": "+79563595777",
+                  "first_name": "Михаил",
+                  "last_name": "Воробьев",
+                  "username": "vorobyev",
+                  "role": "T",
+                  "salary": 1005.00,
+                  "email": "balchen@sbcglobal.net"
+                }
+              },
+              {
+                "model": "users.user",
+                "fields": {
+                  "phone": "+79563595777",
+                  "first_name": "Николай",
+                  "last_name": "Ларионов",
+                  "username": "nlarionov",
+                  "role": "T",
+                  "salary": 1100.00,
+                  "email": "dgriffith@msn.com"
+                }
+              },
+              {
+                "model": "users.user",
+                "fields": {
+                  "phone": "+79563595777",
+                  "first_name": "Артём",
+                  "last_name": "Королев",
+                  "username": "korolev",
+                  "role": "T",
+                  "salary": 1200.00,
+                  "email": "dgriffith@msn.com"
+                }
+              },
+              {
+                "model": "users.user",
+                "fields": {
+                  "phone": "+79563595777",
+                  "first_name": "Герман",
+                  "last_name": "Мельников",
+                  "username": "melnikov",
+                  "role": "T",
+                  "salary": 1000.00,
+                  "email": "dgriffith@msn.com"
+                }
+              }
+  ]

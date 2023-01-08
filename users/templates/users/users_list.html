@@ -1,0 +1,101 @@
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="content-container">
+    <div class="table-container margin-t-15">
+        <table class="list-table">
+            <thead>
+                <tr>
+                    <th><span class="sortable">ФИО</span></th>
+                    <th>E-Mail</th>
+                    <th>Телефон</th>
+                    {% if request.resolver_match.url_name == 'managers' %}
+                        <th>Количество клиентов</th>
+                    {% else %}
+                        <th>Статус записи</th>
+                    {% endif %}
+                    {% if show_status %}
+                        <th>Статус</th>
+                    {% endif %}
+                    {%if show_comment%}
+                        <th>Комментарий</th>
+                    {% endif %}
+                    <th class="edit"></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for client in clients %}
+              {% if client != user %}
+                  <tr class="table-row">
+                      <td>
+                          <a href="{% url 'auth:detail_user' pk=client.pk %}" class="control-link">
+                              {{ client.get_full_name }}
+                          </a>
+                      </td>
+                      <td>{{ client.email }}</td>
+                      <td>{{ client.phone }}</td>
+                    {% if request.resolver_match.url_name == 'managers' %}
+                        <td class="table-cell">
+                            <ul class="tooltip">
+                                  {% if client.users.all|length == 0 %}
+                                        <span>Нет клиентов</span>
+                                  {% else %}
+                                    {% for item in client.users.all %}
+                                        <div class="line-row">
+                                            <a href="{% url 'auth:detail_user' pk=item.pk %}">
+                                                {{ item.get_full_name }}
+                                            </a>
+                                            <span>{{ item.verbose_role }}</span>
+                                        </div>
+                                    {% endfor %}
+                                  {% endif %}
+                            </ul>
+                            {{ client.users.all|length }}
+                        </td>
+                    {% else %}
+                        <td class="table-cell">
+                            <ul class="tooltip">
+                                  {% if client.courses|length == 0 %}
+                                        <span>Нет доступных курсов</span>
+                                  {% else %}
+                                    {% for course in client.courses %}
+                                        <div class="line-row">
+                                            <a href="{% url 'courses:detail' pk=course.pk %}">{{ course.title }}</a>
+                                        </div>
+                                    {% endfor %}
+                                  {% endif %}
+                              </ul>
+                            {% if client.courses|length > 0 %}
+                                Записан ({{ client.courses|length }})
+                            {% else %}
+                                Не записан
+                            {% endif %}
+                        </td>
+                    {% endif %}
+                      {% if show_status %}
+                        <td>{{ client.verbose_status }}</td>
+                      {% endif %}
+                      {%if show_comment%}
+                        <td>{{ client.comment }}</td>
+                      {% endif %}
+                      <td>
+                          <a href="{% url 'auth:user_edit' pk=client.pk %}">
+                              <img src="/static/images/edit.png" alt="">
+                          </a>
+                      </td>
+                  </tr>
+              {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% if user.role == 'M' or user.role == 'H' %}
+        <div class="margin-t-20">
+            <a href="{% url 'auth:create_user' role=role %}" class="not-decorated">
+                <button class="green">+ Добавить</button>
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

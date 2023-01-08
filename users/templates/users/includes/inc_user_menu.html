@@ -1,0 +1,15 @@
+{% load static %}
+
+<ul class="dropdown">
+    <li class="dropdown-item">
+        <a class="menu-item" href="{% url 'user_profile' %}">Профиль</a>
+    </li>
+    {% for value, link in links %}
+        <li class="dropdown-item">
+            <a class="menu-item"  href="{% url link %}">{{ value }}</a>
+        </li>
+    {% endfor %}
+    <li class="dropdown-item">
+        <a class="menu-item" href="{% url 'auth:logout' %}">Выйти</a>
+    </li>
+</ul>

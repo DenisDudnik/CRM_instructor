@@ -1,0 +1,45 @@
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="content-container">
+<div class="title">{{ title | capfirst }}</div>
+<div class="row-reverse">
+    <div class="add-container margin-b-10">
+        {% if user.role == 'M' or user.role == 'H' %}
+            <a href="{% url 'courses:create_type' %}"><button class="green">Добавить +</button></a>
+        {% endif %}
+    </div>
+</div>
+    <div class="table-container margin-t-15">
+        <table class="list-table">
+            <thead>
+                <tr>
+                    <th><span class="sortable">Тип курса</span></th>
+                    <th>Изменить тип</th>
+                    <th class="delete">Удаление</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for object in object_list %}
+                <tr>
+                    <td><a href="{% url 'courses:type_detail' pk=object.pk %}" class="control-link">{{ object.title }}</a></td>
+                    <td>
+                        {% if user.role == 'M' or user.role == 'H' %}
+                        <a href="{% url 'courses:update_type' pk=object.pk %}">
+                            <img src="/static/images/edit.png" alt="">
+                        </a>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'courses:delete_type' pk=object.pk %}">
+                            <button class="orange">Удалить</button>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

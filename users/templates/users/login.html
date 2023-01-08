@@ -2,9 +2,20 @@
 {% load static %}
 
 {% block content %}
-<form action="" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Войти">
-</form>
+<div class="login-form-container">
+    <div class="title">{{ title }}</div>
+    <form action="" method="post" class="as_p">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <p>
+            <label></label>
+            <input type="submit" value="{{ button }}" class="green margin-r-auto">
+        </p>
+        <div class="margin-t-20 center">
+            <a href="{% url 'auth:password_reset' %}" class="not-decorated">
+                <button class="green">Сброс пароля</button>
+            </a>
+        </div>
+    </form>
+</div>
 {% endblock %}

@@ -1,64 +1,12 @@
-import datetime
 from uuid import uuid4
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.urls import reverse
 
+from courses.models import Lesson
+
 # Create your models here.
-
-
-class CourseType(models.Model):
-    """Направление обучения (лыжи, сноуборд, кройка и шитье, что угодно...)"""
-    title = models.CharField(
-        verbose_name='Направление', max_length=255, null=False
-    )
-
-
-class Course(models.Model):
-    """Курс обучения"""
-    kind = models.ForeignKey(
-        CourseType, related_name='courses', on_delete=models.CASCADE
-    )
-    title = models.CharField(
-        verbose_name='Название', max_length=255, null=False
-    )
-    description = models.TextField(
-        blank=True, verbose_name='Описание', null=True)
-
-    @property
-    def cost(self):
-        return sum(x.cost for x in self.lessons.all())
-
-    @property
-    def duration(self) -> int:
-        if not len(self.lessons.all()):
-            return 0
-        if len(self.lessons.all()) == 1:
-            return self.lessons[0].duration
-        lessons = list(self.lessons.all())
-        return (
-            (lessons[-1].date + datetime.timedelta(
-                minutes=lessons[-1].duration
-            )).timestamp() - lessons[0].date.timestamp()
-        ) / 60
-
-
-class Lesson(models.Model):
-    """Отдельный урок"""
-    course = models.ForeignKey(
-        Course, on_delete=models.CASCADE, related_name='lessons', null=True
-    )
-    description = models.TextField(blank=True, null=True,
-                                   verbose_name='Описание')
-    address = models.CharField(
-        max_length=255, verbose_name='Место проведения', blank=False
-    )
-    date = models.DateTimeField(verbose_name='Дата начала', blank=False)
-    duration = models.IntegerField(
-        verbose_name='Продолжительность занятия в минутах', default=0
-    )
-    cost = models.FloatField(verbose_name='Стоимость участия', null=False)
 
 
 class User(AbstractUser):
@@ -75,6 +23,18 @@ class User(AbstractUser):
         (HEAD_MANAGER, 'Старший менеджер')
     )
 
+    NOT_CLIENT = 'N'
+    QUEUED = 'Q'
+    ACTUAL = 'C'
+    VIP = 'V'
+
+    STATUSES = (
+        (NOT_CLIENT, 'Возможный клиент'),
+        (QUEUED, 'В очереди'),
+        (ACTUAL, 'Разовый клиент'),
+        (VIP, 'Постоянный клиент'),
+    )
+
     id = models.UUIDField(primary_key=True, default=uuid4)
     role = models.CharField(
         verbose_name='роль',
@@ -82,6 +42,9 @@ class User(AbstractUser):
         choices=ROLES,
         null=False,
         default='C'
+    )
+    phone = models.CharField(
+        verbose_name='Номер телефона', blank=True, max_length=15
     )
     lessons = models.ManyToManyField(
         Lesson, related_name='users', blank=True)
@@ -100,8 +63,29 @@ class User(AbstractUser):
     updated_at = models.DateTimeField(verbose_name='последнее обновление',
                                       auto_now=True)
 
+    comment = models.TextField(verbose_name='комментарий', blank=True)
+    status = models.CharField(
+        verbose_name='статус клиента',
+        max_length=1,
+        choices=STATUSES,
+        default=NOT_CLIENT,
+        null=False
+    )
+
     class Meta:
         ordering = ["id"]
+
+    @property
+    def verbose_status(self):
+        for item in self.STATUSES:
+            if item[0] == self.status:
+                return item[1]
+
+    @property
+    def verbose_role(self):
+        for item in self.ROLES:
+            if item[0] == self.role:
+                return item[1]
 
     @property
     def courses(self):
@@ -109,6 +93,30 @@ class User(AbstractUser):
 
     def get_absolute_url(self):
         return reverse(
-            'user-detail',
-            # kwargs={'pk': self.pk}
+            'users:detail_user',
+            kwargs={'pk': self.pk}
         )
+
+    def __str__(self):
+        return self.get_full_name()
+
+
+class UserMessage(models.Model):
+
+    kind = models.CharField(max_length=6, choices=[
+        ('notify', 'notify'),
+        ('msg', 'message')
+    ], blank=False, default='msg')
+
+    from_user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='sender',
+        null=False, verbose_name='от кого'
+    )
+    to_user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='recipient',
+        null=False, verbose_name='кому'
+    )
+    timestamp = models.DateTimeField(auto_now_add=True)
+    text = models.TextField(blank=False)

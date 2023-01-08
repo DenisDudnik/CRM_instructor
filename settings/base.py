@@ -23,6 +23,7 @@ from django.core.exceptions import ImproperlyConfigured
 from log_utils import StreamFormatterHandler
 
 env = environ.Env()
+env.read_env()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -59,6 +60,7 @@ THRIDPARTY_APPS = [
 
 LOCAL_APPS = [
     'users.apps.UsersConfig',
+    'courses',
 ]
 
 INSTALLED_APPS = LOCAL_APPS + DJANGO_APPS + THRIDPARTY_APPS
@@ -88,8 +90,12 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'users.context_processors.today_year'
+                'users.context_processors.today_year',
+                'users.context_processors.get_links',
             ],
+            'libraries': {
+                'my_tags': 'crm_instructor.templatetags.my_tags',
+            },
         },
     },
 ]
@@ -215,3 +221,13 @@ LOGIN_URL = 'auth:login'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# email_notifications
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+DEFAULT_FROM_EMAIL = 'Celery <crm_instructor@gmail.com>'
+EMAIL_HOST_USER = env('EMAIL_HOST_USER',
+                      default='crminstructorgeekbrains@gmail.com')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', default='pukzuyevgulnhcas')

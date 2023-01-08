@@ -15,6 +15,7 @@ class BaseHandler:
 class ClientHandler(BaseHandler):
 
     def get_response(self, *args, **kwargs) -> HttpResponse:
+
         context = {
             'title': 'Профиль клиента'
         }
@@ -24,19 +25,43 @@ class ClientHandler(BaseHandler):
 class TeacherHandler(BaseHandler):
 
     def get_response(self, *args, **kwargs) -> HttpResponse:
-        pass
+        user = self.request.user
+        salary = (user.salary or 0) + len(user.lessons.all()) * (
+            user.percent_salary or 0
+        )
+        context = {
+            'title': 'Профиль клиента',
+            'salary': salary
+        }
+        return render(self.request, 'users/client_profile.html', context)
 
 
 class ManagerHandler(BaseHandler):
 
     def get_response(self, *args, **kwargs) -> HttpResponse:
-        pass
+        user = self.request.user
+        salary = (user.salary or 0) + len(user.users.all()) * (
+            user.percent_salary or 0
+        )
+        context = {
+            'title': 'Профиль менеджера',
+            'salary': salary,
+        }
+        return render(self.request, 'users/client_profile.html', context)
 
 
 class HeadManagerHandler(BaseHandler):
 
     def get_response(self, *args, **kwargs) -> HttpResponse:
-        pass
+        user = self.request.user
+        salary = (user.salary or 0) + len(user.users.all()) * (
+            user.percent_salary or 0
+        )
+        context = {
+            'title': 'Профиль старшего менеджера',
+            'salary': salary,
+        }
+        return render(self.request, 'users/client_profile.html', context)
 
 
 class UserHandlerFactory:

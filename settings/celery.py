@@ -5,7 +5,7 @@ result_backend = env("CELERY_BROKER_URL", default="redis://redis:6379/0")
 task_track_started = True
 task_serializer = 'pickle'
 result_serializer = 'pickle'
-accept_content = ['pickle']
+accept_content = ['application/json', 'application/x-python-serialize', 'pickle']
 
 # https://docs.celeryq.dev/en/stable/userguide/configuration.html#beat-scheduler
 beat_scheduler = "django_celery_beat.schedulers:DatabaseScheduler"

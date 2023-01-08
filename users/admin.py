@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext_lazy as _
 
-from users.models import Course, CourseType, Lesson, User
+from users.models import User
 
 # Register your models here.
 
@@ -12,6 +12,7 @@ class CRMUserAdmin(UserAdmin):
         [x for x in UserAdmin.fieldsets] + [(
             _("Other"), {"fields": (
                 "role",
+                "phone",
                 "lessons",
                 "manager",
                 "salary",
@@ -22,6 +23,3 @@ class CRMUserAdmin(UserAdmin):
 
 
 admin.site.register(User, CRMUserAdmin)
-admin.site.register(Lesson)
-admin.site.register(Course)
-admin.site.register(CourseType)

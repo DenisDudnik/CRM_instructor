@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+  <head>
+    <metacharset="UTF-8"/>
+    <metaname="viewport"content="width=device-width, initial-scale=1.0"/>
+    <title>CRM Instructor</title>
+  </head>
+  <body>
+    <h2>Здравствуйте {{ user.get_full_name }}!</h2>
+
+    <p>Спасибо за использование crm_instructor!</p>
+
+    <p>Ваш персональный менеджер - {{ manager.get_full_name }}</p>
+
+    <p>{{ domain }}{% url 'user_profile' %}</p>
+  </body>
+  </html>

@@ -79,3 +79,4 @@ reports
 change_log.txt
 
 docker/fluentbit/
+/localbase/

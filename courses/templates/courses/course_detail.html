@@ -1,0 +1,99 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% load my_tags %}
+
+{% block content %}
+<div class="content-container">
+    <div class="row-reverse">
+        <div class="title">{{ object.title }}</div>
+        <div class="padding-t-20"><a href="{{ back }}" class="control-link"><< К списку курсов</a></div>
+    </div>
+    <div class="cards-container">
+        <div class="card big">
+            <div class="title first">Описание:</div>
+            <div class="margin-b-7">{{ object.description }}</div>
+            <div class="margin-b-7">Стоимость: <strong>{{ object.cost }} руб</strong></div>
+            <div class="margin-b-7">
+                Свободных мест: <strong>{{ object.free_places }}</strong> из <strong>{{ object.places }}</strong>
+            </div>
+            <div class="">
+                {% if user.role == 'M' or user.role == 'H' %}
+                    <a href="{% url 'courses:update' pk=object.pk %}" class="not-decorated">
+                        <button class="green margin-5">Редактировать</button>
+                    </a>
+                    <a href="{% url 'courses:delete' pk=object.pk %}" class="not-decorated">
+                        <button class="orange margin-5">Удалить</button>
+                    </a>
+                {% endif %}
+                {% if user.role == 'C' %}
+                <form action="{% url 'courses:unsubscribe' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="course" value="{{ object.id }}">
+                    <input type="submit" value="Отменить запись">
+                </form>
+                {% endif %}
+            </div>
+            <div class="details-container">
+                <div class="row-reverse">
+                    <div class="title">Клиенты, записанные на курс:</div>
+                    <div class="margin-t-10">
+                        <a href="{% url 'courses:subscribe' course_id=object.id lesson_id=0 role='C' %}" class="not-decorated">
+                            {% if object.free_places %}
+                                <button class="green margin-5">+ Записать клиента</button>
+                            {% else %}
+                                <button disabled class="not_active">Записать клиента на курс</button>
+                            {% endif %}
+                        </a>
+                    </div>
+                </div>
+                {% for client in clients %}
+                    <p>
+                        <a href="{% url 'auth:detail_user' pk=client.pk %}" class="control-link">
+                        {{ client.get_full_name }}
+                        </a>
+                    </p>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="card big">
+            <div class="row space-between">
+                <div class="title first">Уроки</div>
+                {% if user.role == 'M' or user.role == 'H' %}
+                    <div class="">
+                        <a href="{% url 'courses:create-lesson' pk=object.id %}"><button class="green">+ Добавить</button></a>
+                    </div>
+                {% endif %}
+            </div>
+        <table class="line-table centered">
+            <tbody>
+                {% for lesson in object.lessons.all %}
+                    <tr>
+                        <td class="va-top">{{ forloop.counter }}</td>
+                        <td>
+                            <div class="margin-b-7">{{ lesson.description|cut_string }}</div>
+                            <div class="margin-b-7 location">{{ lesson.address }}</div>
+                            <div class="row space-between margin-b-7">
+                                <div>Дата: <strong>{{ lesson.date }}</strong></div>
+                                <div>Длительность: <strong>{{ lesson.duration }}</strong></div>
+                            </div>
+                            <div class="margin-b-7">
+                                Свободных мест: <strong>{{ lesson.free_places }}</strong>
+                                из <strong>{{ lesson.places }}</strong>
+                            </div>
+                            <div class="row space-between">
+                                <div class="">Стоимость: <strong>{{ lesson.cost }} руб</strong></div>
+                                <div>
+                                    <a href="{% url 'courses:lesson-detail' pk=lesson.pk %}" class="control-link">
+                                        Подробнее
+                                    </a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="content-container">
+    <div class="title center">{{ title }}</div>
+    <form action="" method="post" class="as_p">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <p class="justify-force-center">
+            <input type="submit" value="{{ button }}" class="green margin-r-7">
+            <a href="{{ back }}" class="button">Назад</a>
+        </p>
+    </form>
+</div>
+{% endblock %}

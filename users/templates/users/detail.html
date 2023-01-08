@@ -1,0 +1,50 @@
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="content-container">
+    <div class="title center">{{ item.get_full_name }}</div>
+    <div class="details-container">
+        <div class="detail-field">
+            <label for="first_name">Имя: </label>
+            <span id="first_name">{{ item.first_name }}</span>
+        </div>
+        <div class="detail-field">
+            <label for="last_name">Фамилия: </label>
+            <span id="last_name">{{ item.last_name }}</span>
+        </div>
+        <div class="detail-field">
+            <label for="email">Email: </label>
+            <span id="email">{{ item.email }}</span>
+        </div>
+        <div class="detail-field">
+            <label for="phone">Номер телефона: </label>
+            <span id="phone">{{ item.phone }}</span>
+        </div>
+        <div class="detail-field">
+            <label for="created_at">Дата регистрации: </label>
+            <span id="created_at">{{ item.created_at }}</span>
+        </div>
+        {% if item.salary %}
+            <div class="detail-field">
+                <label for="salary">Оклад: </label>
+                <span id="salary">{{ item.salary }} руб.</span>
+            </div>
+        {% endif %}
+        {% if item.percent_salary %}
+            <div class="detail-field">
+                <label for="percent">Надбавка: </label>
+                <span id="percent">{{ item.percent_salary }} %</span>
+            </div>
+        {% endif %}
+    </div>
+    {% if user.role == 'M' or user.role == 'H' %}
+        <div class="margin-t-20 center">
+            <a href="{% url 'auth:user_edit' pk=item.pk %}" class="not-decorated">
+                <button class="green">Редактировать</button>
+            </a>
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}
