@@ -26,7 +26,7 @@ from users.forms import (LoginForm, ManagerUserEditForm, UserEditForm,
                          UserManagerCreateForm)
 from users.handlers import UserHandlerFactory
 from users.models import User
-from users.tasks import send_mail
+from users.tasks import send_mail_to_user
 
 
 def placeholder(request) -> HttpResponse:
@@ -118,7 +118,7 @@ def create_user(request, role: str):
                     'domain': settings.SERVER_URI
                 }
 
-                send_mail(
+                send_mail_to_user(
                     user,
                     'users/send_mail_user_register.html',
                     f"{user.first_name}, вы зарегистрированы в crm_instructor!",
