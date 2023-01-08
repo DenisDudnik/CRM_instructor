@@ -128,7 +128,7 @@ def messages_by_user(request, user_id: str):
         from_user_id=user_id, kind='msg').all()])
     messages.extend([x for x in request.user.out_messages.filter(
         to_user_id=user_id, kind='msg').all()])
-    date_formats = ['%Y-%m-%d', '%H-%M']
+    date_formats = ['%d-%m-%Y', '%H:%M']
     return JsonResponse(
         data={
             'result': [

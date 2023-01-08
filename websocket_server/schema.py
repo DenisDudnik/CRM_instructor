@@ -22,7 +22,7 @@ class WebsocketData(BaseModel):
     from_user: Union[UserItem, str]
     to_user: Optional[Union[UserItem, str]]
     text: Optional[str]
-    timestamp: str = datetime.datetime.now()
+    timestamp: str = datetime.datetime.now().strftime('%d-%m-%Y %H:%M')
 
     @validator('timestamp', pre=True)
     def format_date(cls, value: datetime.datetime) -> str:

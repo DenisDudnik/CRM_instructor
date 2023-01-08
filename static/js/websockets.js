@@ -79,7 +79,11 @@ function newNotification(data) {
     const newNotify = document.createElement('LI');
     let ts = data.timestamp.split('T').join(' ').split('.')[0];
     newNotify.className = 'message-item';
-    newNotify.innerHTML = `<label>${ts}</label><br>${data.text}`;
+    if (data.kind === 'notify') {
+        newNotify.innerHTML = `<label>${ts}</label><br>${data.text}`;
+    } else {
+        newNotify.innerHTML = `<b>У вас новое сообщение</b>`;
+    }
     container.appendChild(newNotify);
     const bubbling = document.querySelector('.notification');
     bubbling.innerHTML = newNotify.innerHTML;
@@ -109,6 +113,7 @@ function newMessageFunction(message) {
     if (data.kind === 'notify') {
         newNotification(data);
     } else {
+        newNotification(data);
         newMessage(data);
     }
 
@@ -129,8 +134,8 @@ async function sendMessage(event) {
         })
     );
     let today = new Date();
-    const hours = today.getTwoDigitHour();
-    const minutes = today.getTwoDigitMinute();
+    const hours = today.getHours();
+    const minutes = today.getMinutes();
     addMessage(
         document.querySelector('.chat'),
         `<b>${hours}:${minutes}</b><br>${text}`

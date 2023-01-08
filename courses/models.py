@@ -30,7 +30,7 @@ class Course(models.Model):
 
     @property
     def cost(self):
-        return sum(x.cost for x in self.lessons.all())
+        return round(sum(x.cost for x in self.lessons.all()), 2)
 
     def start_date(self):
         if len(self.lessons.all()):
