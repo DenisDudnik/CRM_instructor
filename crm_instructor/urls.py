@@ -22,8 +22,10 @@ from django.contrib import admin
 from django.urls import path
 from django.urls.conf import include
 
-from users.views import (ClientsListView, messages_by_user, user_profile,
-                         users_list)
+from users.views import (ClientsListView, UserPasswordResetCompleteView,
+                         UserPasswordResetConfirmView,
+                         UserPasswordResetDoneView, UserPasswordResetView,
+                         messages_by_user, user_profile, users_list)
 from websocket_server.start import main
 
 urlpatterns = [
@@ -36,6 +38,11 @@ urlpatterns = [
     path('courses_list/', include('courses.urls', namespace='courses')),
     path('users_list/', users_list, name='users-list'),
     path('messages_list/<str:user_id>/', messages_by_user, name='messages-list'),
+    path('password-reset/', UserPasswordResetView.as_view(), name='password_reset'),
+    path('password-reset/done/', UserPasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('password-reset-confirm/<uidb64>/<token>/',
+         UserPasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('password-reset-complete/', UserPasswordResetCompleteView.as_view(), name='password_reset_complete'),
 ]
 
 if settings.DEBUG:

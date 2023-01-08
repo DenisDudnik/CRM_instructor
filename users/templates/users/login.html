@@ -11,11 +11,11 @@
             <label></label>
             <input type="submit" value="{{ button }}" class="green margin-r-auto">
         </p>
-        <div class="margin-t-20 center">
-            <a href="{% url 'auth:password_reset' %}" class="not-decorated">
-                <button class="green">Сброс пароля</button>
-            </a>
-        </div>
     </form>
+    <div class="margin-t-20 center">
+        <a href="{% url 'password_reset' %}" class="not-decorated">
+            <button class="green">Сброс пароля</button>
+        </a>
+    </div>
 </div>
 {% endblock %}

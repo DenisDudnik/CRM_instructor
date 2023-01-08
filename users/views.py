@@ -4,15 +4,13 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.shortcuts import render
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import (PasswordChangeView,
                                        PasswordResetCompleteView,
                                        PasswordResetConfirmView,
                                        PasswordResetDoneView,
                                        PasswordResetView)
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, resolve_url
 from django.template.response import TemplateResponse
 from django.urls import reverse, reverse_lazy
@@ -28,8 +26,8 @@ from users.forms import (LoginForm, ManagerUserEditForm, UserEditForm,
                          UserManagerCreateForm)
 from users.handlers import UserHandlerFactory
 from users.models import User
-from websocket_server.schema import UserItem, UsersList
 from users.tasks import send_mail_to_user
+from websocket_server.schema import UserItem, UsersList
 
 
 def placeholder(request) -> HttpResponse:
@@ -51,8 +49,8 @@ def login(request) -> HttpResponse:
             if user and user.is_active:
                 auth.login(request, user)
                 return HttpResponseRedirect(reverse('user_profile'))
-        else:
-            return HttpResponseRedirect(reverse('auth:password_reset'))
+        # else:
+        #     return HttpResponseRedirect(reverse('auth:password_reset'))
     form = LoginForm()
     context = {
         'title': 'Вход',
@@ -259,12 +257,12 @@ class UserPasswordResetView(PasswordResetView):
     """Initialize password reset. Enter corresponding e-mail to receive reset link"""
 
     def __init__(self, **kwargs):
-        super().__init__(kwargs)
+        super().__init__(**kwargs)
         self.POST = None
         self.method = None
 
     @csrf_protect
-    def password_reset(request, is_admin_site=False,
+    def password_reset(self, request, is_admin_site=False,
                        template_name='/users/password-reset/password_reset_form.html',
                        email_template_name='users/password-reset/password_reset_email.html',
                        subject_template_name='users/password-reset/password_reset_subject.txt',
@@ -306,7 +304,7 @@ class UserPasswordResetView(PasswordResetView):
 
 class UserPasswordResetDoneView(PasswordResetDoneView):
     """Automatically displays after submitting an e-mail"""
-    def password_reset_done(request,
+    def password_reset_done(self, request,
                             template_name='users/password-reset/password_reset_done.html',
                             current_app=None, extra_context=None):
         context = {}
@@ -319,13 +317,13 @@ class UserPasswordResetConfirmView(PasswordResetConfirmView):
     """This link is emailed to the user. Here token is validated against user data."""
 
     def __init__(self, **kwargs):
-        super().__init__(kwargs)
+        super().__init__(**kwargs)
         self.POST = None
         self.method = None
 
     @sensitive_post_parameters()
     @never_cache
-    def password_reset_confirm(request, uidb64=None, token=None,
+    def password_reset_confirm(self, request, uidb64=None, token=None,
                                template_name='users/password-reset/password_reset_confirm.html',
                                token_generator=default_token_generator,
                                set_password_form=SetPasswordForm,
@@ -371,7 +369,7 @@ class UserPasswordResetConfirmView(PasswordResetConfirmView):
 
 class UserPasswordResetCompleteView(PasswordResetCompleteView):
     """Page Display after successful Password Reset."""
-    def password_reset_complete(request,
+    def password_reset_complete(self, request,
                                 template_name='users/password-reset/password_reset_complete.html',
                                 current_app=None, extra_context=None):
         context = {
