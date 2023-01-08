@@ -23,6 +23,7 @@
                     <td>Номер телефона</td>
                     <td>{{ user.phone }}</td>
                 </tr>
+
                 {% if user.manager %}
                 <tr>
                     <td>Менеджер</td>
@@ -56,6 +57,13 @@
         <a href="{% url 'auth:edit_profile' %}" class="not-decorated">
             <button class="green">Редактировать</button>
         </a>
+    </div>
+    <div class="margin-t-20 center">
+        <span id="password">
+            <a href="{% url 'auth:change_password' %}" class="not-decorated">
+                <button class="green">Сменить пароль</button>
+            </a>
+        </span>
     </div>
 </div>
 {% endblock %}

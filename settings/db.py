@@ -13,6 +13,5 @@ DATABASES = {
             env("DJANGO_POSTGRES_DB", default='crm_db')), ),
 }
 
-
 DATABASES['default']['ATOMIC_REQUESTS'] = True
 DATABASE_ROUTERS = ['settings.dbrouters.DbRouter', ]
