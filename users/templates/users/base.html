@@ -19,38 +19,71 @@
 </head>
 
 <body>
-    <div class="body-container">
-        <div class="top-container">
-            <div class="sized-container">
-                <div class="logo-container">
-                    instructor<span>crm</span>
-                </div>
-                <div class="menu-container">
+<input type="hidden" name="user_id" id="user-id" value="{{ user.pk }}">
+{% include 'users/includes/message_form.html' %}
+<div class="body-container">
+    <div class="top-container">
+        <div class="sized-container">
+            <div class="logo-container">
+                instructor<span>crm</span>
+            </div>
+            {% if user.is_authenticated %}
+                <div class="menu-container row">
                     <div class="menu-list">
-                        {% if user.is_authenticated %}
                             <div class="menu-box">
                                 {% include 'users/includes/inc_user_menu.html' %}
                                 <span class="menu-item active username">
                                     {{ user.get_full_name }}
                                 </span>
                             </div>
-                        {% endif %}
+                    </div>
+                    <div class="messages-container">
+                        <img class="bell" src="{% static 'images/bell.png' %}" alt="" id="bell">
+                        <img class="letter" src="{% static 'images/letter.png' %}" alt="" id="messages-link">
+                        <div class="messages {% comment %}active{% endcomment %}">
+                            <ul class="messages-list">
+                                {% for msg in user_notifications %}
+                                <li class="message-item">
+                                    <label>{{ msg.timestamp|date:'d-m-Y G:i' }}</label>
+                                    <br>
+                                    {{ msg.text }}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="main-container">
-            <div class="sized-container">
-                {% block content %}
-                {% endblock %}
-            </div>
-        </div>
-        <div class="footer-container">
-            <div class="sized-container">
-                @copyright {{ year }}
-            </div>
+            {% endif %}
         </div>
     </div>
+    <div class="main-container">
+        <div class="notification">
+        </div>
+        <div class="sized-container">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+    <div class="footer-container">
+        <div class="sized-container">
+            @copyright {{ year }}
+        </div>
+    </div>
+</div>
+<script src="{% static 'js/websockets.js' %}"></script>
+<script>
+    "use strict";
+    window.addEventListener('load', () => {
+        const bell = document.querySelector('#bell');
+        bell.addEventListener('click', () => showNotifications());
+    })
+
+    function showNotifications() {
+        const notifications = document.querySelector('.messages');
+        notifications.classList.toggle('active');
+    }
+
+</script>
 {% block js %}
 {% endblock %}
 </body>

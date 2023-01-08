@@ -4,6 +4,8 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.shortcuts import render
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import (PasswordChangeView,
                                        PasswordResetCompleteView,
@@ -26,6 +28,7 @@ from users.forms import (LoginForm, ManagerUserEditForm, UserEditForm,
                          UserManagerCreateForm)
 from users.handlers import UserHandlerFactory
 from users.models import User
+from websocket_server.schema import UserItem, UsersList
 from users.tasks import send_mail_to_user
 
 
@@ -135,6 +138,34 @@ def create_user(request, role: str):
         form = UserManagerCreateForm(manager=request.user, role=role)
     context['form'] = form
     return render(request, 'users/form.html', context)
+
+
+def messages_by_user(request, user_id: str):
+    messages = []
+    messages.extend([x for x in request.user.in_messages.filter(
+        from_user_id=user_id, kind='msg').all()])
+    messages.extend([x for x in request.user.out_messages.filter(
+        to_user_id=user_id, kind='msg').all()])
+    date_formats = ['%d-%m-%Y', '%H:%M']
+    return JsonResponse(
+        data={
+            'result': [
+                f'<b>{x.timestamp.strftime(" ".join(date_formats))}</b><br>{x.text}'
+                for x in sorted(messages, key=lambda x: x.timestamp)
+            ]
+        }
+    )
+
+
+def users_list(request):
+    result = UsersList(
+        result=[]
+    )
+    for i in User.objects.all():
+        result.result.append(
+            UserItem.parse_obj({'id': str(i.pk), 'name': i.get_full_name()})
+        )
+    return JsonResponse(data=result.dict())
 
 
 class ClientsListView(LoginRequiredMixin, ListView):

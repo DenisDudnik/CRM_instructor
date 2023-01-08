@@ -92,6 +92,8 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'users.context_processors.today_year',
                 'users.context_processors.get_links',
+                'users.context_processors.get_contacts',
+                'users.context_processors.get_notification',
             ],
             'libraries': {
                 'my_tags': 'crm_instructor.templatetags.my_tags',

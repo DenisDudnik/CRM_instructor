@@ -1,0 +1,28 @@
+{% load static %}
+
+<div class="messages-form-container">
+    <div class="messages-form-container-inner">
+        <button class="close-button">
+            X
+        </button>
+        <ul class="contacts-list">
+            <div id="user-search">
+                <input type="text" name="user_search" id="user-search-input">
+                <div id="tips" style="display: none"></div>
+            </div>
+            {% for item in contacts %}
+                <li class="contacts-item" data-id="{{ item.id }}">
+                    {{ item.name }}
+                </li>
+            {% endfor %}
+        </ul>
+        <div class="chat-box">
+            <ul class="chat">
+            </ul>
+            <div id="send-form" style="display: none">
+                <input type="text" name="text" id="text" data-id="">
+                <button id="send-button">Отправить</button>
+            </div>
+        </div>
+    </div>
+</div>
